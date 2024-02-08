@@ -1,5 +1,3 @@
-# Meeting Minutes Template
-
 # Project Orientation Meeting Minutes
 
 **Date**: January 31, 2024

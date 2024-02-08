@@ -1,6 +1,4 @@
-# Meeting Minutes Template
-
-# Project Orientation Meeting Minutes
+# Sprint 1 Planning Meeting Minutes
 
 **Date**: February 2, 2024
 

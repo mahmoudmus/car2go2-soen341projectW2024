@@ -1,5 +1,3 @@
-# Meeting Minutes Template
-
 # Sprint 1 Review Meeting Minutes
 
 **Date**: February 7, 2024
