@@ -36,10 +36,11 @@
  Front-end Developper, Designs & Styling
 #### Background
 
-### Alex Page, 40193184 
+### Alex Page-Slowik, 40193184 
 #### Role
 Front-end Developper, Templating & Layout
 #### Background
+Third year Computer Engineering student with embedded C programming experience.
 
 ### Adam Tahle, 40237870 
 #### Role
