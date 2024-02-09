@@ -49,6 +49,8 @@ Third year Computer Engineering student with embedded C programming experience.
 #### Background
 Second year Software Engineering student with academic and professional experience with traditional HTML/CSS/JS web development
 
+### Activity log for all members
+https://docs.google.com/spreadsheets/d/1uNgTQ0MPYsZqD4j4SAwWKReTsDaYdLrwizcvZZYlPd4/edit?usp=sharing
 
 
 # 2. Project Approach
