@@ -45,7 +45,7 @@ Front-end Developper, Templating & Layout
 #### Role
  Back-end Developper, Routing and Controller Logic
 #### Background
-
+Second year Software Engineering student with academic and professional experience with traditional HTML/CSS/JS web development
 
 
 
