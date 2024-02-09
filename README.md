@@ -25,7 +25,7 @@
 #### Role
   Scrum Master and Full-stack Developper, Integration & Testing
 #### Background
-
+  2nd year soen student with experience in web development.
 ### Mahmoud Mustafa, 40262016
 #### Role
   Front-end Developper, Logic & Architecture
