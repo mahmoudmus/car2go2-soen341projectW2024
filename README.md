@@ -30,7 +30,7 @@
 #### Role
   Front-end Developper, Logic & Architecture
 #### Background
-
+   Second yearr software engineerring student
 ### Vincent Nguyen, 40246406
 #### Role
  Front-end Developper, Designs & Styling
