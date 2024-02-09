@@ -35,6 +35,7 @@
 #### Role
  Front-end Developper, Designs & Styling
 #### Background
+Computer Engineering with low-level programming
 
 ### Alex Page-Slowik, 40193184 
 #### Role
