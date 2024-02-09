@@ -240,7 +240,9 @@ In summary, during the first sprint, our team weighs the pros and cons of the di
 # Installation Instructions
 
 This project is built on Express, a Node.js framework. Node.js and the [Node.js package manager (npm)](https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager)
-must be installed in order to run the application.
+must be installed in order to run the application.  
+
+Furthermore please see our [Wiki](https://github.com/mahmoudmus/car2go2-soen341projectW2024/wiki/Team-Rules) for Team rules.
 
 ### Installing Node.js & Node.js Package Manager
 
