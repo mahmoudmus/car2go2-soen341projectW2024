@@ -20,7 +20,7 @@
 #### Role 
   Back-end Developper, Database Design & Model Management
 #### Background
-
+ Student in Software Engineering with professional experience in Agile Methodologies 
 ### Thomas Mahut, 40249811
 #### Role
   Scrum Master and Full-stack Developper, Integration & Testing
