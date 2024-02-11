@@ -27,16 +27,16 @@
 
 ## Discussion
 
-- Discussed backend frameworks.
+- Discussed different backend frameworks (Ruby on Rails, Express, and Laravel).
 - Discussed possible database management systems.
-- Discussed how to seperate work for sprint 1.
+- Discussed how to seperate work for sprint 1.  
 - Discussed which team member should create the repository.
 - Discussed aspects of sprint needing clarification.
 
 ## Decisions Made
 
-- Decided on the Express framework.
-- Decided on MongoDB, a NoSQL DBMS.
+- Decided on the Express framework. Decision was made unanimously. 
+- Decided on MongoDB, a NoSQL DBMS. Decision was made unanimously.
 - Created a repository under Azal's account.
 
 ## Actions Items
