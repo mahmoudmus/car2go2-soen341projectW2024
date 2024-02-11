@@ -30,13 +30,13 @@
 - User stories and existing task breakdowns.
 - Possible task breakdown for CRUD based user stories.
 - New repository using Mahmoud’s GitHub account due to his access to a student developer account.
-- Potential APIs to leverage such as a price-of-gas API and the Google maps API.
+- Potential APIs to leverage such as a price-of-gas API and the Google maps API. The price-of-gas API could be used as an extra feature to show the ongoing changes in the price-of-gas.
 
 ## Decisions Made
 
-- Approved existing and new task breakdowns.
+- Approved existing and new task breakdowns. New task breakdowns were assigned based on preference. The task breakdowns are split and included in the “Action Items” section.  
 - Created new repository under Mahmoud’s account.
-- Decided to drop real-world rental availability APIs in favour of fabricating rental availability and location data, so as to adhere to the scope of this project.
+- Decided to drop real-world rental availability APIs in favour of fabricating rental availability and location data, so as to adhere to the scope of this project. Decision was made unanimously. 
 
 ## Actions Items
 
