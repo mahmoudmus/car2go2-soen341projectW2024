@@ -51,6 +51,13 @@ Second year Software Engineering student with academic and professional experien
 ### Activity log for all members
 https://docs.google.com/spreadsheets/d/1uNgTQ0MPYsZqD4j4SAwWKReTsDaYdLrwizcvZZYlPd4/edit?usp=sharing
 
+# Tech Stack  
+Our project will utilize Express on the backend and leverage HTML, CSS, and JavaScript on the frontend (including libraries that consist of these technologies). Will we integrate the backend and frontend by using a templating engine to generate HTML files on the backend, and we will then serve these to the client side with publicly visible CSS and JavaScript files.
+
+The templating engine of choice is the embedded JavaScript (EJS) templating engine, so that templates can be defined using a familiar HTML markup and JavaScript syntax.
+
+Component-based reusability and custom functionality will be on the front-end using JavaScript web components, where needed. The HTMX library will be used to add interactivity and partial page reloads, and the Bootstrap library will be employed to facilitate styling and to maintain a consistent look.
+
 # Installation Instructions
 
 This project is built on Express, a Node.js framework. Node.js and the [Node.js package manager (npm)](https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager)
