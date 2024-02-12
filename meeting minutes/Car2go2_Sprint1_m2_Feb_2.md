@@ -26,16 +26,31 @@
 
 ## Discussion
 
-- Discussed team roles.
+- Created and discussed team roles.
+   - Azal Al-Mashta: Back-end Developer, Database Design & Model Management
+   - Thomas Mahut: Scrum Master and Full-stack Developer, Integration & Testing
+   - Mahmoud Mustafa: Front-end Developer, Logic & Architecture
+   - Vincent Nguyen: Front-end Developer, Designs & Styling
+   - Alex Page-Slowik: Front-end Developer, Templating & Layout
+   - Adam Tahle: Back-end Developer, Routing and Controller Logic
+
 - Discussed frontend frameworks.
+  - The team had discussed whether we should use React.js as a frontend framework or use HTML, CSS, and JavaScript instead. 
 - Discussed how we would individually track and log our work.
+  - The activity log sheet will be created using Google Sheets and team members are expected to log in their work and their hours. Thomas will create the activity log sheet.
 - Discussed who should focus on which tasks for sprint 1.
 
 ## Decisions Made
 
-- Assigned team roles.
-- Decided on possible frontend frameworks.
+- Assigned team roles based on preference. After the roles were created, members took turns picking a role that they prefer and have some background about.  
+- Decided on using HTML, CSS, and JavaScript instead of React because such frameworks are beginner friendly for people with no background in web development.  The decision was made unanimously. 
 - Split work for sprint 1.
+   - Part 1: Azal
+   - Part 2: Mahmoud 
+   - Part 3-4: Adam & Thomas 
+   - Part 5-6: Vincent
+   - User stories and burn down chart: Alex 
+
 
 ## Actions Items
 
