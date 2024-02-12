@@ -63,7 +63,7 @@ Component-based reusability and custom functionality will be on the front-end us
 This project is built on Express, a Node.js framework. Node.js and the [Node.js package manager (npm)](https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager)
 must be installed in order to run the application.  
 
-Furthermore please see our [Wiki](https://github.com/mahmoudmus/car2go2-soen341projectW2024/wiki/Team-Rules) for Team rules.
+Furthermore please see our [Wiki](https://github.com/mahmoudmus/car2go2-soen341projectW2024/wiki/Team-Rules-and-Guidelines) for Team rules.
 
 ### Installing Node.js & Node.js Package Manager
 
