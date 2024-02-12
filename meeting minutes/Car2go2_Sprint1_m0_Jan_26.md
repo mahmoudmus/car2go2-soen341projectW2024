@@ -1,4 +1,4 @@
-Team Formation Meeting Minutes
+#Team Formation Meeting Minutes
 
 **Date**: January 26th, 2024
 
@@ -25,12 +25,12 @@ Team Formation Meeting Minutes
 
 ## Discussion
 
--Discussed potential team names
--Discussed how much experience each team member had in web development
+- Discussed potential team names
+- Discussed how much experience each team member had in web development
 
 ## Decisions Made
 
--Decided on team name by unanimous vote
+- Decided on team name by unanimous vote
 
 ## Actions Items
 
