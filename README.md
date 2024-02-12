@@ -29,7 +29,7 @@ This project is a car rental platform designed to facilitate the process of rent
   Scrum Master and Full-stack Developper, Integration & Testing
 #### Background
   2nd year soen student with experience in web development.
-### Mahmoud Mustafa, 40262016
+### Mahmoud Mustafa, 40252016
 #### Role
   Front-end Developper, Logic & Architecture
 #### Background
