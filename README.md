@@ -1,16 +1,19 @@
 #  1. Project Overview
 
-## 1.1 Project Objectives
+## 1.1 Project Description
+This project is a car rental platform designed to facilitate the process of renting vehicles for periods time that range from a few hours to a few weeks. The application serves as an interface between customers looking to rent vehicles and a car rental company that is offering those services.
+
+## 1.2 Project Objectives
 
  By the end of the fourth sprint we are looking to have a middle-fidelity prototype  that we can present and demo to showcase what our marketable product would look like.
  As a team we are looking to learn and improve in web programming, specifically get more experience using Express, MongoDB for a NoSQL database. We are also looking to implement
  and get comfortable with Agile methodologies such as Scrum meetings, user stories, task breakdown and incremental development. 
 
-## 1.2 Scope
+## 1.3 Scope
 
   We are looking to implement most core features for a car rental service. A client should be able to create an account, and later log in using their credentials, and use said account to make a rental request in which the client specifies duration, car type, location and other details. The customer will be able to modify and cancel a booking, sort cars based on their preferences, give reviews and more. 
 
-## 1.3 Target Audience
+## 1.4 Target Audience
 
   Our target audience for our services are tourists who need a car for th duration of their stay, people from abroad who are staying for an extended period of time, or newly arrived immigrants that need a rental car, either as a transition.
 
