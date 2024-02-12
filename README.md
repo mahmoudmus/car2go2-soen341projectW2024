@@ -87,7 +87,7 @@ Assuming you are using VS Code, you can follow the steps below.
 1. Open VS Code.
 2. Open the command palette by pressing **`Ctrl + Shift + P`** (Windows/Linux) or **`Cmd + Shift + P`** (Mac).
 3. Type `Git: Clone` in the command palette and press enter.
-4. Paste in the url of [this repository](https://github.com/mahutt/341bones) and press enter.
+4. Paste in the url of [this repository](https://github.com/mahmoudmus/car2go2-soen341projectW2024) and press enter.
 5. Specify a location on your machine.
 6. VS Code will ask if you want to open the cloned repository - select `Yes` or `Open`.
 
