@@ -1,4 +1,4 @@
-#Team Formation Meeting Minutes
+# Team Formation Meeting Minutes
 
 **Date**: January 26th, 2024
 
