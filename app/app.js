@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// setting environment variables
+require('dotenv').config();
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -12,13 +15,19 @@ var app = express();
 // mongoose connection setup
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-require('dotenv').config();
 const mongoDB = process.env.MONGODB_URI;
 
 main().catch((err) => console.log(err));
 async function main() {
     await mongoose.connect(mongoDB);
 }
+
+// initializing passport
+const passport = require('passport');
+const authStrategy = require('./controllers/authController').strategy;
+
+authStrategy(passport);
+app.use(passport.initialize());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
