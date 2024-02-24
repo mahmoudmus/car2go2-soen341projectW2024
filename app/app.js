@@ -41,6 +41,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
+app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons/')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
