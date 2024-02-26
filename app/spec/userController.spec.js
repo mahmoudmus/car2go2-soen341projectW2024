@@ -7,6 +7,7 @@ describe('User Controller', function () {
             Promise.resolve([
                 { user_name: 'Azal Al-Mashta' },
                 { user_name: 'Mahmoud Mustafa' },
+                { user_name: 'Alex Page' },
             ])
         );
 
@@ -21,6 +22,7 @@ describe('User Controller', function () {
             user_list: [
                 { user_name: 'Azal Al-Mashta' },
                 { user_name: 'Mahmoud Mustafa' },
+                { user_name: 'Alex Page' },
             ],
         });
     });
