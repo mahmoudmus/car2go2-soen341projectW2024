@@ -1,0 +1,24 @@
+name: Run Jasmine Unit Tests
+run-name: ${{ github.actor }} is running Jasmine unit tests
+
+on:
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "21.4.0"
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./app
+      - name: Run unit tests
+        run: npm run test
+        working-directory: ./app
