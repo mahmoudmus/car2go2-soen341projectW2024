@@ -19,7 +19,7 @@ describe('User Controller', function () {
         expect(User.find).toHaveBeenCalledWith({}, 'user_name');
         expect(res.render).toHaveBeenCalledWith('user_list', {
             user_list: [
-                { user_name: 'AzalAl-Mashta' },
+                { user_name: 'Azal Al-Mashta' },
                 { user_name: 'Mahmoud Mustafa' },
             ],
         });
