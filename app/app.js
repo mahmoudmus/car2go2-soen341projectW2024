@@ -8,8 +8,9 @@ const expressLayouts = require('express-ejs-layouts');
 // setting environment variables
 require('dotenv').config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/user');
+const vehiclesRouter = require('./routes/vehicle');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons/')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/vehicles', vehiclesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
