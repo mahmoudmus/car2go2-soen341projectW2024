@@ -14,6 +14,7 @@ const UserSchema = new Schema({
     name: { type: String, required: true, maxLength: 100 },
     age: { type: Number, required: true, min: 18 , max: 100}, //Can change minimum. Must look into laws about minimum age to rent and drive a car
     email: {type: String, required: 'An email address is required', lowercase: true, unique: true }, //Must implement email confirmation system
+    id: {type: String, required: true, unique: true, default: () => nanoid(), immutable: true},
     password: { type: String, required: true },
     homeAdress: {type: AddressSchema, required: true},
     sex: {type: Number},
