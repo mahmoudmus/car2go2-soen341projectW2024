@@ -13,8 +13,10 @@ const VehicleSchema = new Schema({
     colour: String,
     seats: Number, //max number of passengers
     doors: Number,
-    mileage: Number,
-
+    mileage: Number, //in km
+    isAutomatic: Boolean,
+    engineType: String, // Gas, electric, hybrid
+    size: Number //in Litres
 });
 
 
@@ -28,6 +30,20 @@ VehicleSchema.methods.verifyPriceRange = function(price) { //returns price range
           return 30
         case price>=35 && price<=40:
           return 35
+      }   
+};
+VehicleSchema.methods.verifySizeRange = function(price) { //returns size range minimum. Maximum is min+500.
+    switch (size) {
+        case price<=1000:
+          return 0
+        case price>=1000 && price<=1500:
+          return 1000
+        case price>=1500 && price<=2000:
+          return 1500
+        case price>=2000 && price<=2500:
+          return 2000
+        case price>=2500:
+          return -1
       }   
 };
 module.exports = mongoose.model('Vehicle', VehicleSchema);
