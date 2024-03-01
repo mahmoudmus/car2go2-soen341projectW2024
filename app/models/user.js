@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     age: { type: Number, required: true, min: 18 , max: 100}, //Can change minimum. Must look into laws about minimum age to rent and drive a car
     email: {type: String, required: 'An email address is required', lowercase: true, unique: true }, //Must implement email confirmation system
     id: {type: String, required: true, unique: true, default: () => nanoid(), immutable: true},
-    password: { type: String, required: true },
+    password: { type: String, required: true, minLength: 8 },
     homeAdress: {type: AddressSchema, required: true},
     sex: {type: Number},
     createdAt: {type: Date, default: () => Date.now, immutable: true}, //cannot be modified
@@ -48,10 +48,10 @@ UserSchema.pre('save', function(next) {
     });
 });
      
-UserSchema.methods.verifyPassword = function(candidatePassword, cb) {
+UserSchema.methods.verifyPassword = async function(candidatePassword) {
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
+        if (err) return false;
+        return true;
     });
 };
 
