@@ -21,6 +21,7 @@ const deleteAllVehicles = async () => {
 };
 
 const createVehicleInstances = async () => {
+    const categories = ['compact', 'standard', 'intermediate', 'full-size'];
     const types = ['car', 'suv', 'van', 'truck'];
     const makers = ['Ford', 'Toyota', 'Volkswagen'];
     const models = ['Tesla Model S', 'Ford Mustang', 'Honda Civic'];
@@ -45,9 +46,6 @@ const createVehicleInstances = async () => {
         return Math.random() >= 0.5;
     };
     const engineTypes = ['gas', 'electric', 'hybrid'];
-    const randomSize = () => {
-        return Math.floor(Math.random() * (81 - 40) + 40);
-    };
     const randomHourlyPrice = () => {
         return Math.floor(Math.random() * (10 - 3) + 3);
     };
@@ -60,6 +58,7 @@ const createVehicleInstances = async () => {
     try {
         for (let i = 1; i <= 25; i++) {
             const vehicle = new Vehicle({
+                category: chooseRandom(categories),
                 type: chooseRandom(types),
                 details: {
                     make: chooseRandom(makers),
@@ -71,7 +70,6 @@ const createVehicleInstances = async () => {
                     mileage: randomMileage(),
                     isAutomatic: randomBool(),
                     engineType: chooseRandom(engineTypes),
-                    size: randomSize(),
                 },
                 available: randomBool(),
                 hourlyPrice: 50,
