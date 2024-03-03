@@ -1,0 +1,99 @@
+<!-- Button trigger modal -->
+<!-- Uncomment the lines below to get the button-->
+
+<!-- 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Button
+</button>
+-->
+  
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Vehicle</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>  
+                <div class="form-group">
+                    <label for="vehicleId">ID</label>
+                    <input type="text" class="form-control" id="vehicleId" placeholder="Vehicle ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <input type="text" class="form-control" id="type" placeholder="Type" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" class="form-control" id="category" placeholder="Category" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" id="price" placeholder="Price" required>
+                </div>
+                <div class="form-group">
+                    <label for="locationId">Pickup Location ID</label>
+                    <input type="text" class="form-control" id="locationId" placeholder="Location ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="make">Manufacturer</label>
+                    <input type="text" class="form-control" id="make" placeholder="Manufacturer">
+                </div>
+                <div class="form-group">
+                    <label for="model">Model</label>
+                    <input type="text" class="form-control" id="model" placeholder="Model">
+                </div>
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" class="form-control" id="year" placeholder="Year">
+                </div>
+                <div class="form-group">
+                    <label for="colour">Colour</label>
+                    <input type="text" class="form-control" id="colour" placeholder="Colour">
+                </div>
+
+                <div class="form-group">
+                    <label for="seats">Number of Seats</label>
+                    <input type="number" class="form-control" id="seats" placeholder="Seats">
+                </div>
+
+                <div class="form-group">
+                    <label for="doors">Number of Doors</label>
+                    <input type="number" class="form-control" id="doors" placeholder="Doors">
+                </div>
+
+                <div class="form-group">
+                    <label for="mileage">Mileage (km)</label>
+                    <input type="number" class="form-control" id="mileage" placeholder="Mileage">
+                </div>
+
+                <div class="form-group">
+                    <input type="radio" id="automatic" name="isAutomatic" value="true">
+                    <label class="form-check-label" for="automatic">Automatic</label>
+                    <input type="radio" id="notAutomatic" name="isAutomatic" value="false">
+                    <label class="form-check-label" for="notAutomatic">Not Automatic</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="engine">Engine Type</label>
+                    <input type="text" class="form-control" id="engine" placeholder="Engine">  
+                </div>
+
+                <div class="form-group">
+                    <label for="size">Size (Litres)</label><br>
+                    <input type="number" class="form-control" id="size" placeholder="Size"><br>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+</div>
+</div>
