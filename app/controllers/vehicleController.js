@@ -19,7 +19,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         savedVehicle = await newVehicle.save();
         res.send({ savedVehicle });
     } catch (e) {
-        res.status(400).send({ error: 'Could not create vehicle.' });
+        res.status(400).send({ message: 'Could not create vehicle.' });
     }
 });
 
@@ -29,8 +29,15 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
 });
 
 exports.readVehicle = asyncHandler(async (req, res, next) => {
-    // @todo tsk-12008
-    res.sendStatus(404);
+    try {
+        const vehicle = await Vehicle.findById(req.params.id);
+        if (!vehicle) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+        res.send({ vehicle });
+    } catch (e) {
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
