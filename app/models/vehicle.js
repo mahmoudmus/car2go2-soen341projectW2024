@@ -18,7 +18,12 @@ const VehicleSchema = new Schema({
         doors: Number,
         mileage: Number, // In km
         isAutomatic: Boolean,
-        engineType: String, // Gas, electric, hybrid
+        engineType: {
+            type: String,
+            enum: ['gas', 'electric', 'hybrid'],
+            lowercase: true,
+            trim: true,
+        },
         size: Number,
     },
     available: {
@@ -27,6 +32,10 @@ const VehicleSchema = new Schema({
     },
     hourlyPrice: { type: Number, required: true, min: 0 },
     branch: { type: String, required: true }, // @todo Replace with reference to branch model.
+    imageUrl: {
+        type: String,
+        trim: true,
+    },
 });
 
 VehicleSchema.virtual('category').get(function () {
