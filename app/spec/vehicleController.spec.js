@@ -1,5 +1,5 @@
 const sinon = require('sinon');
-const { createVehicle } = require('../controllers/vehicleController');
+const vehicleController = require('../controllers/vehicleController');
 const Vehicle = require('../models/vehicle');
 const asyncHandler = require('express-async-handler');
 
@@ -30,22 +30,25 @@ describe('Vehicle Controller', () => {
 
         res = {
             send: sinon.stub(),
+            render: sinon.stub(),
         };
 
         next = sinon.stub();
 
         vehicleSaveStub = sinon.stub(Vehicle.prototype, 'save');
+        vehicleFindStub = sinon.stub(Vehicle, 'find');
     });
 
     afterEach(() => {
         vehicleSaveStub.restore();
+        vehicleFindStub.restore();
     });
 
     it('should create a new vehicle and send it as a response', async () => {
         const newVehicle = new Vehicle(req.body);
         vehicleSaveStub.resolves(newVehicle);
 
-        await createVehicle(req, res, next);
+        await vehicleController.createVehicle(req, res, next);
 
         sinon.assert.calledWith(res.send, { savedVehicle: newVehicle });
         sinon.assert.notCalled(next);
@@ -60,8 +63,23 @@ describe('Vehicle Controller', () => {
             send: sinon.stub(),
         };
 
-        await createVehicle(req, res, next);
+        await vehicleController.createVehicle(req, res, next);
 
         sinon.assert.calledWith(res.status, 400);
+    });
+
+    it('should fetch all vehicles and render them', async () => {
+        const vehicles = [
+            { type: 'car', available: true },
+            { type: 'suv', available: false },
+        ];
+        vehicleFindStub.resolves(vehicles);
+
+        await vehicleController.readAllVehicles(req, res, next);
+
+        sinon.assert.calledWith(res.render, 'vehicle/list', {
+            vehicleList: vehicles,
+        });
+        sinon.assert.notCalled(next);
     });
 });

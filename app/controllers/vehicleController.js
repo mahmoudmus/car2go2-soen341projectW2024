@@ -24,8 +24,8 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
-    // @todo tsk-12008
-    res.sendStatus(404);
+    const vehicleList = await Vehicle.find({}, 'type available');
+    res.render('vehicle/list', { vehicleList });
 });
 
 exports.readVehicle = asyncHandler(async (req, res, next) => {

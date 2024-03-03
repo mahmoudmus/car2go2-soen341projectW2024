@@ -5,8 +5,10 @@
         alt="Car Image"
     />
     <div class="card-body">
-        <h5 class="card-title">Car Name</h5>
-        <p class="card-text text-success">Available</p>
+        <h5 class="card-title"><%= vehicle.type %></h5>
+        <p class="card-text <%= vehicle.available ? 'text-success' : 'text-danger' %>">
+            <%= vehicle.available ? 'Available' : 'Unavailable' %>
+        </p>
         <div class="">
             <a href="#" class="btn btn-danger"
                 ><i class="bi bi-pencil-fill"></i>
