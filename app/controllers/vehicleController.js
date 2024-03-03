@@ -24,7 +24,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
-    const vehicleList = await Vehicle.find({}, 'type available');
+    const vehicleList = await Vehicle.find({}, 'type available imageUrl');
     res.render('vehicle/list', { vehicleList });
 });
 
