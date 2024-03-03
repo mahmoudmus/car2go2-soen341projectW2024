@@ -23,6 +23,7 @@
         "morgan": "~1.9.1",
         "passport": "^0.7.0",
         "passport-jwt": "^4.0.1",
+        "sinon": "^17.0.1",
         "supertest": "^6.3.4"
     },
     "devDependencies": {

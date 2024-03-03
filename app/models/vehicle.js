@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 const VehicleSchema = new Schema({
     type: {
         type: String,
-        enum: ['CAR', 'SUV', 'VAN', 'TRUCK'],
+        enum: ['car', 'suv', 'van', 'truck'],
         required: true,
+        lowercase: true,
         trim: true,
     },
     details: {
@@ -63,4 +64,5 @@ VehicleSchema.methods.verifySizeRange = function (price) {
             return -1;
     }
 };
+
 module.exports = mongoose.model('Vehicle', VehicleSchema);
