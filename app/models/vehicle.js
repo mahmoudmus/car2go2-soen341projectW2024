@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VehicleSchema = new Schema({
+    category: {
+        type: String,
+        enum: ['compact', 'standard', 'intermediate', 'full-size'],
+        required: true,
+        lowercase: true,
+        trim: true,
+    },
     type: {
         type: String,
         enum: ['car', 'suv', 'van', 'truck'],
@@ -24,7 +31,6 @@ const VehicleSchema = new Schema({
             lowercase: true,
             trim: true,
         },
-        size: Number,
     },
     available: {
         type: Boolean,
@@ -36,13 +42,6 @@ const VehicleSchema = new Schema({
         type: String,
         trim: true,
     },
-});
-
-VehicleSchema.virtual('category').get(function () {
-    if (this.details.size <= 45) return 'compact';
-    if (this.details.size <= 60) return 'standard';
-    if (this.details.size <= 75) return 'intermediate';
-    return 'full-size';
 });
 
 VehicleSchema.methods.verifyPriceRange = function (price) {

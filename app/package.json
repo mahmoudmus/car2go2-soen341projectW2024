@@ -5,7 +5,8 @@
     "scripts": {
         "start": "node ./bin/www",
         "devstart": "nodemon ./bin/www",
-        "test": "jasmine"
+        "test": "jasmine",
+        "cv": "node scripts/createVehicles.js"
     },
     "dependencies": {
         "bootstrap": "^5.3.3",
