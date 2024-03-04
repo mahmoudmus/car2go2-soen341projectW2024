@@ -28,8 +28,9 @@ class VehicleCard extends HTMLElement {
     }
 
     editVehicle() {
-        const vehicleForm = document.querySelector('#updateVehicleModal');
+        const vehicleForm = document.querySelector('vehicle-form');
         vehicleForm.setFields(this.vehicleId);
+        vehicleForm.mode = 'updating';
         vehicleForm.modal.show();
     }
 

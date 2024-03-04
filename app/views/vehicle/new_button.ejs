@@ -1,5 +1,10 @@
-<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newVehicleModal">
+<button id="newVehicleButton" type="button" class="btn btn-dark">
     <i class="bi bi-plus-lg"></i>
 </button>
-
-<%- include('./form', { purpose: 'creating', modalId: 'newVehicleModal', formId: 'create-vehicle', title: "New Vehicle", submit: "Create" }) %>
+<script>
+    document.querySelector('#newVehicleButton').addEventListener('click', () => {
+        const vehicleForm = document.querySelector('vehicle-form');
+        vehicleForm.mode = 'creating';
+        vehicleForm.modal.show();
+    });
+</script>

@@ -1,7 +1,5 @@
 class VehicleForm extends HTMLElement {
     connectedCallback() {
-        this.purpose = this.getAttribute('purpose');
-
         this.modal = new bootstrap.Modal(this);
         this.form = this.querySelector('form');
         this.form.addEventListener('submit', (e) => {
@@ -36,14 +34,14 @@ class VehicleForm extends HTMLElement {
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network error.');
-                    } else if (this.purpose === 'creating') {
+                    } else if (this.mode === 'creating') {
                         return response.text();
                     } else {
                         return response.json();
                     }
                 })
                 .then((data) => {
-                    if (this.purpose === 'creating') {
+                    if (this.mode === 'creating') {
                         this.successfulCreation(data);
                     } else {
                         this.successfulUpdate(data);
@@ -56,38 +54,39 @@ class VehicleForm extends HTMLElement {
                         .caution(this.requestError());
                 });
         });
+        this.mode = 'creating';
     }
 
     requestMethod() {
-        switch (this.purpose) {
+        switch (this.mode) {
             case 'creating':
                 return 'POST';
             case 'updating':
                 return 'PUT';
             default:
-                throw new Error('Invalid vehicle form purpose.');
+                throw new Error('Invalid vehicle form mode.');
         }
     }
 
     requestUrl() {
-        switch (this.purpose) {
+        switch (this.mode) {
             case 'creating':
                 return '/vehicles';
             case 'updating':
                 return `/vehicles/${this.vehicleId}`;
             default:
-                throw new Error('Invalid vehicle form purpose.');
+                throw new Error('Invalid vehicle form mode.');
         }
     }
 
     requestError() {
-        switch (this.purpose) {
+        switch (this.mode) {
             case 'creating':
                 return 'Failed to create vehicle.';
             case 'updating':
                 return `Failed to update vehicle.`;
             default:
-                throw new Error('Invalid vehicle form purpose.');
+                throw new Error('Invalid vehicle form mode.');
         }
     }
 
@@ -177,6 +176,38 @@ class VehicleForm extends HTMLElement {
                     .caution('Error fetching vehicle data.');
                 console.error('Error:', error);
             });
+    }
+
+    get mode() {
+        return this._mode;
+    }
+
+    set mode(mode) {
+        switch (mode) {
+            case 'creating':
+                this._mode = mode;
+                this.form.reset();
+                this.title = 'New Vehicle';
+                this.submitButtonText = 'Create';
+
+                break;
+            case 'updating':
+                this._mode = mode;
+                this.title = 'Update Vehicle';
+                this.submitButtonText = 'Update';
+                break;
+            default:
+                throw new Error('Invalid vehicle form mode.');
+        }
+    }
+
+    set title(title) {
+        this.querySelector('.modal-title').innerHTML = title;
+    }
+
+    set submitButtonText(submitButtonText) {
+        this.querySelector('button[type="submit"]').innerHTML =
+            submitButtonText;
     }
 }
 
