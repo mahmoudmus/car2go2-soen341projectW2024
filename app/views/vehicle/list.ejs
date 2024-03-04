@@ -2,7 +2,7 @@
 <%- include('./new_button') %>
 </div>
 <div class="container">
-    <div class="row">
+    <div class="row" id="vehicle-list">
        <% vehicleList.forEach(function(vehicle) { %>
             <div class="col-12 col-md-6 col-lg-4 mb-3">
                 <%- include('./row', { vehicle }) %>

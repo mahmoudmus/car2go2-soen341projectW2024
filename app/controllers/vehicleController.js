@@ -2,14 +2,16 @@ const Vehicle = require('../models/vehicle');
 const asyncHandler = require('express-async-handler');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
-    const { type, details, branch } = req.body;
+    const { type, category, details, branch, imageUrl } = req.body;
     const available = Boolean(req.body.available);
     const hourlyPrice = parseFloat(req.body.hourlyPrice);
 
     const newVehicle = new Vehicle({
         type,
+        category,
         details,
         branch,
+        imageUrl,
         available,
         hourlyPrice,
     });
@@ -17,7 +19,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
     let savedVehicle;
     try {
         savedVehicle = await newVehicle.save();
-        res.send({ savedVehicle });
+        res.render('vehicle/row', { vehicle: savedVehicle, layout: false });
     } catch (e) {
         res.status(400).send({ message: 'Could not create vehicle.' });
     }
