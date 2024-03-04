@@ -1,0 +1,134 @@
+<div class="modal fade" id="<%= modalId %>" tabindex="-1" aria-labelledby="newVehicleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="newVehicleModalLabel"><%= title %></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="<%= formId %>">
+                <input type="hidden" id="vehicle_id" name="vehicle_id" value="">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="type">Type</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="" disabled selected>select</option>
+                                <option value="car">Car</option>
+                                <option value="suv">SUV</option>
+                                <option value="van">Van</option>
+                                <option value="truck">Truck</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="category">Category</label>
+                            <select class="form-control" id="category" name="category" required>
+                                <option value="" disabled selected>select</option>
+                                <option value="compact">Compact</option>
+                                <option value="standard">Standard</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="full-size">Full-size</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="text" class="form-control" id="imageUrl" name="imageUrl" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="branch">Branch</label>
+                        <select class="form-control" id="branch" name="branch" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="montreal">Montreal</option>
+                            <option value="toronto">Toronto</option>
+                            <option value="winnipeg">Winnipeg</option>
+                            <option value="calgary">Calgary</option>
+                            <option value="vancouver">Vancouver</option>
+                        </select>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="hourlyPrice">Hourly Rate</label>
+                            <input type="number" class="form-control" id="hourlyPrice" name="hourlyPrice" required min="0" step=".01">
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="available" name="available">
+                                <label class="form-check-label" for="available">
+                                    Available
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="make">Manufacturer</label>
+                        <input type="text" class="form-control" id="make" name="make">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="model">Model</label>
+                        <input type="text" class="form-control" id="model" name="model">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="year">Year</label>
+                            <input type="number" class="form-control" id="year" name="year">
+                        </div>
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="colour">Colour</label>
+                            <input type="text" class="form-control" id="colour" name="colour">
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="seats">Number of Seats</label>
+                            <input type="number" class="form-control" id="seats" name="seats">
+                        </div>
+        
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="doors">Number of Doors</label>
+                            <input type="number" class="form-control" id="doors" name="doors">
+                        </div>
+                    </div>
+    
+                    <div class="form-group mb-3">
+                        <label for="mileage">Mileage (km)</label>
+                        <input type="number" class="form-control" id="mileage" name="mileage">
+                    </div>
+    
+                    
+                    <div class="row align-items-center">
+                        <div class="form-group mb-3 col-sm-6">
+                            <label for="engineType">Engine Type</label>
+                            <select class="form-control" id="engineType" name="engineType">
+                                <option value="" disabled selected>select</option>
+                                <option value="gas">Gas</option>
+                                <option value="electric">Electric</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3 col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="automatic" name="automatic">
+                                <label class="form-check-label" for="automatic">
+                                    Automatic
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success"><%= submit %></button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

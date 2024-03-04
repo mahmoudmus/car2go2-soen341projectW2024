@@ -15,7 +15,7 @@ describe('User Controller', function () {
             render: jasmine.createSpy(),
         };
 
-        await userController.user_list({}, res, () => {});
+        await userController.readAllUsers({}, res, () => {});
 
         expect(User.find).toHaveBeenCalledWith({}, 'user_name');
         expect(res.render).toHaveBeenCalledWith('user_list', {
