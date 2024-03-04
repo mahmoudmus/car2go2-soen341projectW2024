@@ -1,34 +1,55 @@
 <!-- Button trigger modal -->
 <!-- Uncomment the lines below to get the button-->
 
-<!-- 
+ 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editVehicle(this)">
     Edit
 </button>
--->
+
 
 <script>
     function editVehicle(editButton) {
-        const vehicleCard = editButton.closest('.vehicleCard');
-        const vehicleData = vehicleCard.dataset;
+        const vehicleCard = editButton.closest('.card');
+        const vehicleId = vehicleCard.getAttribute('vehicle_id');
     
-        // Populate the form fields with the vehicle's existing data
-        document.getElementById('vehicleId').value = vehicleData.id;
-        document.getElementById('type').value = vehicleData.type;
-        document.getElementById('category').value = vehicleData.category;
-        document.getElementById('price').value = vehicleData.price;
-        document.getElementById('locationId').value = vehicleData.locationId;
-        document.getElementById('make').value = vehicleData.make;
-        document.getElementById('model').value = vehicleData.model;
-        document.getElementById('year').value = vehicleData.year;
-        document.getElementById('colour').value = vehicleData.colour;
-        document.getElementById('seats').value = vehicleData.seats;
-        document.getElementById('doors').value = vehicleData.doors;
-        document.getElementById('mileage').value = vehicleData.mileage;
-        document.getElementById('isAutomatic').value = vehicleData.isAutomatic;
-        document.getElementById('engine').value = vehicleData.engine;
-        document.getElementById('size').value = vehicleData.size;
+        fetch(`/vehicles/${this.vehicle_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                // do something to handle failed request
+                console.log(response);
+                }
+            })
+            .then((vehicleData) => {
+            // display edit form and fill with data here
+            // Populate the form fields with the vehicle's existing data
+            document.getElementById('type').value = vehicleData.type;
+            document.getElementById('category').value = vehicleData.details.category ;
+            document.getElementById('price').value = vehicleData.hourlyPrice;
+            document.getElementById('branch').value = vehicleData.branch;
+            document.getElementById('make').value = vehicleData.details.make;
+            document.getElementById('model').value = vehicleData.details.model;
+            document.getElementById('year').value = vehicleData.details.year;
+            document.getElementById('colour').value = vehicleData.details.colour;
+            document.getElementById('seats').value = vehicleData.details.seats;
+            document.getElementById('doors').value = vehicleData.details.doors;
+            document.getElementById('mileage').value = vehicleData.details.mileage;
+            document.getElementById('isAutomatic').value = vehicleData.details.isAutomatic;
+            document.getElementById('engine').value = vehicleData.details.engineType.type;
+            console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        
     }
+
 </script>
     
   
@@ -43,24 +64,34 @@
             <div class="modal-body">
                 <form>  
                     <div class="form-group">
-                        <label for="vehicleId">ID</label>
-                        <input type="text" class="form-control" id="vehicleId" placeholder="Vehicle ID" required>
-                    </div>
-                    <div class="form-group">
                         <label for="type">Type</label>
-                        <input type="text" class="form-control" id="type" placeholder="Type" required>
+                        <select class="form-control" id="type" required>
+                            <option value="">Select Type</option> <!-- Placeholder option -->
+                            <option value="car">Car</option>
+                            <option value="suv">SUV</option>
+                            <option value="van">Van</option>
+                            <option value="truck">Truck</option>
+                        </select>
                     </div>
+                    
                     <div class="form-group">
                         <label for="category">Category</label>
-                        <input type="text" class="form-control" id="category" placeholder="Category" required>
+                        <select class="form-control" id="category" required>
+                            <option value="">Select Category</option> <!-- Placeholder option -->
+                            <option value="compact">Compact</option>
+                            <option value="standard">Standard</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="full-size">Full-size</option>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="price">Price</label>
                         <input type="number" class="form-control" id="price" placeholder="Price" required>
                     </div>
                     <div class="form-group">
-                        <label for="locationId">Pickup Location ID</label>
-                        <input type="text" class="form-control" id="locationId" placeholder="Location ID" required>
+                        <label for="branch">Branch</label>
+                        <input type="text" class="form-control" id="branch" placeholder="Branch" required>
                     </div>
                     <div class="form-group">
                         <label for="make">Manufacturer</label>
@@ -95,17 +126,22 @@
                     </div>
     
                     <div class="form-group">
-                        <input type="radio" id="automatic" name="isAutomatic" value="true">
+                        <input type="radio" id="automatic" name="isAutomatic">
                         <label class="form-check-label" for="automatic">Automatic</label>
-                        <input type="radio" id="notAutomatic" name="isAutomatic" value="false">
+                        <input type="radio" id="notAutomatic" name="isAutomatic">
                         <label class="form-check-label" for="notAutomatic">Not Automatic</label>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="engine">Engine Type</label>
-                        <input type="text" class="form-control" id="engine" placeholder="Engine">  
-                    </div>
-    
+                        <select class="form-control" id="engine">
+                            <option value="">Select Engine Type</option> <!-- Placeholder option -->
+                            <option value="gas">Gas</option>
+                            <option value="electric">Electric</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>                    
+
                     <div class="form-group">
                         <label for="size">Size (Litres)</label><br>
                         <input type="number" class="form-control" id="size" placeholder="Size"><br>
@@ -121,4 +157,4 @@
             </div>
         </div>
     </div>
-    </div>
+</div>

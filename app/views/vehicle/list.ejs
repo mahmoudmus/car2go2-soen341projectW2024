@@ -8,3 +8,48 @@
     </div>
 </div>
 <%- include('./new_button') %>
+
+<script>
+    function editVehicle(editButton) {
+        const vehicleCard = editButton.closest('.card');
+        const vehicleId = vehicleCard.getAttribute('vehicle_id');
+    
+        fetch(`/vehicles/${this.vehicle_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                // do something to handle failed request
+                console.log(response);
+                }
+            })
+            .then((vehicleData) => {
+            // display edit form and fill with data here
+            // Populate the form fields with the vehicle's existing data
+            document.getElementById('type').value = vehicleData.type;
+            document.getElementById('category').value = vehicleData.details.category ;
+            document.getElementById('price').value = vehicleData.hourlyPrice;
+            document.getElementById('branch').value = vehicleData.branch;
+            document.getElementById('make').value = vehicleData.details.make;
+            document.getElementById('model').value = vehicleData.details.model;
+            document.getElementById('year').value = vehicleData.details.year;
+            document.getElementById('colour').value = vehicleData.details.colour;
+            document.getElementById('seats').value = vehicleData.details.seats;
+            document.getElementById('doors').value = vehicleData.details.doors;
+            document.getElementById('mileage').value = vehicleData.details.mileage;
+            document.getElementById('isAutomatic').value = vehicleData.details.isAutomatic;
+            document.getElementById('engine').value = vehicleData.details.engineType.type;
+            console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        
+    }
+
+</script>
