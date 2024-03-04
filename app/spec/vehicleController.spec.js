@@ -121,4 +121,18 @@ describe('Vehicle Controller', () => {
         sinon.assert.calledWith(res.status, 500);
         sinon.assert.calledWith(res.json, { message: 'Server error' });
     });
+
+    it('should update a vehicle and send it as a response', async () => {
+        const updatedVehicle = new Vehicle({
+            ...req.body,
+            _id: 'vid',
+        });
+        vehicleFindByIdStub.resolves(updatedVehicle);
+        vehicleSaveStub.resolves(updatedVehicle);
+
+        await vehicleController.updateVehicle(req, res, next);
+
+        sinon.assert.calledWith(res.send, { updatedVehicle });
+        sinon.assert.notCalled(next);
+    });
 });
