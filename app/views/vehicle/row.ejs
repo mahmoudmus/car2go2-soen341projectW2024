@@ -1,7 +1,7 @@
 <vehicle-card
     class="card shadow-sm"
     style="max-width: 18rem"
-    vehicle_id="<%= vehicle._id %>"
+    vehicle-id="<%= vehicle._id %>"
 >
     <img
         src="<%= vehicle.imageUrl %>"
@@ -15,7 +15,7 @@
             <%= vehicle.available ? 'Available' : 'Unavailable' %>
         </p>
         <div class="">
-            <button class="btn btn-dark update-vehicle"
+            <button class="btn btn-dark edit-vehicle"
                 ><i class="bi bi-pencil-fill"></i>
             </button>
             <button class="btn btn-dark delete-vehicle"

@@ -2,10 +2,12 @@ class VehicleCard extends HTMLElement {
     connectedCallback() {
         const deleteButton = this.querySelector('.delete-vehicle');
         deleteButton.addEventListener('click', () => this.deleteVehicle());
+        const editButton = this.querySelector('.edit-vehicle');
+        editButton.addEventListener('click', () => this.editVehicle());
     }
 
     deleteVehicle() {
-        fetch(`/vehicles/${this.getAttribute('vehicle_id')}`, {
+        fetch(`/vehicles/${this.vehicleId}`, {
             method: 'DELETE',
         })
             .then((response) => {
@@ -23,6 +25,16 @@ class VehicleCard extends HTMLElement {
             .catch((error) => {
                 console.error('Error:', error);
             });
+    }
+
+    editVehicle() {
+        const vehicleForm = document.querySelector('#updateVehicleModal');
+        vehicleForm.setFields(this.vehicleId);
+        vehicleForm.modal.show();
+    }
+
+    get vehicleId() {
+        return this.getAttribute('vehicle-id');
     }
 }
 
