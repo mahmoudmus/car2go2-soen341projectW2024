@@ -91,10 +91,11 @@ class VehicleForm extends HTMLElement {
     }
 
     successfulCreation(html) {
-        const vehicleContainer = document.createElement('div');
-        vehicleContainer.className = 'col-12 col-md-6 col-lg-4 mb-3';
-        vehicleContainer.innerHTML = html;
-        document.querySelector('#vehicle-list').appendChild(vehicleContainer);
+        const template = document.createElement('div');
+        template.innerHTML = html;
+        console.log(template);
+        const vehicleCard = template.querySelector('vehicle-card');
+        document.querySelector('#vehicle-list').appendChild(vehicleCard);
         document
             .querySelector('#toast')
             .notify('Successfully created vehicle.');

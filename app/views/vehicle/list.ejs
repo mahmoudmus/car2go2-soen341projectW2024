@@ -1,13 +1,18 @@
 <div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
 <%- include('./new_button') %>
 </div>
-<div class="container">
-    <div class="row" id="vehicle-list">
+<style>
+    #vehicle-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 2rem;
+    }
+</style>
+<div class="container" id="vehicle-list">
        <% vehicleList.forEach(function(vehicle) { %>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
                 <%- include('./row', { vehicle }) %>
-            </div>
         <% }) %>
-    </div>
 </div>
 <%- include('./form') %>

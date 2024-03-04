@@ -12,7 +12,7 @@ class VehicleCard extends HTMLElement {
         })
             .then((response) => {
                 if (response.ok) {
-                    this.parentElement.remove();
+                    this.remove();
                     document
                         .querySelector('#toast')
                         .notify('Successfully deleted vehicle.');
