@@ -46,26 +46,27 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const available = Boolean(req.body.available);
     const hourlyPrice = parseFloat(req.body.hourlyPrice);
 
-    try {
-        const vehicle = await Vehicle.findById(id);
-        if (!vehicle) {
-            return res.status(404).send({ message: 'Vehicle not found.' });
-        }
-
-        vehicle.type = type;
-        vehicle.details = details;
-        vehicle.branch = branch;
-        vehicle.available = available;
-        vehicle.hourlyPrice = hourlyPrice;
-
-        const updatedVehicle = await vehicle.save();
-        res.send({ updatedVehicle });
-    } catch (e) {
-        res.status(500).json({ message: 'Server error' });
+    const vehicle = await Vehicle.findById(id);
+    if (!vehicle) {
+        return res.status(404).send({ message: 'Vehicle not found.' });
     }
+
+    vehicle.type = type;
+    vehicle.details = details;
+    vehicle.branch = branch;
+    vehicle.available = available;
+    vehicle.hourlyPrice = hourlyPrice;
+
+    const updatedVehicle = await vehicle.save();
+    res.send({ updatedVehicle });
 });
 
 exports.deleteVehicle = asyncHandler(async (req, res, next) => {
-    // @todo tsk-12010
-    res.sendStatus(404);
+    const id = req.params.id;
+
+    const result = await Vehicle.findByIdAndDelete(id);
+    if (!result) {
+        return res.status(404).json({ message: 'Vehicle not found.' });
+    }
+    res.send({ message: 'Vehicle deleted successfully.' });
 });
