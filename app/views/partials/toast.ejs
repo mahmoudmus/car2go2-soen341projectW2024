@@ -1,0 +1,66 @@
+<button type="button" class="btn btn-primary" id="liveToastBtn">
+    Show live toast
+</button>
+
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div
+        id="toast"
+        class="toast align-items-center border-0 toast-success"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+    >
+        <div class="d-flex">
+            <div class="toast-body"></div>
+            <button
+                    type="button"
+                    class="btn-close me-2 m-auto"
+                    data-bs-dismiss="toast"
+                    aria-label="Close"
+                >
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .toast-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .toast-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    }
+    .toast-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+</style>
+
+<script>
+    const toast = document.querySelector('#toast');
+    toast.notify = function(message) {
+        const bsToast = bootstrap.Toast.getOrCreateInstance(this);
+        this.querySelector('.toast-body').innerHTML = message;
+        this.classList.remove('toast-danger', 'toast-warning');
+        this.classList.add('toast-success');
+        bsToast.show();
+
+    }
+    toast.caution = function(message) {
+        const bsToast = bootstrap.Toast.getOrCreateInstance(this);
+        this.querySelector('.toast-body').innerHTML = message;
+        this.classList.remove('toast-success', 'toast-warning');
+        this.classList.add('toast-danger');
+        bsToast.show();
+
+    }
+    toast.warn = function(message) {
+        const bsToast = bootstrap.Toast.getOrCreateInstance(this);
+        this.querySelector('.toast-body').innerHTML = message;
+        this.classList.remove('toast-success', 'toast-danger');
+        this.classList.add('toast-warning');
+        bsToast.show();
+    }
+</script>
