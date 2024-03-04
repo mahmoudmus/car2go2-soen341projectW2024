@@ -1,130 +1,18 @@
 <div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
 <%- include('./new_button') %>
 </div>
-<div class="container">
-    <div class="row" id="vehicle-list">
+<style>
+    #vehicle-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 2rem;
+    }
+</style>
+<div class="container" id="vehicle-list">
        <% vehicleList.forEach(function(vehicle) { %>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
                 <%- include('./row', { vehicle }) %>
-            </div>
         <% }) %>
-    </div>
 </div>
-<%- include('./form', { modalId: 'updateVehicleModal',formId: 'update-vehicle', title: "Update Vehicle", submit: "Update" }) %>
-
-<script>
-    document.querySelectorAll('.update-vehicle').forEach(function(button) {
-        button.addEventListener('click', () => {
-            const vehicleCard = button.closest('.card');
-            const vehicleId = vehicleCard.getAttribute('vehicle_id');
-
-            fetch(`/vehicles/${vehicleId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        document.querySelector("#toast").warn('Could not get vehicle data.');
-                        console.log(response);
-                    }
-                })
-                .then((data) => {
-                    const vehicle = data.vehicle;
-                    const form = document.querySelector("#update-vehicle");
-
-                    form.querySelector("#vehicle_id").value = vehicle._id;
-
-                    form.querySelector('#type').value = vehicle.type;
-                    form.querySelector('#category').value = vehicle.category;
-                    form.querySelector("#imageUrl").value = vehicle.imageUrl;
-                    form.querySelector("#branch").value = vehicle.branch;
-                    form.querySelector("#hourlyPrice").value = vehicle.hourlyPrice;
-                    form.querySelector("#available").checked = vehicle.available;
-
-                    form.querySelector("#make").value = vehicle.details.make;
-                    form.querySelector("#model").value = vehicle.details.model;
-                    form.querySelector("#year").value = vehicle.details.year;
-                    form.querySelector("#colour").value = vehicle.details.colour;
-                    form.querySelector("#seats").value = vehicle.details.seats;
-                    form.querySelector("#doors").value = vehicle.details.doors;
-                    form.querySelector("#mileage").value = vehicle.details.mileage;
-                    form.querySelector("#engineType").value = vehicle.details.engineType;
-                    form.querySelector("#automatic").checked = vehicle.details.isAutomatic;
-                })
-                .catch((error) => {
-                    document.querySelector("#toast").caution('Error fetching vehicle data.');
-                    console.error('Error:', error);
-                });
-
-            const modal = document.querySelector("#updateVehicleModal");
-            const bsModal = bootstrap.Modal.getOrCreateInstance(modal);
-            bsModal.show();
-        })
-    });
-</script>
-
-<script>
-    const editForm = document.querySelector('#update-vehicle');
-
-    editForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(editForm);
-        const requestBody = {
-            type: formData.get('type'),
-            category: formData.get('category'),
-            imageUrl: formData.get('imageUrl'),
-            branch: formData.get('branch'),
-            available: formData.get('available') === "on",
-            hourlyPrice: formData.get('hourlyPrice'),
-            details: {
-                make: formData.get('make'),
-                model: formData.get('model'),
-                year: formData.get('year'),
-                colour: formData.get('colour'),
-                seats: formData.get('seats'),
-                doors: formData.get('doors'),
-                mileage: formData.get('mileage'),
-                isAutomatic: formData.get('automatic') === "on",
-                engineType: formData.get('engineType'),
-            }
-    
-        };
-        fetch(`/vehicles/${formData.get('vehicle_id')}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network error.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const vehicle = data.updatedVehicle;
-            const vehicleCard = document.querySelector(`vehicle-card[vehicle_id="${formData.get('vehicle_id')}"]`);
-            vehicleCard.querySelector('.card-img-top').src = vehicle.imageUrl;
-            vehicleCard.querySelector('.card-title').innerHTML = vehicle.type;
-            vehicleCard.querySelector('.card-text').classList.remove('text-success', 'text-danger');
-            vehicleCard.querySelector('.card-text').classList.add(vehicle.available ? 'text-success' : 'text-danger');
-            vehicleCard.querySelector('.card-text').innerHTML = vehicle.available ? 'Available' : 'Unavailable';
-            document.querySelector("#toast").notify('Successfully updated vehicle.');
-
-            const editModal = document.querySelector('#updateVehicleModal');
-            const editBsModal = bootstrap.Modal.getOrCreateInstance(editModal);
-            editBsModal.hide();
-            editForm.reset();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.querySelector("#toast").caution('Failed to update vehicle.');
-        });
-    });
-</script>
-<!-- @todo: Refactor in JS Web Components -->
+<%- include('./form') %>

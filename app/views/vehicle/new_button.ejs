@@ -1,62 +1,10 @@
-<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newVehicleModal">
+<button id="newVehicleButton" type="button" class="btn btn-dark">
     <i class="bi bi-plus-lg"></i>
 </button>
-
-<%- include('./form', { modalId: 'newVehicleModal', formId: 'create-vehicle', title: "New Vehicle", submit: "Create" }) %>
 <script>
-    const form = document.querySelector('#create-vehicle');
-    const modal = document.getElementById('newVehicleModal');
-    const bsModal = new bootstrap.Modal(modal);
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const requestBody = {
-            type: formData.get('type'),
-            category: formData.get('category'),
-            imageUrl: formData.get('imageUrl'),
-            branch: formData.get('branch'),
-            available: formData.get('available') === "on",
-            hourlyPrice: formData.get('hourlyPrice'),
-            details: {
-                make: formData.get('make'),
-                model: formData.get('model'),
-                year: formData.get('year'),
-                colour: formData.get('colour'),
-                seats: formData.get('seats'),
-                doors: formData.get('doors'),
-                mileage: formData.get('mileage'),
-                isAutomatic: formData.get('automatic') === "on",
-                engineType: formData.get('engineType'),
-            }
-    
-        };
-        fetch('/vehicles', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network error.');
-            }
-            return response.text();
-        })
-        .then(html => {
-            const vehicleContainer = document.createElement('div');
-            vehicleContainer.className = 'col-12 col-md-6 col-lg-4 mb-3';
-            vehicleContainer.innerHTML = html;
-            document.querySelector("#vehicle-list").appendChild(vehicleContainer);
-            document.querySelector("#toast").notify('Successfully created vehicle.');
-
-            bsModal.hide();
-            form.reset();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.querySelector("#toast").caution('Failed to create vehicle.');
-        });
+    document.querySelector('#newVehicleButton').addEventListener('click', () => {
+        const vehicleForm = document.querySelector('vehicle-form');
+        vehicleForm.mode = 'creating';
+        vehicleForm.modal.show();
     });
 </script>
