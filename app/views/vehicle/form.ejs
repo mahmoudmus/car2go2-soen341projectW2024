@@ -1,11 +1,12 @@
-<div class="modal fade" id="newVehicleModal" tabindex="-1" aria-labelledby="newVehicleModalLabel" aria-hidden="true">
+<div class="modal fade" id="<%= modalId %>" tabindex="-1" aria-labelledby="newVehicleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="newVehicleModalLabel">New Vehicle</h1>
+                <h1 class="modal-title fs-5" id="newVehicleModalLabel"><%= title %></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="create-vehicle">
+            <form id="<%= formId %>">
+                <input type="hidden" id="vehicle_id" name="vehicle_id" value="">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group mb-3 col-sm-6">
@@ -33,7 +34,7 @@
 
                     <div class="form-group mb-3">
                         <label for="imageUrl">Image URL</label>
-                        <input type="text" class="form-control" id="branch" name="imageUrl" required>
+                        <input type="text" class="form-control" id="imageUrl" name="imageUrl" required>
                     </div>
 
                     <div class="form-group mb-3">
@@ -124,67 +125,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success"><%= submit %></button>
                     <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script>
-    const form = document.querySelector('#create-vehicle');
-    const modal = document.getElementById('newVehicleModal');
-    const bsModal = new bootstrap.Modal(modal);
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const requestBody = {
-            type: formData.get('type'),
-            category: formData.get('category'),
-            imageUrl: formData.get('imageUrl'),
-            branch: formData.get('branch'),
-            available: formData.get('available') === "on",
-            hourlyPrice: formData.get('hourlyPrice'),
-            details: {
-                make: formData.get('make'),
-                model: formData.get('model'),
-                year: formData.get('year'),
-                colour: formData.get('colour'),
-                seats: formData.get('seats'),
-                doors: formData.get('doors'),
-                mileage: formData.get('mileage'),
-                isAutomatic: formData.get('automatic') === "on",
-                engineType: formData.get('engineType'),
-            }
-    
-        };
-        fetch('/vehicles', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network error.');
-            }
-            return response.text();
-        })
-        .then(html => {
-            const vehicleContainer = document.createElement('div');
-            vehicleContainer.className = 'col-12 col-md-6 col-lg-4 mb-3';
-            vehicleContainer.innerHTML = html;
-            document.querySelector("#vehicle-list").appendChild(vehicleContainer);
-            document.querySelector("#toast").notify('Successfully created vehicle.');
-
-            bsModal.hide();
-            form.reset();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.querySelector("#toast").caution('Failed to create vehicle.');
-        });
-    });
-</script>

@@ -49,7 +49,13 @@ const createVehicleInstances = async () => {
     const randomHourlyPrice = () => {
         return Math.floor(Math.random() * (10 - 3) + 3);
     };
-    const branches = ['downtown', 'laval', 'south shore'];
+    const branches = [
+        'montreal',
+        'toronto',
+        'winnipeg',
+        'calgary',
+        'vancouver',
+    ];
     const imageUrls = [
         'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcnN8ZW58MHx8MHx8fDA%3D',
         'https://di-uploads-pod44.dealerinspire.com/nyetoyota/uploads/2023/09/Toyota-Sequoia-Capstone-23-1.jpg',

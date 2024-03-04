@@ -44,7 +44,7 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
 
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const { type, details, branch } = req.body;
+    const { type, category, details, branch, imageUrl } = req.body;
     const available = Boolean(req.body.available);
     const hourlyPrice = parseFloat(req.body.hourlyPrice);
 
@@ -54,8 +54,10 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     }
 
     vehicle.type = type;
+    vehicle.category = category;
     vehicle.details = details;
     vehicle.branch = branch;
+    vehicle.imageUrl = imageUrl;
     vehicle.available = available;
     vehicle.hourlyPrice = hourlyPrice;
 
