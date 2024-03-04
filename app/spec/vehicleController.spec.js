@@ -58,7 +58,10 @@ describe('Vehicle Controller', () => {
 
         await vehicleController.createVehicle(req, res, next);
 
-        sinon.assert.calledWith(res.send, { savedVehicle: newVehicle });
+        sinon.assert.calledWith(res.render, 'vehicle/row', {
+            vehicle: newVehicle,
+            layout: false,
+        });
         sinon.assert.notCalled(next);
     });
 

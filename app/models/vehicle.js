@@ -16,6 +16,22 @@ const VehicleSchema = new Schema({
         lowercase: true,
         trim: true,
     },
+    imageUrl: {
+        type: String,
+        trim: true,
+    },
+    available: {
+        type: Boolean,
+        default: true,
+    },
+    hourlyPrice: { type: Number, required: true, min: 0 },
+    branch: {
+        type: String,
+        enum: ['montreal', 'toronto', 'winnipeg', 'calgary', 'vancouver'],
+        required: true,
+        lowercase: true,
+        trim: true,
+    }, // @todo Replace with reference to branch model.
     details: {
         make: String, // Car manufacturer
         model: String, // Car model
@@ -31,16 +47,6 @@ const VehicleSchema = new Schema({
             lowercase: true,
             trim: true,
         },
-    },
-    available: {
-        type: Boolean,
-        default: true,
-    },
-    hourlyPrice: { type: Number, required: true, min: 0 },
-    branch: { type: String, required: true }, // @todo Replace with reference to branch model.
-    imageUrl: {
-        type: String,
-        trim: true,
     },
 });
 
