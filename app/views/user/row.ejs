@@ -1,0 +1,22 @@
+<user-row
+    class="card shadow-sm"
+    style="max-width: 18rem"
+    user-id="<%= user._id %>"
+>
+    <div class="card-body">
+        <tr>
+            <td><%= user.username %></td>
+            <td><%= user.age %></td>
+            <td><%= user.type %></td>
+            <!--Could also add user.email and user.address-->
+            <td>
+                <button type="button" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </button>
+            </td>            
+        </tr>
+    </div>
+</user-row>
