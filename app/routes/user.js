@@ -1,9 +1,20 @@
 var router = require('express').Router();
+var passport = require('passport');
 
 // Require controller modules.
 const userController = require('../controllers/userController');
 
-// GET users listing
+// Create
+router.post('/', userController.createUser);
+
+// Read
 router.get('/', userController.readAllUsers);
+router.get('/:id', userController.readUser);
+
+// Update
+router.post('/:id/update', userController.updateUser);
+
+// Delete
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;

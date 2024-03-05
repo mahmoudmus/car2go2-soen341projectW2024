@@ -11,8 +11,8 @@ const UserSchema = new Schema({
         lowercase: true,
         unique: true,
     },
-    hash: { type: String, required: true },
     address: { type: String, required: true },
+    hash: { type: String, required: true },
     type: {
         type: String,
         enum: ['customer', 'csr', 'admin'],

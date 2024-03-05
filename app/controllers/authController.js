@@ -1,41 +1,35 @@
 const asyncHandler = require('express-async-handler');
+// @todo remove these dependencies
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy;
 const User = require('../models/user');
 
-const opts = {
-    jwtFromRequest: function (req) {
-        let token = null;
-        if (req && req.cookies) {
-            token = req.cookies['jwt'];
-        }
-        return token;
-    },
-    secretOrKey: process.env.USER_AUTH_JWT_SECRET,
-};
-
-exports.strategy = function (passport) {
-    passport.use(
-        new JwtStrategy(opts, async function (jwt_payload, done) {
-            try {
-                const user = await User.findById(jwt_payload.id);
-                if (user) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }
-            } catch (err) {
-                return done(err, false);
+exports.authenticate = asyncHandler(async (req, res, next) => {
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies['jwt'] ?? null;
+    }
+    jwt.verify(
+        token,
+        process.env.USER_AUTH_JWT_SECRET,
+        async (err, decoded) => {
+            if (err) {
+                req.user = false;
+            } else {
+                req.user = await User.findById(decoded.id);
             }
-        })
+            res.locals.user = req.user;
+            next();
+        }
     );
-};
+});
 
 exports.login = asyncHandler(async (req, res, next) => {
-    console.log('loging running...');
-    const user = await User.findOne({ user_name: req.body.username });
-    if (!user /*|| !user.verifyPassword(req.body.password)*/) {
-        return res.status(401).send('Invalid credentials');
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+        return res.render('user/login', { error: 'Invalid email.' });
+    } else if (!user.verifyPassword(req.body.hash)) {
+        return res.render('user/login', { error: 'Invalid password.' });
     }
 
     // Issue JWT token
@@ -51,5 +45,9 @@ exports.login = asyncHandler(async (req, res, next) => {
         sameSite: 'strict',
         path: '/',
     });
-    res.redirect('/users');
+    res.redirect(`/users/${user._id}`);
+});
+
+exports.visitSignup = asyncHandler(async (req, res, next) => {
+    res.render('user/signup');
 });
