@@ -1,25 +1,36 @@
 const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
-const User = require('../models/user')
+const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
-    const { vehicle_id, user_id, start_time, end_time, pickup_location_id, dropoff_location_id, status } = req.body;
+    const {
+        vehicle_id,
+        user_id,
+        start_time,
+        end_time,
+        pickup_location_id,
+        dropoff_location_id,
+        status,
+    } = req.body;
 
     const newReservation = new Reservation({
-        vehicle_id, 
-        user_id, 
-        start_time, 
-        end_time, 
-        pickup_location_id, 
-        dropoff_location_id, 
-        status 
+        vehicle_id,
+        user_id,
+        start_time,
+        end_time,
+        pickup_location_id,
+        dropoff_location_id,
+        status,
     });
 
     let savedReservation;
     try {
         savedReservation = await newReservation.save();
-        res.render('reservation/row', { reservation: savedReservation, layout: false });
+        res.render('reservation/row', {
+            reservation: savedReservation,
+            layout: false,
+        });
     } catch (e) {
         res.status(400).send({ message: 'Could not create reservation.' });
     }
@@ -27,12 +38,11 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
 
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
     const reservationList = await Reservation.find()
-        .populate('user_name') 
-        .populate('type') 
+        .populate('user_name')
+        .populate('type')
         .exec();
     res.render('reservation/list', { reservationList });
 });
-
 
 exports.readReservation = asyncHandler(async (req, res, next) => {
     try {
@@ -42,7 +52,7 @@ exports.readReservation = asyncHandler(async (req, res, next) => {
         if (!reservation || vehicle || user) {
             return res.status(404).json({ message: 'Resource not found' });
         }
-        res.send({ reservation , user , vehicle});
+        res.send({ reservation, user, vehicle });
     } catch (e) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -50,7 +60,15 @@ exports.readReservation = asyncHandler(async (req, res, next) => {
 
 exports.updateReservation = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const { vehicle_id, user_id, start_time, end_time, pickup_location_id, dropoff_location_id, status  } = req.body;
+    const {
+        vehicle_id,
+        user_id,
+        start_time,
+        end_time,
+        pickup_location_id,
+        dropoff_location_id,
+        status,
+    } = req.body;
 
     const reservation = await Reservation.findById(id);
     if (!reservation) {
