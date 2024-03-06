@@ -2,12 +2,14 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 var logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 
 // setting environment variables
 require('dotenv').config();
 
+const { authenticate } = require('./controllers/authController');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 const vehiclesRouter = require('./routes/vehicle');
@@ -25,13 +27,6 @@ async function main() {
     await mongoose.connect(mongoDB);
 }
 
-// initializing passport
-const passport = require('passport');
-const authStrategy = require('./controllers/authController').strategy;
-
-authStrategy(passport);
-app.use(passport.initialize());
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -41,6 +36,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(authenticate);
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons/')));
