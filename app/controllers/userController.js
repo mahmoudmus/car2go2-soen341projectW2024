@@ -70,9 +70,19 @@ exports.readProfile = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
-        res.sendStatus(200);
+        const { name, age, email, address } = req.body;
+        user.name = name;
+        user.age = age;
+        user.email = email;
+        user.address = address;
+        const savedUser = await user.save();
+
+        res.redirect('/profile');
     } else {
-        return res.sendStatus(401);
+        return res.render('user/profile', {
+            user,
+            error: 'You need to be signed it to modify this information',
+        });
     }
 });
 
