@@ -70,9 +70,16 @@ exports.readProfile = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
+        vehicle.type = type;
+        const { name, age, email, address} = req.body;
+        user.name = name;
+        user.age = age;
+        user.email = email;
+        user.address = address;
+
         res.sendStatus(200);
     } else {
-        return res.sendStatus(401);
+        return res.sendStatus('user/profile', {user, error: 'You need to be signed it to modify this information'});
     }
 });
 
