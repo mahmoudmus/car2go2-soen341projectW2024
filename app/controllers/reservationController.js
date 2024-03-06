@@ -4,15 +4,13 @@ const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
-    const {
-        vehicle_id,
-        user_id,
-        start_time,
-        end_time,
-        pickup_location_id,
-        dropoff_location_id,
-        status,
-    } = req.body;
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+    const { startDate, endDate } = req.body;
+    console.log(startDate, endDate);
+    // Work in progress.
+    return res.sendStatus(400);
 
     const newReservation = new Reservation({
         vehicle_id,
