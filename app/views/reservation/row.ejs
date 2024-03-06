@@ -1,0 +1,52 @@
+<style>
+    .reservation {
+        max-height: 150px; /* Set the maximum height for the reservation container */
+    }
+
+    .reservation .row {
+        display: flex; /* Use flexbox to display columns in a row */
+        gap: 20px;
+    }
+
+    .reservation img {
+        max-height: 150px; /* Set the maximum height for the image */
+        max-width: 100%; /* Set the maximum width for the image */
+        object-fit: contain; /* Fit the image within the specified dimensions */
+    }
+    
+    .reservation button {
+        padding: 10px 20px; /* Add padding to the buttons */
+        font-size: 16px; /* Increase the font size of the buttons */
+    }
+</style>
+
+<div class="reservation">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Get vehicle image -->
+            <img
+                src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcnN8ZW58MHx8MHx8fDA%3D"
+                class="card-img-top"
+                alt="Car Image"
+            />
+        </div>
+        <div class="col-md-4">
+            <h5>Reservation ID: <%= reservation.id %></h5>
+            <!-- Add the locations -->
+            <p>Pick up: <%= reservation.start_time %> at: </p>
+            <p>Drop off: <%= reservation.end_time %> at: </p>
+        </div>
+        <div class="col-md-4">
+            <!-- Get and display vehicle details -->
+            <h5>Vehicle Details: </h5>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-dark edit-vehicle">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-dark delete-vehicle">
+                <i class="bi bi-trash3-fill"></i>
+            </button>
+        </div>
+    </div>
+</div>
