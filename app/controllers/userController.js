@@ -70,7 +70,6 @@ exports.readProfile = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
-        vehicle.type = type;
         const { name, age, email, address} = req.body;
         user.name = name;
         user.age = age;
