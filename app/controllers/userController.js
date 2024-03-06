@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 
 exports.createUser = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, hash } = req.body;
@@ -17,8 +18,24 @@ exports.createUser = asyncHandler(async (req, res, next) => {
     });
 
     try {
-        await user.save();
-        res.render('index');
+        const savedUser = await user.save();
+        const token = jwt.sign(
+            { id: savedUser._id },
+            process.env.USER_AUTH_JWT_SECRET,
+            {
+                expiresIn: '12h',
+            }
+        );
+
+        // Set HttpOnly cookie @duplicated
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: false, // Set to true in production
+            maxAge: 3600000,
+            sameSite: 'strict',
+            path: '/',
+        });
+        res.redirect('/');
     } catch (error) {
         switch (error.code) {
             case 11000: // Duplicate key error
