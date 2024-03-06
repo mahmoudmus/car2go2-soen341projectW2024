@@ -48,6 +48,11 @@ exports.login = asyncHandler(async (req, res, next) => {
     res.redirect(`/users/${user._id}`);
 });
 
+exports.logout = asyncHandler(async (req, res, next) => {
+    res.clearCookie('jwt');
+    res.redirect('/');
+});
+
 exports.visitSignup = asyncHandler(async (req, res, next) => {
     res.render('user/signup');
 });
