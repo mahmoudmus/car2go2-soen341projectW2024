@@ -1,0 +1,26 @@
+<vehicle-card
+    class="card shadow-sm"
+    style="max-width: 18rem"
+    vehicle-id="<%= vehicle._id %>"
+>
+    <img
+        src="<%= vehicle.imageUrl %>"
+        class="card-img-top"
+        style="height: 200px; object-fit: cover"
+        alt="Car Image"
+    />
+    <div class="card-body">
+        <h5 class="card-title"><%= vehicle.type %></h5>
+        <p class="card-text <%= vehicle.available ? 'text-success' : 'text-danger' %>">
+            <%= vehicle.available ? 'Available' : 'Unavailable' %>
+        </p>
+        <div class="">
+            <button class="btn btn-dark edit-vehicle"
+                ><i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-dark delete-vehicle"
+                ><i class="bi bi-trash3-fill"></i>
+            </button>
+        </div>
+    </div>
+</vehicle-card>
