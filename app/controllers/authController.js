@@ -45,7 +45,7 @@ exports.login = asyncHandler(async (req, res, next) => {
         sameSite: 'strict',
         path: '/',
     });
-    res.redirect(`/users/${user._id}`);
+    res.redirect('/');
 });
 
 exports.logout = asyncHandler(async (req, res, next) => {
