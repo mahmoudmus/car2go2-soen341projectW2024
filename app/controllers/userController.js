@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 
 exports.createUser = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, hash } = req.body;
@@ -17,8 +18,24 @@ exports.createUser = asyncHandler(async (req, res, next) => {
     });
 
     try {
-        await user.save();
-        res.render('index');
+        const savedUser = await user.save();
+        const token = jwt.sign(
+            { id: savedUser._id },
+            process.env.USER_AUTH_JWT_SECRET,
+            {
+                expiresIn: '12h',
+            }
+        );
+
+        // Set HttpOnly cookie @duplicated
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: false, // Set to true in production
+            maxAge: 3600000,
+            sameSite: 'strict',
+            path: '/',
+        });
+        res.redirect('/');
     } catch (error) {
         switch (error.code) {
             case 11000: // Duplicate key error
@@ -40,6 +57,14 @@ exports.readAllUsers = asyncHandler(async (req, res, next) => {
 exports.readUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     res.render('user/profile', { user });
+});
+
+exports.readProfile = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        res.redirect('/login');
+    } else {
+        res.render('user/profile', { user: req.user });
+    }
 });
 
 exports.updateUser = asyncHandler(async (req, res, next) => {

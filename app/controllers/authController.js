@@ -28,7 +28,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
         return res.render('user/login', { error: 'Invalid email.' });
-    } else if (!user.verifyPassword(req.body.hash)) {
+    } else if (!(await user.verifyPassword(req.body.hash))) {
         return res.render('user/login', { error: 'Invalid password.' });
     }
 
@@ -45,7 +45,7 @@ exports.login = asyncHandler(async (req, res, next) => {
         sameSite: 'strict',
         path: '/',
     });
-    res.redirect(`/users/${user._id}`);
+    res.redirect('/');
 });
 
 exports.logout = asyncHandler(async (req, res, next) => {
