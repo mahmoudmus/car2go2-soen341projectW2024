@@ -42,6 +42,14 @@ exports.readUser = asyncHandler(async (req, res, next) => {
     res.render('user/profile', { user });
 });
 
+exports.readProfile = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        res.redirect('/login');
+    } else {
+        res.render('user/profile', { user: req.user });
+    }
+});
+
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
