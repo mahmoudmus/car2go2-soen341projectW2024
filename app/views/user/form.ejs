@@ -59,7 +59,36 @@
         <% } %>
         <div class="d-flex justify-content-between">
             <a href="/<%= user ? 'logout' : 'login' %>" class=""><%= user ? 'Logout' : 'Login' %></a>
-            <button type="submit" class="btn btn-success"><%= user ? 'Update' : 'Sign Up' %></button>
+
+            <div>
+                <% if (user) { %>
+                <button id="delete-account" class="btn btn-danger">Delete</button>
+                <% } %>
+                <button type="submit" class="btn btn-success"><%= user ? 'Update' : 'Sign Up' %></button>
+            </div>
         </div>
     </form>
 </div>
+<% if (user) { %>
+<script>
+    document.querySelector('#delete-account').addEventListener('click', (e) => {
+        e.preventDefault();
+        fetch(`/users/<%= user._id %>`, {
+            method: 'DELETE',
+        })
+            .then((response) => {
+                if (response.ok) {
+                    var baseUrl = window.location.protocol + "//" + window.location.host;
+                    window.location.href = baseUrl;
+                } else {
+                    document
+                        .querySelector('#toast')
+                        .caution('Could not delete user.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+<% } %>
