@@ -50,8 +50,9 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
-    const allUsers = await User.find({}, 'user_name');
-    res.render('user_list', { user_list: allUsers });
+    const allUsers = await User.find({}, 'name email address type');
+    console.log(allUsers);
+    res.render('user/list', { userList: allUsers });
 });
 
 exports.readUser = asyncHandler(async (req, res, next) => {
@@ -88,11 +89,10 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
 exports.deleteUser = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    
+
     const result = await User.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'User not found.' });
     }
     res.send({ message: 'User deleted successfully.' });
 });
-
