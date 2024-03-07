@@ -51,7 +51,6 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
     const allUsers = await User.find({}, 'name email address type');
-    console.log(allUsers);
     res.render('user/list', { userList: allUsers });
 });
 
