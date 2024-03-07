@@ -1,8 +1,8 @@
-<button id="newUserButton" type="button" class="btn btn-dark">
+<button id="new-user-button" type="button" class="btn btn-dark">
     <i class="bi bi-plus-lg"></i>
 </button>
 <script>
-    document.querySelector('#newUserButton').addEventListener('click', () => {
+    document.querySelector('#new-user-button').addEventListener('click', () => {
         const userForm = document.querySelector('user-form');
         userForm.mode = 'creating';
         userForm.modal.show();

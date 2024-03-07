@@ -5,7 +5,8 @@ var passport = require('passport');
 const userController = require('../controllers/userController');
 
 // Create
-router.post('/', userController.createUser);
+router.post('/', userController.signUp);
+router.post('/new', userController.createUser);
 
 // Read
 router.get('/', userController.readAllUsers);
@@ -13,6 +14,7 @@ router.get('/:id', userController.readUser);
 
 // Update
 router.post('/:id/update', userController.updateUser);
+router.put('/:id', userController.updateUser);
 
 // Delete
 router.delete('/:id', userController.deleteUser);

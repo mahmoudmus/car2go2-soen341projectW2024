@@ -2,7 +2,7 @@ const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
-exports.createUser = asyncHandler(async (req, res, next) => {
+exports.signUp = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, hash } = req.body;
     if (age < 18) {
         return res.render('user/signup', {
@@ -45,6 +45,40 @@ exports.createUser = asyncHandler(async (req, res, next) => {
                 break;
             default:
                 res.render('user/signup', { error: error.message });
+        }
+    }
+});
+
+exports.createUser = asyncHandler(async (req, res, next) => {
+    const { name, email, age, address, hash } = req.body;
+    console.log({ name, email, age, address, hash });
+    if (age < 18) {
+        return res.status(400).json({
+            message: 'Users must be atleast 18 years of age.',
+        });
+    }
+    const user = new User({
+        name,
+        email,
+        age,
+        address,
+        hash,
+    });
+
+    try {
+        const savedUser = await user.save();
+        res.render('user/row', { user: savedUser, layout: false });
+    } catch (error) {
+        switch (error.code) {
+            case 11000: // Duplicate key error
+                res.status(400).json({
+                    error: 'This email is already in use.',
+                });
+                break;
+            default:
+                res.status(500).json({
+                    message: 'Server error.',
+                });
         }
     }
 });

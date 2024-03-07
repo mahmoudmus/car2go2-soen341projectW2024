@@ -2,7 +2,7 @@
     <%- include('./newButton') %>
 </div>
 
-<div class="container" id="user-list">
+<div class="container">
     <table class="table">
         <thead>
             <tr>
@@ -13,12 +13,11 @@
                 <th scope="col">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="user-list">
             <% userList.forEach(function(user) { %>
-                <%- include('row', { user: user }) %>
+                <%- include('./row', { user: user }) %>
             <% }) %>
         </tbody>
     </table>
 </div>
-
-<%- // include('./form') %>
+<%- include('./userForm') %>
