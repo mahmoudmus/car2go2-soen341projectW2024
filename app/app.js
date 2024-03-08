@@ -13,7 +13,7 @@ const { authenticate } = require('./controllers/authController');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 const vehiclesRouter = require('./routes/vehicle');
-const reservationsRouter = require ('./routes/reservation');
+const reservationsRouter = require('./routes/reservation');
 
 var app = express();
 

@@ -1,72 +1,103 @@
 const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
-const User = require('../models/user')
+const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
-    const { vehicle_id, user_id, start_time, end_time, pickup_location_id, dropoff_location_id, status } = req.body;
+    if (!req.user || (req.body.email && req.user.type !== 'admin')) {
+        return res.sendStatus(401);
+    }
+
+    const { startDate, endDate, vehicleId } = req.body;
+    let user;
+    if (req.body.email) {
+        user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: 'Invalid email.' });
+        }
+    } else {
+        user = req.user;
+    }
 
     const newReservation = new Reservation({
-        vehicle_id, 
-        user_id, 
-        start_time, 
-        end_time, 
-        pickup_location_id, 
-        dropoff_location_id, 
-        status 
+        user: user._id,
+        vehicle: vehicleId,
+        startDate,
+        endDate,
     });
 
-    let savedReservation;
     try {
-        savedReservation = await newReservation.save();
-        res.render('reservation/row', { reservation: savedReservation, layout: false });
+        const savedReservation = await newReservation.save();
+        const populatedReservation = await Reservation.populate(
+            savedReservation,
+            ['user', 'vehicle']
+        );
+        res.render('reservation/row', {
+            reservation: populatedReservation,
+            layout: false,
+        });
     } catch (e) {
+        console.log(e);
         res.status(400).send({ message: 'Could not create reservation.' });
     }
 });
 
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
+    if (!req.user || req.user.type !== 'admin') {
+        return res.render('user/login', {
+            error: 'This page is restricted.',
+        });
+    }
     const reservationList = await Reservation.find()
-        .populate('user_name') 
-        .populate('type') 
+        .populate('user')
+        .populate('vehicle')
         .exec();
     res.render('reservation/list', { reservationList });
 });
 
-
 exports.readReservation = asyncHandler(async (req, res, next) => {
     try {
-        const reservation = await Reservation.findById(req.params.id);
-        const vehicle = await Vehicle.findById(reservation.vehicle_id);
-        const user = await User.findById(reservation.user_id);
-        if (!reservation || vehicle || user) {
-            return res.status(404).json({ message: 'Resource not found' });
-        }
-        res.send({ reservation , user , vehicle});
+        const reservation = await Reservation.findById(req.params.id)
+            .populate('user')
+            .populate('vehicle');
+        res.send({ reservation });
     } catch (e) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
 exports.updateReservation = asyncHandler(async (req, res, next) => {
-    const id = req.params.id;
-    const { vehicle_id, user_id, start_time, end_time, pickup_location_id, dropoff_location_id, status  } = req.body;
+    if (!req.user || (req.body.email && req.user.type !== 'admin')) {
+        return res.sendStatus(401);
+    }
 
-    const reservation = await Reservation.findById(id);
+    const { startDate, endDate, vehicleId } = req.body;
+    let user;
+    if (req.body.email) {
+        user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: 'Invalid email.' });
+        }
+    } else {
+        user = req.user;
+    }
+
+    const reservation = await Reservation.findById(req.params.id);
     if (!reservation) {
         return res.status(404).send({ message: 'Reservation not found.' });
     }
 
-    reservation.vehicle_id = vehicle_id;
-    reservation.user_id = user_id;
-    reservation.start_time = start_time;
-    reservation.end_time = end_time;
-    reservation.pickup_location_id = pickup_location_id;
-    reservation.dropoff_location_id = dropoff_location_id;
-    reservation.status = status;
+    reservation.user = user._id;
+    reservation.vehicle = vehicleId;
+    reservation.startDate = startDate;
+    reservation.endDate = endDate;
 
     const updatedReservation = await reservation.save();
-    res.send({ updatedReservation });
+    const populatedReservation = await Reservation.populate(
+        updatedReservation,
+        ['user', 'vehicle']
+    );
+    res.send({ reservation: populatedReservation });
 });
 
 exports.deleteReservation = asyncHandler(async (req, res, next) => {

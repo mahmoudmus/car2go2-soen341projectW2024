@@ -1,6 +1,5 @@
-<div
-    class="container py-2 my-3 rounded bg-light d-flex justify-content-end"
-></div>
+<div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
+<%- include('./newButton') %></div>
 <style>
     #reservation-list {
         display: flex;
@@ -8,7 +7,8 @@
         gap: 2rem;
     }
 </style>
-<div class="container" id="reservation-list">
+<div class="container d-flex align-items-center" id="reservation-list">
     <% reservationList.forEach(function(reservation) { %> <%- include('./row', {
     reservation }) %> <% }) %>
 </div>
+<%- include('./form') %>

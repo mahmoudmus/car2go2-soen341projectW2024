@@ -2,14 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
-    vehicle_id: { type: String, required: true, maxLength: 20 },
-    user_id: {type: String, required: true, maxLength: 20 },
-    start_time: { type: Date, required: true, default: Date.now },
-    end_time: { type: Date, required: true, default: Date.now },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    vehicle: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vehicle',
+        required: true,
+    },
+
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
+
     // TBD
-    pickup_location_id: {type: String, required: true },
-    dropoff_location_id: {type: String, required: true },
-    status: {type: String, default: 'Pending'}
+    pickup_location_id: { type: String },
+    dropoff_location_id: { type: String },
+    status: { type: String, default: 'Pending' },
 });
 
 module.exports = mongoose.model('Reservation', reservationSchema);
