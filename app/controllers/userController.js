@@ -108,6 +108,16 @@ exports.readProfile = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.readLoggedInEmail = asyncHandler(async (req, res, next) => {
+    if (req.user) {
+        res.json({ email: req.user.email });
+    } else {
+        res.status(401).json({
+            message: 'You must be logged in to make a reservation.',
+        });
+    }
+});
+
 exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
