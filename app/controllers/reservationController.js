@@ -57,14 +57,14 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
         .exec();
     res.render('reservation/list', { reservationList });
 });
-exports.readUserReservations = asyncHandler(async (req, res, next) =>{
-    if(!req.user){
-        return res.render('user/login',{
-            error: 'Please Login'
-        })
+exports.readUserReservations = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        return res.render('user/login', {
+            error: 'Please Login',
+        });
     }
-    const currentUser = await User.findById(req.user._id)
-    var query = { user: currentUser}
+    const currentUser = await User.findById(req.user._id);
+    var query = { user: currentUser };
     const reservationList = await Reservation.find(query)
         .populate('user')
         .populate('vehicle')
@@ -132,14 +132,14 @@ exports.servePayment = asyncHandler(async (req, res, next) => {
 });
 
 exports.processPayment = asyncHandler(async (req, res, next) => {
-    const {cardNumber, cvv, expiryDate, cardHolderName, address, postalCode} = req.body;
+    const { cardNumber, cvv, expiryDate, cardHolderName, address, postalCode } =
+        req.body;
     if (cardNumber < 1000000000000000 || cardNumber > 9999999999999999) {
-        return res.render('reservation/checkout', 
-        { error: 'Invalid card number.' });
+        return res.render('reservation/checkout', {
+            error: 'Invalid card number.',
+        });
     } else if (cvv < 100 || cvv > 9999) {
-        return res.render('reservation/checkout', 
-        { error: 'Invalid CVV.' });
+        return res.render('reservation/checkout', { error: 'Invalid CVV.' });
     }
-    res.render('/myreservations');
-    
+    res.redirect('/myreservations');
 });
