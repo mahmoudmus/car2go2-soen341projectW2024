@@ -11,19 +11,35 @@ describe('User Controller', function () {
             ])
         );
 
+        const req = { user: { type: 'admin' } };
         const res = {
             render: jasmine.createSpy(),
         };
 
-        await userController.readAllUsers({}, res, () => {});
+        await userController.readAllUsers(req, res, () => {});
 
-        expect(User.find).toHaveBeenCalledWith({}, 'user_name');
-        expect(res.render).toHaveBeenCalledWith('user_list', {
-            user_list: [
+        expect(User.find).toHaveBeenCalledWith(
+            {},
+            'name email age address type'
+        );
+        expect(res.render).toHaveBeenCalledWith('user/list', {
+            userList: [
                 { user_name: 'Azal Al-Mashta' },
                 { user_name: 'Mahmoud Mustafa' },
                 { user_name: 'Alex Page' },
             ],
+        });
+    });
+
+    it('should render the login page if an admin is not signed in', async function () {
+        const req = { user: { type: 'customer' } };
+        const res = {
+            render: jasmine.createSpy(),
+        };
+
+        await userController.readAllUsers(req, res, () => {});
+        expect(res.render).toHaveBeenCalledWith('user/login', {
+            error: 'This page is restricted.',
         });
     });
 });
