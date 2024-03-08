@@ -55,6 +55,15 @@
                             required
                         >
                     </div>
+                    <div class="mb-3 col-sm-8">
+                        <label  class="form-label" for="type">User Type</label>
+                        <select class="form-control" id="type" name="type" required>
+                            <option value="" disabled selected>select</option>
+                            <option value="customer">Customer</option>
+                            <option value="csr">Customer Service Representative</option>
+                            <option value="admin">System Admin</option>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="hash" class="form-label">Password</label>
                         <input type="password" class="form-control" id="hash" name="hash" required>

@@ -2,7 +2,7 @@ class UserForm extends HTMLElement {
     connectedCallback() {
         this.modal = new bootstrap.Modal(this);
         this.form = this.querySelector('form');
-        this.form.addEventListener('submit', (e) => {
+        this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(this.form);
             const requestBody = {
@@ -10,37 +10,24 @@ class UserForm extends HTMLElement {
                 email: formData.get('email'),
                 age: formData.get('age'),
                 address: formData.get('address'),
+                type: formData.get('type'),
                 hash: formData.get('hash'),
             };
-            fetch(this.requestUrl(), {
+            const response = await fetch(this.requestUrl(), {
                 method: this.requestMethod(),
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(requestBody),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network error.');
-                    } else if (this.mode === 'creating') {
-                        return response.text();
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then((data) => {
-                    if (this.mode === 'creating') {
-                        this.successfulCreation(data);
-                    } else {
-                        this.successfulUpdate(data);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    document
-                        .querySelector('#toast')
-                        .caution(this.requestError());
-                });
+            });
+            if (!response.ok) {
+                const message = (await response.json()).message;
+                document.querySelector('#toast').caution(message);
+            } else if (this.mode === 'creating') {
+                this.successfulCreation(await response.text());
+            } else {
+                this.successfulUpdate(await response.json());
+            }
         });
         this.mode = 'creating';
     }
@@ -110,55 +97,26 @@ class UserForm extends HTMLElement {
         this.form.reset();
     }
 
-    setFields(vehicleId) {
-        this.vehicleId = vehicleId;
-        fetch(`/vehicles/${vehicleId}`, {
+    async setFields(userId) {
+        this.userId = userId;
+        const response = await fetch(`/users/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    document
-                        .querySelector('#toast')
-                        .warn('Could not get vehicle data.');
-                    console.log(response);
-                }
-            })
-            .then((data) => {
-                const vehicle = data.vehicle;
-                this.form.querySelector('#type').value = vehicle.type;
-                this.form.querySelector('#category').value = vehicle.category;
-                this.form.querySelector('#imageUrl').value = vehicle.imageUrl;
-                this.form.querySelector('#branch').value = vehicle.branch;
-                this.form.querySelector('#hourlyPrice').value =
-                    vehicle.hourlyPrice;
-                this.form.querySelector('#available').checked =
-                    vehicle.available;
-
-                this.form.querySelector('#make').value = vehicle.details.make;
-                this.form.querySelector('#model').value = vehicle.details.model;
-                this.form.querySelector('#year').value = vehicle.details.year;
-                this.form.querySelector('#colour').value =
-                    vehicle.details.colour;
-                this.form.querySelector('#seats').value = vehicle.details.seats;
-                this.form.querySelector('#doors').value = vehicle.details.doors;
-                this.form.querySelector('#mileage').value =
-                    vehicle.details.mileage;
-                this.form.querySelector('#engineType').value =
-                    vehicle.details.engineType;
-                this.form.querySelector('#automatic').checked =
-                    vehicle.details.isAutomatic;
-            })
-            .catch((error) => {
-                document
-                    .querySelector('#toast')
-                    .caution('Error fetching vehicle data.');
-                console.error('Error:', error);
-            });
+        });
+        if (!response.ok) {
+            document
+                .querySelector('#toast')
+                .warn('Could not get vehicle data.');
+        } else {
+            const user = (await response.json()).user;
+            this.form.querySelector('#name').value = user.name;
+            this.form.querySelector('#email').value = user.email;
+            this.form.querySelector('#age').value = user.age;
+            this.form.querySelector('#address').value = user.address;
+            this.form.querySelector('#type').value = user.type;
+        }
     }
 
     get mode() {
@@ -170,13 +128,13 @@ class UserForm extends HTMLElement {
             case 'creating':
                 this._mode = mode;
                 this.form.reset();
-                this.title = 'New Vehicle';
+                this.title = 'New User';
                 this.submitButtonText = 'Create';
 
                 break;
             case 'updating':
                 this._mode = mode;
-                this.title = 'Update Vehicle';
+                this.title = 'Update User';
                 this.submitButtonText = 'Update';
                 break;
             default:

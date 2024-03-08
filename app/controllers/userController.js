@@ -50,7 +50,7 @@ exports.signUp = asyncHandler(async (req, res, next) => {
 });
 
 exports.createUser = asyncHandler(async (req, res, next) => {
-    const { name, email, age, address, hash } = req.body;
+    const { name, email, age, address, type, hash } = req.body;
     console.log({ name, email, age, address, hash });
     if (age < 18) {
         return res.status(400).json({
@@ -62,6 +62,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
         email,
         age,
         address,
+        type,
         hash,
     });
 
@@ -72,7 +73,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
         switch (error.code) {
             case 11000: // Duplicate key error
                 res.status(400).json({
-                    error: 'This email is already in use.',
+                    message: 'This email is already in use.',
                 });
                 break;
             default:
@@ -84,13 +85,13 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
-    const allUsers = await User.find({}, 'name email address type');
+    const allUsers = await User.find({}, 'name email age address type');
     res.render('user/list', { userList: allUsers });
 });
 
 exports.readUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    res.render('user/profile', { user });
+    res.json({ user });
 });
 
 exports.readProfile = asyncHandler(async (req, res, next) => {
@@ -127,5 +128,5 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
     if (!result) {
         return res.status(404).json({ message: 'User not found.' });
     }
-    res.send({ message: 'User deleted successfully.' });
+    res.json({ message: 'User deleted successfully.' });
 });

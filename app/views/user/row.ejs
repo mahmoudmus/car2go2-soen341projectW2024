@@ -1,4 +1,4 @@
-<tr user-id="<%= user._id %>">
+<tr>
     <td class="d-none d-sm-table-cell">
         <%= user.name %>
     </td>
@@ -6,11 +6,13 @@
     <td class="d-none d-md-table-cell"><%= user.address %></td>
     <td class="text-secondary d-none d-sm-table-cell"><%= user.type %></td>
     <td style="width: 8rem;">
-        <button type="button" class="btn btn-dark">
-            <i class="bi bi-pencil-fill"></i>
-        </button>
-        <button type="button" class="btn btn-danger">
-            <i class="bi bi-trash3-fill"></i>
-        </button>
+        <user-row user-id="<%= user._id %>">
+            <button type="button" class="edit-user btn btn-dark">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button type="button" class="delete-user btn btn-danger">
+                <i class="bi bi-trash3-fill"></i>
+            </button>
+        </user-row>
     </td>
 </tr>
