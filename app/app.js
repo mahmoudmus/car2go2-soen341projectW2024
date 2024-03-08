@@ -13,6 +13,7 @@ const { authenticate } = require('./controllers/authController');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 const vehiclesRouter = require('./routes/vehicle');
+const reservationsRouter = require('./routes/reservation');
 
 var app = express();
 
@@ -44,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons/')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/vehicles', vehiclesRouter);
+app.use('/reservations', reservationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

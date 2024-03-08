@@ -8,6 +8,7 @@ router.post('/', vehicleController.createVehicle);
 
 // Read
 router.get('/', vehicleController.readAllVehicles);
+router.get('/available', vehicleController.readAvailableVehicles);
 router.get('/:id', vehicleController.readVehicle);
 
 // Update

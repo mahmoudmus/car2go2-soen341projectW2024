@@ -33,6 +33,21 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     res.render('vehicle/list', { vehicleList });
 });
 
+exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
+    try {
+        const startDate = new Date(req.query.start);
+        const endDate = new Date(req.query.end);
+        console.log(`Start Date: ${startDate}`);
+        console.log(`End Date: ${endDate}`);
+        // @todo alter this method so that only vehicles that will
+        // be available between the start and end dates are returned.
+        const vehicles = await Vehicle.find({}, 'details imageUrl');
+        res.json({ vehicles });
+    } catch (e) {
+        console.log(e);
+    }
+});
+
 exports.readVehicle = asyncHandler(async (req, res, next) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id);

@@ -1,0 +1,54 @@
+<reservation-card reservation-id="<%= reservation._id %>" class="card mb-3 col-lg-8">
+    <style>
+        .card .img-fluid {
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="<%= reservation.vehicle.imageUrl %>" class="reservation-image img-fluid rounded-start" alt="Vehicle Photo">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+        <h5 class="card-title"><span class="reservation-name"><%= reservation.user.name %></span>'s reservation</h5>
+        
+        <small class="text-body-secondary text-truncate d-block">
+        <a role="button" class="copy-on-click text-secondary text-decoration-none pointer">
+            <i class="bi bi-copy" style="align-self: top;"></i>
+        </a>
+        ID: <span id="reservationId"><%= reservation.id %></span>
+        </small>
+        <div>
+            <span class="reservation-email">
+                <%= reservation.user.email %> 
+            </span>
+            is renting a 
+            <span class="reservation-model">
+                <%= reservation.vehicle.details.model %>
+            </span><span class="reservation-year">
+                (<%= reservation.vehicle.details.year %>)
+            </span>
+        </div>
+        <div>
+            <span class="reservation-start-date">
+                <%= reservation.startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
+            </span>
+            -
+            <span class="reservation-end-date">
+                <%= reservation.endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
+            </span>
+            
+        </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2 m-2">
+            <button class="btn btn-dark edit-reservation"
+                ><i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-danger delete-reservation"
+                ><i class="bi bi-trash3-fill"></i>
+            </button>
+        </div>
+      </div>
+    </div>
+  </reservation-card>
