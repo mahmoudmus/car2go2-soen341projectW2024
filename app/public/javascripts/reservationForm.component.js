@@ -34,13 +34,7 @@ class ReservationForm extends HTMLElement {
                 this.successfulUpdate(data);
             }
         });
-        this.calendar.config.onChange.push(async (selectedDates, dateStr, instance) => {
-            // Fetch available vehicles based on the selected reservation period
-            await this.fetchAvailableVehicles(selectedDates);
-        });
         this.mode = 'creating';
-        
-
     }
 
     async initializeDateRangePicker() {
@@ -58,6 +52,11 @@ class ReservationForm extends HTMLElement {
             };
             updateCalendarMode();
             window.addEventListener('resize', updateCalendarMode);
+            this.calendar.config.onChange.push(
+                async (selectedDates, dateStr, instance) => {
+                    await this.fetchAvailableVehicles(selectedDates);
+                }
+            );
         });
     }
 
@@ -96,7 +95,6 @@ class ReservationForm extends HTMLElement {
                 throw new Error('Invalid reservation form mode.');
         }
     }
-    
 
     successfulCreation(html) {
         // const template = document.createElement('div');
@@ -220,7 +218,7 @@ class ReservationForm extends HTMLElement {
     async fetchAvailableVehicles(selectedDates) {
         try {
             // Fetch available vehicles for the selected reservation period
-            const response = await fetch(`/reservations/availability`, {
+            const response = await fetch(`/vehicles/availability`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,22 +229,23 @@ class ReservationForm extends HTMLElement {
                 }),
             });
 
-            if (!response.ok) {
-                console.error('Failed to fetch available vehicles.');
-                return;
-            }
-
-            const data = await response.json();
-
-            // Update "choose a vehicle" options based on the response
             this.updateVehicleOptions(data);
+            if (!response.ok) {
+                document
+                    .querySelector('#toast')
+                    .caution('Failed to fetch available vehicles.');
+                return;
+            } else {
+                const data = await response.json();
+                this.updateVehicleOptions(data);
+            }
         } catch (error) {
             console.error('Error fetching available vehicles:', error);
         }
     }
 
     updateVehicleOptions(vehicles) {
-        const chooseVehicleInput = this.querySelector('#vehicleDropdown');
+        const chooseVehicleInput = this.querySelector('#vehicleId');
         chooseVehicleInput.innerHTML = ''; // Clear existing options
 
         vehicles.forEach((vehicle) => {
