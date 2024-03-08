@@ -21,9 +21,11 @@ class ReservationForm extends HTMLElement {
             });
             let data;
             if (!response.ok) {
-                document
-                    .querySelector('#toast')
-                    .caution(this.requestError(response));
+                let message = (await response.json()).message;
+                if (!message) {
+                    message = 'Server error.';
+                }
+                document.querySelector('#toast').caution(message);
                 return;
             } else if (this.mode === 'creating') {
                 data = await response.text();
