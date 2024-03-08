@@ -24,7 +24,7 @@ class UserRow extends HTMLElement {
             document.querySelector('#toast').caution('Server Error.');
         } else {
             const message = (await response.json()).message;
-            document.querySelector('#toast').warn('User not found.');
+            document.querySelector('#toast').warn(message);
         }
     }
 

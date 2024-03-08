@@ -50,7 +50,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.logout = asyncHandler(async (req, res, next) => {
     res.clearCookie('jwt');
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 exports.visitSignup = asyncHandler(async (req, res, next) => {
