@@ -126,6 +126,6 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
         return res.render('reservation/checkout', 
         { error: 'Invalid CVV.' });
     }
-    res.render('reservation/checkout');
+    res.render('/myreservations');
     
 });
