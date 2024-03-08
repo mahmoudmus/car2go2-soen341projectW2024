@@ -4,7 +4,10 @@ const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
-    if (!req.user || (req.body.email && req.user.type !== 'admin')) {
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+    if (req.body.email !== req.user.email && req.user.type !== 'admin') {
         return res.sendStatus(401);
     }
 
