@@ -109,3 +109,7 @@ exports.deleteReservation = asyncHandler(async (req, res, next) => {
     }
     res.send({ message: 'Reservation deleted successfully.' });
 });
+
+exports.servePayment = asyncHandler(async (req, res, next) => {
+    res.render('reservation/checkout');
+});

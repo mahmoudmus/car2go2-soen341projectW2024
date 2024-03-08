@@ -8,6 +8,15 @@ router.post('/', reservationController.createReservation);
 
 // Read
 router.get('/', reservationController.readAllReservations);
+// Payment Form
+router.get('/checkout', function (req, res, next) {
+    try {
+        res.render('reservation/checkout');
+    }
+    catch(error){
+        console.log(error);
+    }
+});
 router.get('/:id', reservationController.readReservation);
 
 // Update
