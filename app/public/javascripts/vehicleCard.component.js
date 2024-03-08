@@ -44,11 +44,13 @@ class VehicleCard extends HTMLElement {
         vehicleForm.modal.show();
     }
 
-    startReservation() {
+    async startReservation() {
         const reservationForm = document.querySelector('reservation-form');
         reservationForm.mode = 'creating';
-        reservationForm.setVehicle(this.vehicleId);
-        reservationForm.modal.show();
+        const result = await reservationForm.setVehicle(this.vehicleId);
+        if (result) {
+            reservationForm.modal.show();
+        }
     }
 
     get vehicleId() {

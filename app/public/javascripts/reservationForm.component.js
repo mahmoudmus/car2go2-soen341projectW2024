@@ -241,6 +241,60 @@ class ReservationForm extends HTMLElement {
             chooseVehicleInput.appendChild(option);
         });
     }
+
+    async setVehicle(vehicleId) {
+        this.reservationId = null;
+        if (!(await this.setEmail())) {
+            return false;
+        }
+        const response = await fetch(
+            // `/vehicles/${vehicleId}/unavailabilities`,
+            `/vehicles/${vehicleId}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        if (!response.ok) {
+            document
+                .querySelector('#toast')
+                .warn('Could not get reservation data.');
+            return false;
+        } else {
+            const vehicle = (await response.json()).vehicle;
+            // @todo Use availabilities to restrict reservation dates.
+            // this.calendar.setDate([reservation.startDate, reservation.endDate]);
+            this.updateVehicleOptions([vehicle]);
+            this.disableField('#vehicleId');
+
+            return true;
+        }
+    }
+
+    async setEmail() {
+        const response = await fetch(`users/myemail`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            const message = (await response.json()).message;
+            document.querySelector('#toast').warn(message);
+            return false;
+        } else {
+            const email = (await response.json()).email;
+            this.form.querySelector('#email').value = email;
+            this.disableField('#email');
+            return true;
+        }
+    }
+
+    disableField(query) {
+        document.querySelector(query).disabled = true;
+    }
 }
 
 customElements.define('reservation-form', ReservationForm);

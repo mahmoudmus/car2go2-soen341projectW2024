@@ -10,6 +10,7 @@ router.post('/new', userController.createUser);
 
 // Read
 router.get('/', userController.readAllUsers);
+router.get('/myemail', userController.readLoggedInEmail);
 router.get('/:id', userController.readUser);
 
 // Update
