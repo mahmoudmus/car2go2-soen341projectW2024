@@ -46,7 +46,7 @@ class VehicleCard extends HTMLElement {
 
     async startReservation() {
         const reservationForm = document.querySelector('reservation-form');
-        reservationForm.mode = 'creating';
+        reservationForm.mode = 'starting';
         const result = await reservationForm.setVehicle(this.vehicleId);
         if (result) {
             reservationForm.modal.show();
