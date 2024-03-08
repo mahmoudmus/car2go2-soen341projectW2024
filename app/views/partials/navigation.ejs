@@ -29,8 +29,18 @@
                 aria-current="true"
             >
                 <i class="bi bi-car-front-fill px-2"></i>
-                Browse Vehicles
+                Vehicles Catalogue
             </a>
+            <% if (user && user.type === 'admin') { %>
+            <a
+                href="/users"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-people-fill px-2"></i>
+                Browse Users
+            </a>
+            <% } %>
         </div>
     </div>
 </div>

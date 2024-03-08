@@ -110,16 +110,16 @@ class VehicleForm extends HTMLElement {
             `vehicle-card[vehicle-id="${this.vehicleId}"]`
         );
         vehicleCard.querySelector('.card-img-top').src = vehicle.imageUrl;
-        vehicleCard.querySelector('.card-title').innerHTML = vehicle.type;
-        vehicleCard
-            .querySelector('.card-text')
-            .classList.remove('text-success', 'text-danger');
-        vehicleCard
-            .querySelector('.card-text')
-            .classList.add(vehicle.available ? 'text-success' : 'text-danger');
-        vehicleCard.querySelector('.card-text').innerHTML = vehicle.available
-            ? 'Available'
-            : 'Unavailable';
+        vehicleCard.querySelector('.card-title').innerHTML =
+            vehicle.details.model;
+
+        vehicleCard.querySelector('.vehicle-year').innerHTML =
+            vehicle.details.year;
+        vehicleCard.querySelector('.vehicle-make').innerHTML =
+            vehicle.details.make;
+        vehicleCard.querySelector('.vehicle-price').innerHTML =
+            vehicle.hourlyPrice;
+
         document
             .querySelector('#toast')
             .notify('Successfully updated vehicle.');
