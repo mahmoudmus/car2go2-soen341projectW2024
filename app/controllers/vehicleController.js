@@ -1,4 +1,5 @@
 const Vehicle = require('../models/vehicle');
+const Reservation = require('../models/reservation');
 const asyncHandler = require('express-async-handler');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
@@ -33,18 +34,33 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     res.render('vehicle/list', { vehicleList });
 });
 
+// const { start, end } = req.query;
 exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
     try {
         const startDate = new Date(req.query.start);
         const endDate = new Date(req.query.end);
         console.log(`Start Date: ${startDate}`);
         console.log(`End Date: ${endDate}`);
-        // @todo alter this method so that only vehicles that will
-        // be available between the start and end dates are returned.
-        const vehicles = await Vehicle.find({}, 'details imageUrl');
-        res.json({ vehicles });
+
+        // Find reservations that overlap with the requested date range
+        const overlappingReservations = await Reservation.find({
+            startDate: { $lt: endDate },
+            endDate: { $gt: startDate },
+        });
+
+        // Get the IDs of vehicles from overlapping reservations
+        const reservedVehicleIds = overlappingReservations.map(reservation => reservation.vehicle);
+
+        // Find available vehicles that do not have reservations in the given date range
+        const availableVehicles = await Vehicle.find({
+            _id: { $nin: reservedVehicleIds },
+            available: true, // Assuming you have an 'available' field in your Vehicle model
+        }, 'details imageUrl');
+
+        res.json({ vehicles: availableVehicles });
     } catch (e) {
-        console.log(e);
+        console.error('Error in readAvailableVehicles:', e);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
