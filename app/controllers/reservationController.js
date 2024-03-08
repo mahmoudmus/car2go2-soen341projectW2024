@@ -57,6 +57,20 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
         .exec();
     res.render('reservation/list', { reservationList });
 });
+exports.readUserReservations = asyncHandler(async (req, res, next) =>{
+    if(!req.user){
+        return res.render('user/login',{
+            error: 'Please Login'
+        })
+    }
+    const currentUser = await User.findById(req.user._id)
+    var query = { user: currentUser}
+    const reservationList = await Reservation.find(query)
+        .populate('user')
+        .populate('vehicle')
+        .exec();
+    res.render('reservation/list', { reservationList });
+});
 
 exports.readReservation = asyncHandler(async (req, res, next) => {
     try {
