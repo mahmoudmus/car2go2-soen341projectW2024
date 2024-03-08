@@ -147,14 +147,13 @@ class ReservationForm extends HTMLElement {
     }
 
     successfulStart(html) {
-        const template = document.createElement('div');
-        template.innerHTML = html;
-        const model = template.querySelector('.reservation-model').innerHTML;
-        const message = `You've successfully reserved a ${model}!`;
-        document.querySelector('#toast').notify(message);
-
-        this.modal.hide();
-        this.form.reset();
+        const paymentUrl =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '') +
+            '/reservations/checkout';
+        window.location.href = paymentUrl;
     }
 
     async setFields(reservationId) {
