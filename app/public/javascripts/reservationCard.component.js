@@ -5,7 +5,9 @@ class ReservationCard extends HTMLElement {
         const editButton = this.querySelector('.edit-reservation');
         editButton.addEventListener('click', () => this.editReservation());
         const copyButton = this.querySelector('.copy-on-click');
-        copyButton.addEventListener('click', () => this.copyToClipboard());
+        copyButton.addEventListener('click', () =>
+            this.copyToClipboard('Reservation ID copied to clipboard.')
+        );
     }
 
     async deleteReservation() {
@@ -35,12 +37,10 @@ class ReservationCard extends HTMLElement {
         reservationForm.modal.show();
     }
 
-    async copyToClipboard() {
+    async copyToClipboard(message) {
         try {
             await navigator.clipboard.writeText(this.reservationId);
-            document
-                .querySelector('#toast')
-                .notify('Text copied to clipboard.');
+            document.querySelector('#toast').notify(message);
         } catch (err) {
             console.error('Failed to copy text: ', err);
         }

@@ -4,7 +4,10 @@ const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
-    if (!req.user || (req.body.email && req.user.type !== 'admin')) {
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+    if (req.body.email !== req.user.email && req.user.type !== 'admin') {
         return res.sendStatus(401);
     }
 
@@ -108,4 +111,21 @@ exports.deleteReservation = asyncHandler(async (req, res, next) => {
         return res.status(404).json({ message: 'Reservation not found.' });
     }
     res.send({ message: 'Reservation deleted successfully.' });
+});
+
+exports.servePayment = asyncHandler(async (req, res, next) => {
+    res.render('reservation/checkout');
+});
+
+exports.processPayment = asyncHandler(async (req, res, next) => {
+    const {cardNumber, cvv, expiryDate, cardHolderName, address, postalCode} = req.body;
+    if (cardNumber < 1000000000000000 || cardNumber > 9999999999999999) {
+        return res.render('reservation/checkout', 
+        { error: 'Invalid card number.' });
+    } else if (cvv < 100 || cvv > 9999) {
+        return res.render('reservation/checkout', 
+        { error: 'Invalid CVV.' });
+    }
+    res.render('/myreservations');
+    
 });

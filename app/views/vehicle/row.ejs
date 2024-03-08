@@ -21,16 +21,18 @@
         </p>
         <% if (user && user.type === 'admin') { %>
         <div>
+            <button class="btn btn-dark start-reservation"
+                ><i class="bi bi-calendar3-range"></i>
+            </button>
             <button class="btn btn-dark edit-vehicle"
                 ><i class="bi bi-pencil-fill"></i>
             </button>
-            <button class="btn btn-dark delete-vehicle"
+            <button class="btn btn-danger delete-vehicle"
                 ><i class="bi bi-trash3-fill"></i>
             </button>
-            <a href="/reservation-route" class="btn btn-dark reservation-vehicle"><i class="bi bi-calendar"></i></a>
         </div>
         <% } else { %>
-            <button class="btn btn-dark edit-vehicle">
+            <button class="btn btn-dark start-reservation">
                 <i class="bi bi-calendar3-range"></i> Reserve
             </button>
         <% } %>
