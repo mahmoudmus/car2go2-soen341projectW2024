@@ -113,3 +113,16 @@ exports.deleteReservation = asyncHandler(async (req, res, next) => {
 exports.servePayment = asyncHandler(async (req, res, next) => {
     res.render('reservation/checkout');
 });
+
+exports.processPayment = asyncHandler(async (req, res, next) => {
+    const {cardNumber, cvv, expiryDate, cardHolderName, address, postalCode} = req.body;
+    if (cardNumber < 1000000000000000 || cardNumber > 9999999999999999) {
+        return res.render('reservation/checkout', 
+        { error: 'Invalid card number.' });
+    } else if (cvv < 100 || cvv > 9999) {
+        return res.render('reservation/checkout', 
+        { error: 'Invalid CVV.' });
+    }
+    res.render('reservation/checkout');
+    
+});
