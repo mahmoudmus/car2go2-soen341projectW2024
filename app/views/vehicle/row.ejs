@@ -10,9 +10,14 @@
         alt="Car Image"
     />
     <div class="card-body">
-        <h5 class="card-title"><%= vehicle.type %></h5>
-        <p class="card-text <%= vehicle.available ? 'text-success' : 'text-danger' %>">
-            <%= vehicle.available ? 'Available' : 'Unavailable' %>
+        <h5 class="card-title model"><%= vehicle.details.model %></h5>
+        <p class="card-text">
+            <span class="vehicle-year"
+            ><%= vehicle.details.year %></span
+            >&nbsp;|&nbsp;<span class="vehicle-make"
+            ><%= vehicle.details.make %></span
+            >&nbsp;|
+            $<span class="vehicle-price"><%= vehicle.hourlyPrice %></span><small class="text-secondary">/hr</small>
         </p>
         <% if (user && user.type === 'admin') { %>
         <div>
