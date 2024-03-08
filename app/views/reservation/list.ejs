@@ -7,7 +7,7 @@
         gap: 2rem;
     }
 </style>
-<div class="container" id="reservation-list">
+<div class="container d-flex align-items-center" id="reservation-list">
     <% reservationList.forEach(function(reservation) { %> <%- include('./row', {
     reservation }) %> <% }) %>
 </div>

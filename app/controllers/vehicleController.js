@@ -38,7 +38,7 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
         console.log(`End Date: ${endDate}`);
         // @todo alter this method so that only vehicles that will
         // be available between the start and end dates are returned.
-        const vehicles = await Vehicle.find({}, 'type imageUrl');
+        const vehicles = await Vehicle.find({}, 'details imageUrl');
         res.json({ vehicles });
     } catch (e) {
         console.log(e);

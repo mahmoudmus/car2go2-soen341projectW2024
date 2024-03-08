@@ -15,10 +15,10 @@ const reservationSchema = new Schema({
 
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    
+
     // TBD
-    pickup_location_id: { type: String, required: true },
-    dropoff_location_id: { type: String, required: true },
+    pickup_location_id: { type: String },
+    dropoff_location_id: { type: String },
     status: { type: String, default: 'Pending' },
 });
 

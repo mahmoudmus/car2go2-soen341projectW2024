@@ -5,10 +5,12 @@ class ReservationForm extends HTMLElement {
         this.initializeDateRangePicker();
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // const formData = new FormData(this.form);
+            const formData = new FormData(this.form);
             const requestBody = {
                 startDate: this.calendar.selectedDates[0],
                 endDate: this.calendar.selectedDates[1],
+                email: formData.get('email'),
+                vehicleId: formData.get('vehicleId'),
             };
             let response = await fetch(this.requestUrl(), {
                 method: this.requestMethod(),
@@ -52,12 +54,8 @@ class ReservationForm extends HTMLElement {
             };
             updateCalendarMode();
             window.addEventListener('resize', updateCalendarMode);
-            this.calendar.config.onChange.push(
-                async (selectedDates, dateStr, instance) => {
-                    if (selectedDates[0] && selectedDates[1]) {
-                        await this.fetchAvailableVehicles(selectedDates);
-                    }
-                }
+            this.calendar.config.onChange.push(() =>
+                this.fetchAvailableVehicles()
             );
         });
     }
@@ -99,92 +97,70 @@ class ReservationForm extends HTMLElement {
     }
 
     successfulCreation(html) {
-        // const template = document.createElement('div');
-        // template.innerHTML = html;
-        // console.log(template);
-        // const vehicleCard = template.querySelector('vehicle-card');
-        // document.querySelector('#vehicle-list').appendChild(vehicleCard);
-        // document
-        //     .querySelector('#toast')
-        //     .notify('Successfully created reservation.');
-        // this.modal.hide();
-        // this.form.reset();
+        const template = document.createElement('div');
+        template.innerHTML = html;
+        console.log(template);
+        const reservationCard = template.querySelector('reservation-card');
+        document
+            .querySelector('#reservation-list')
+            .appendChild(reservationCard);
+        document
+            .querySelector('#toast')
+            .notify('Successfully created reservation.');
+        this.modal.hide();
+        this.form.reset();
     }
 
-    // successfulUpdate(data) {
-    //     const vehicle = data.updatedVehicle;
-    //     const vehicleCard = document.querySelector(
-    //         `vehicle-card[vehicle-id="${this.vehicleId}"]`
-    //     );
-    //     vehicleCard.querySelector('.card-img-top').src = vehicle.imageUrl;
-    //     vehicleCard.querySelector('.card-title').innerHTML = vehicle.type;
-    //     vehicleCard
-    //         .querySelector('.card-text')
-    //         .classList.remove('text-success', 'text-danger');
-    //     vehicleCard
-    //         .querySelector('.card-text')
-    //         .classList.add(vehicle.available ? 'text-success' : 'text-danger');
-    //     vehicleCard.querySelector('.card-text').innerHTML = vehicle.available
-    //         ? 'Available'
-    //         : 'Unavailable';
-    //     document
-    //         .querySelector('#toast')
-    //         .notify('Successfully updated vehicle.');
+    successfulUpdate(data) {
+        const reservation = data.reservation;
+        const reservationCard = document.querySelector(
+            `reservation-card[reservation-id="${this.reservationId}"]`
+        );
+        reservationCard.name = reservation.user.name;
+        reservationCard.email = reservation.user.email;
+        reservationCard.startDate = new Date(
+            reservation.startDate
+        ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        reservationCard.endDate = new Date(
+            reservation.endDate
+        ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        reservationCard.imageUrl = reservation.vehicle.imageUrl;
+        reservationCard.model = reservation.vehicle.details.model;
+        reservationCard.year = reservation.vehicle.details.year;
 
-    //     this.modal.hide();
-    //     this.form.reset();
-    // }
+        this.modal.hide();
+        this.form.reset();
+    }
 
-    // setFields(vehicleId) {
-    //     this.vehicleId = vehicleId;
-    //     fetch(`/vehicles/${vehicleId}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     })
-    //         .then((response) => {
-    //             if (response.ok) {
-    //                 return response.json();
-    //             } else {
-    //                 document
-    //                     .querySelector('#toast')
-    //                     .warn('Could not get vehicle data.');
-    //                 console.log(response);
-    //             }
-    //         })
-    //         .then((data) => {
-    //             const vehicle = data.vehicle;
-    //             this.form.querySelector('#type').value = vehicle.type;
-    //             this.form.querySelector('#category').value = vehicle.category;
-    //             this.form.querySelector('#imageUrl').value = vehicle.imageUrl;
-    //             this.form.querySelector('#branch').value = vehicle.branch;
-    //             this.form.querySelector('#hourlyPrice').value =
-    //                 vehicle.hourlyPrice;
-    //             this.form.querySelector('#available').checked =
-    //                 vehicle.available;
-
-    //             this.form.querySelector('#make').value = vehicle.details.make;
-    //             this.form.querySelector('#model').value = vehicle.details.model;
-    //             this.form.querySelector('#year').value = vehicle.details.year;
-    //             this.form.querySelector('#colour').value =
-    //                 vehicle.details.colour;
-    //             this.form.querySelector('#seats').value = vehicle.details.seats;
-    //             this.form.querySelector('#doors').value = vehicle.details.doors;
-    //             this.form.querySelector('#mileage').value =
-    //                 vehicle.details.mileage;
-    //             this.form.querySelector('#engineType').value =
-    //                 vehicle.details.engineType;
-    //             this.form.querySelector('#automatic').checked =
-    //                 vehicle.details.isAutomatic;
-    //         })
-    //         .catch((error) => {
-    //             document
-    //                 .querySelector('#toast')
-    //                 .caution('Error fetching vehicle data.');
-    //             console.error('Error:', error);
-    //         });
-    // }
+    async setFields(reservationId) {
+        this.reservationId = reservationId;
+        const response = await fetch(`/reservations/${reservationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            document
+                .querySelector('#toast')
+                .warn('Could not get reservation data.');
+        } else {
+            const reservation = (await response.json()).reservation;
+            this.calendar.setDate([reservation.startDate, reservation.endDate]);
+            await this.fetchAvailableVehicles();
+            this.form.querySelector('#email').value = reservation.user.email;
+            this.form.querySelector('#vehicleId').value =
+                reservation.vehicle._id;
+        }
+    }
 
     get mode() {
         return this._mode;
@@ -217,7 +193,12 @@ class ReservationForm extends HTMLElement {
         this.querySelector('button[type="submit"]').innerHTML =
             submitButtonText;
     }
-    async fetchAvailableVehicles(selectedDates) {
+
+    async fetchAvailableVehicles() {
+        const selectedDates = this.calendar.selectedDates;
+        if (!selectedDates[0] || !selectedDates[1]) {
+            return;
+        }
         try {
             const startDate = selectedDates[0].toISOString();
             const endDate = selectedDates[1].toISOString();
@@ -249,12 +230,12 @@ class ReservationForm extends HTMLElement {
 
     updateVehicleOptions(vehicles) {
         const chooseVehicleInput = this.querySelector('#vehicleId');
-        chooseVehicleInput.innerHTML = ''; // Clear existing options
+        chooseVehicleInput.innerHTML = '';
 
         vehicles.forEach((vehicle) => {
             const option = document.createElement('option');
-            option.value = vehicle._id; // Use the appropriate property based on your data
-            option.textContent = vehicle.type; // Use the appropriate property based on your data
+            option.value = vehicle._id;
+            option.textContent = `${vehicle.details.model} ${vehicle.details.year}`;
             chooseVehicleInput.appendChild(option);
         });
     }
