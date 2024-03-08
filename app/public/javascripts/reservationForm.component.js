@@ -34,7 +34,13 @@ class ReservationForm extends HTMLElement {
                 this.successfulUpdate(data);
             }
         });
+        this.calendar.config.onChange.push(async (selectedDates, dateStr, instance) => {
+            // Fetch available vehicles based on the selected reservation period
+            await this.fetchAvailableVehicles(selectedDates);
+        });
         this.mode = 'creating';
+        
+
     }
 
     async initializeDateRangePicker() {
@@ -90,6 +96,7 @@ class ReservationForm extends HTMLElement {
                 throw new Error('Invalid reservation form mode.');
         }
     }
+    
 
     successfulCreation(html) {
         // const template = document.createElement('div');
@@ -209,6 +216,45 @@ class ReservationForm extends HTMLElement {
     set submitButtonText(submitButtonText) {
         this.querySelector('button[type="submit"]').innerHTML =
             submitButtonText;
+    }
+    async fetchAvailableVehicles(selectedDates) {
+        try {
+            // Fetch available vehicles for the selected reservation period
+            const response = await fetch(`/reservations/availability`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    startDate: selectedDates[0],
+                    endDate: selectedDates[1],
+                }),
+            });
+
+            if (!response.ok) {
+                console.error('Failed to fetch available vehicles.');
+                return;
+            }
+
+            const data = await response.json();
+
+            // Update "choose a vehicle" options based on the response
+            this.updateVehicleOptions(data);
+        } catch (error) {
+            console.error('Error fetching available vehicles:', error);
+        }
+    }
+
+    updateVehicleOptions(vehicles) {
+        const chooseVehicleInput = this.querySelector('#vehicleDropdown');
+        chooseVehicleInput.innerHTML = ''; // Clear existing options
+
+        vehicles.forEach((vehicle) => {
+            const option = document.createElement('option');
+            option.value = vehicle._id; // Use the appropriate property based on your data
+            option.textContent = vehicle.type; // Use the appropriate property based on your data
+            chooseVehicleInput.appendChild(option);
+        });
     }
 }
 

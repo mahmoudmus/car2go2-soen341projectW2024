@@ -12,8 +12,10 @@ const reservationSchema = new Schema({
         ref: 'Vehicle',
         required: true,
     },
+
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    
     // TBD
     pickup_location_id: { type: String, required: true },
     dropoff_location_id: { type: String, required: true },

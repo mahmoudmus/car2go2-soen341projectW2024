@@ -17,8 +17,19 @@
                     </div>
 
                     <!-- @todo put a text input to accept user email -->
+                    <div class="form-group mb-3">
+                        <label for="userEmail" class="mb-1">Email Address</label>
+                        <input type="email" id="userEmail" class="form-control" placeholder="Enter your email">
+                    </div>
+                    
 
-                    <!-- @todo put a drop down to choose a vehicle -->
+                    <div class="form-group mb-3">
+                        <label for="vehicleDropdown" class="mb-1">Choose a Vehicle</label>
+                        <select class="form-control" id="vehicleDropdown" name="vehicleDropdown" required>
+                            <option value="" disabled selected>Select</option>
+                            <!-- Dynamic options will be added here by reservationForm.component.js -->
+                        </select>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
