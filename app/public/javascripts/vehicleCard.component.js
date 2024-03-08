@@ -1,9 +1,19 @@
 class VehicleCard extends HTMLElement {
     connectedCallback() {
         const deleteButton = this.querySelector('.delete-vehicle');
-        deleteButton.addEventListener('click', () => this.deleteVehicle());
+        if (deleteButton) {
+            deleteButton.addEventListener('click', () => this.deleteVehicle());
+        }
         const editButton = this.querySelector('.edit-vehicle');
-        editButton.addEventListener('click', () => this.editVehicle());
+        if (editButton) {
+            editButton.addEventListener('click', () => this.editVehicle());
+        }
+        const reserveButton = this.querySelector('.start-reservation');
+        if (reserveButton) {
+            reserveButton.addEventListener('click', () =>
+                this.startReservation()
+            );
+        }
     }
 
     deleteVehicle() {
@@ -32,6 +42,13 @@ class VehicleCard extends HTMLElement {
         vehicleForm.setFields(this.vehicleId);
         vehicleForm.mode = 'updating';
         vehicleForm.modal.show();
+    }
+
+    startReservation() {
+        const reservationForm = document.querySelector('reservation-form');
+        reservationForm.mode = 'creating';
+        reservationForm.setVehicle(this.vehicleId);
+        reservationForm.modal.show();
     }
 
     get vehicleId() {
