@@ -85,8 +85,14 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
-    const allUsers = await User.find({}, 'name email age address type');
-    res.render('user/list', { userList: allUsers });
+    if (!req.user || req.user.type !== 'admin') {
+        res.render('user/login', {
+            error: 'This page is restricted.',
+        });
+    } else {
+        const allUsers = await User.find({}, 'name email age address type');
+        res.render('user/list', { userList: allUsers });
+    }
 });
 
 exports.readUser = asyncHandler(async (req, res, next) => {
