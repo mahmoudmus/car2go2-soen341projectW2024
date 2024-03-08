@@ -1,10 +1,10 @@
 <tr>
-    <td class="d-none d-sm-table-cell">
+    <td class="user-name d-none d-sm-table-cell">
         <%= user.name %>
     </td>
-    <td><%= user.email %></td>
-    <td class="d-none d-md-table-cell"><%= user.address %></td>
-    <td class="text-secondary d-none d-sm-table-cell"><%= user.type %></td>
+    <td class="user-email"><%= user.email %></td>
+    <td class="user-address d-none d-md-table-cell"><%= user.address %></td>
+    <td class="user-type text-secondary d-none d-sm-table-cell"><%= user.type %></td>
     <td style="width: 8rem;">
         <user-row user-id="<%= user._id %>">
             <button type="button" class="edit-user btn btn-dark">

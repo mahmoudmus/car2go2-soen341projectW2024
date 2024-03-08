@@ -102,7 +102,7 @@ exports.readProfile = asyncHandler(async (req, res, next) => {
     }
 });
 
-exports.updateUser = asyncHandler(async (req, res, next) => {
+exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
         const { name, age, email, address } = req.body;
@@ -118,6 +118,27 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
             user,
             error: 'You need to be signed it to modify this information',
         });
+    }
+});
+
+exports.updateUser = asyncHandler(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (req.user && req.user.type === 'admin') {
+        const { name, age, email, address, type, hash } = req.body;
+        user.name = name;
+        user.age = age;
+        user.email = email;
+        user.address = address;
+        user.type = type;
+
+        if (hash) {
+            user.hash = hash;
+        }
+
+        const updatedUser = await user.save();
+        res.status(200).json({ updatedUser });
+    } else {
+        res.status(401).json({ message: 'You do not have admin privileges.' });
     }
 });
 

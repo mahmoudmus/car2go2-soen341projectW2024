@@ -12,7 +12,6 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input
-                            value = "<%= user ? user.name : '' %>"
                             type="text"
                             class="form-control"
                             id="name"
@@ -24,7 +23,6 @@
                         <div class="mb-3 col-sm-8">
                             <label for="email" class="form-label">Email</label>
                             <input
-                                value = "<%= user ? user.email : '' %>"
                                 type="email"
                                 class="form-control"
                                 id="email"
@@ -35,7 +33,6 @@
                         <div class="mb-3 col-sm-4">
                             <label for="age" class="form-label">Age</label>
                             <input
-                                value = "<%= user ? user.age : '' %>"
                                 type="number"
                                 class="form-control"
                                 id="age" 
@@ -47,7 +44,6 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">Home Address</label>
                         <input
-                            value = "<%= user ? user.address : '' %>"
                             type="text"
                             class="form-control"
                             id="address"

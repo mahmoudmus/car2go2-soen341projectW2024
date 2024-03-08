@@ -38,6 +38,22 @@ class UserRow extends HTMLElement {
     get userId() {
         return this.getAttribute('user-id');
     }
+
+    set name(name) {
+        this.row.querySelector('.user-name').innerHTML = name;
+    }
+
+    set email(email) {
+        this.row.querySelector('.user-email').innerHTML = email;
+    }
+
+    set address(address) {
+        this.row.querySelector('.user-address').innerHTML = address;
+    }
+
+    set type(type) {
+        this.row.querySelector('.user-type').innerHTML = type;
+    }
 }
 
 customElements.define('user-row', UserRow);

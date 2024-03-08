@@ -74,24 +74,15 @@ class UserForm extends HTMLElement {
     }
 
     successfulUpdate(data) {
-        const vehicle = data.updatedVehicle;
-        const vehicleCard = document.querySelector(
-            `vehicle-card[vehicle-id="${this.vehicleId}"]`
+        const user = data.updatedUser;
+        const userRow = document.querySelector(
+            `user-row[user-id="${this.userId}"]`
         );
-        vehicleCard.querySelector('.card-img-top').src = vehicle.imageUrl;
-        vehicleCard.querySelector('.card-title').innerHTML = vehicle.type;
-        vehicleCard
-            .querySelector('.card-text')
-            .classList.remove('text-success', 'text-danger');
-        vehicleCard
-            .querySelector('.card-text')
-            .classList.add(vehicle.available ? 'text-success' : 'text-danger');
-        vehicleCard.querySelector('.card-text').innerHTML = vehicle.available
-            ? 'Available'
-            : 'Unavailable';
-        document
-            .querySelector('#toast')
-            .notify('Successfully updated vehicle.');
+
+        userRow.name = user.name;
+        userRow.email = user.email;
+        userRow.address = user.address;
+        userRow.type = user.type;
 
         this.modal.hide();
         this.form.reset();
@@ -128,12 +119,14 @@ class UserForm extends HTMLElement {
             case 'creating':
                 this._mode = mode;
                 this.form.reset();
+                this.form.querySelector('#hash').required = true;
                 this.title = 'New User';
                 this.submitButtonText = 'Create';
 
                 break;
             case 'updating':
                 this._mode = mode;
+                this.form.querySelector('#hash').required = false;
                 this.title = 'Update User';
                 this.submitButtonText = 'Update';
                 break;

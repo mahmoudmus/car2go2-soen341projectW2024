@@ -13,7 +13,7 @@ router.get('/', userController.readAllUsers);
 router.get('/:id', userController.readUser);
 
 // Update
-router.post('/:id/update', userController.updateUser);
+router.post('/:id/update', userController.updateProfile);
 router.put('/:id', userController.updateUser);
 
 // Delete
