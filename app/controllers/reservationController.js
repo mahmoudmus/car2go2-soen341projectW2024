@@ -43,6 +43,11 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
+    if (!req.user || req.user.type !== 'admin') {
+        return res.render('user/login', {
+            error: 'This page is restricted.',
+        });
+    }
     const reservationList = await Reservation.find()
         .populate('user')
         .populate('vehicle')
