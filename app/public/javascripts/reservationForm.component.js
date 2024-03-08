@@ -54,7 +54,9 @@ class ReservationForm extends HTMLElement {
             window.addEventListener('resize', updateCalendarMode);
             this.calendar.config.onChange.push(
                 async (selectedDates, dateStr, instance) => {
-                    await this.fetchAvailableVehicles(selectedDates);
+                    if (selectedDates[0] && selectedDates[1]) {
+                        await this.fetchAvailableVehicles(selectedDates);
+                    }
                 }
             );
         });
@@ -217,27 +219,28 @@ class ReservationForm extends HTMLElement {
     }
     async fetchAvailableVehicles(selectedDates) {
         try {
+            const startDate = selectedDates[0].toISOString();
+            const endDate = selectedDates[1].toISOString();
             // Fetch available vehicles for the selected reservation period
-            const response = await fetch(`/vehicles/availability`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    startDate: selectedDates[0],
-                    endDate: selectedDates[1],
-                }),
-            });
+            const response = await fetch(
+                `/vehicles/available?start=${encodeURIComponent(
+                    startDate
+                )}&end=${encodeURIComponent(endDate)}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
 
-            this.updateVehicleOptions(data);
-            if (!response.ok) {
+            if (response.ok) {
+                const data = await response.json();
+                this.updateVehicleOptions(data.vehicles);
+            } else {
                 document
                     .querySelector('#toast')
                     .caution('Failed to fetch available vehicles.');
-                return;
-            } else {
-                const data = await response.json();
-                this.updateVehicleOptions(data);
             }
         } catch (error) {
             console.error('Error fetching available vehicles:', error);
