@@ -29,7 +29,7 @@
                 aria-current="true"
             >
                 <i class="bi bi-car-front-fill px-2"></i>
-                All Vehicles
+                Vehicles Catalogue
             </a>
             <% if (user && user.type === 'admin') { %>
             <a
@@ -49,6 +49,16 @@
                 All Reservations
             </a>
             <% } %>
+            <% if (user) { %>
+            <a
+                href="/myreservations"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-calendar3-range px-2"></i>
+                My Reservations
+            </a>   
+            <% } %> 
         </div>
     </div>
 </div>
