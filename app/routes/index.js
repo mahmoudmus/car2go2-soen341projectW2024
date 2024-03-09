@@ -6,7 +6,11 @@ const reservationController = require('../controllers/reservationController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', { title: 'Gas' });
+    let notification = req.cookies.justLoggedIn
+        ? "You've successfully logged in."
+        : false;
+    res.clearCookie('justLoggedIn');
+    res.render('index', { title: 'Gas', notification });
 });
 
 router.get('/signup', function (req, res, next) {
