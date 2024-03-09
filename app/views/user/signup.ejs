@@ -1,0 +1,11 @@
+<div class="container pb-2">
+    <h1>Signup</h1>
+</div>
+<div class="container col-md-6">
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+    <%- include('./form', { user: false }) %>
+</div>
