@@ -1,0 +1,22 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+  function showConfirmationPopup() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Handle confirmed action here
+        // You can use AJAX or any other logic here
+        // For example, emit an event or call a function
+        console.log('User confirmed');
+      }
+    });
+  }
+</script>
