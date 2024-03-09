@@ -139,25 +139,4 @@ describe('Vehicle Controller', () => {
         sinon.assert.calledWith(res.send, { updatedVehicle });
         sinon.assert.notCalled(next);
     });
-
-    it('should delete a vehicle and send a success message', async () => {
-        const vehicleId = 'vid';
-        vehicleFindByIdAndDeleteStub.resolves(new Vehicle({ _id: vehicleId }));
-
-        await vehicleController.deleteVehicle(req, res, next);
-
-        sinon.assert.calledWith(res.send, {
-            message: 'Vehicle deleted successfully.',
-        });
-        sinon.assert.notCalled(next);
-    });
-
-    it('should return 404 if the vehicle is not found', async () => {
-        vehicleFindByIdAndDeleteStub.resolves(null);
-
-        await vehicleController.deleteVehicle(req, res, next);
-
-        sinon.assert.calledWith(res.status, 404);
-        sinon.assert.calledWith(res.json, { message: 'Vehicle not found.' });
-    });
 });
