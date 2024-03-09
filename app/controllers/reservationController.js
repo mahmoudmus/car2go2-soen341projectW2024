@@ -2,6 +2,7 @@ const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
+const Swal = require('sweetalert2');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
     if (!req.user) {
@@ -120,11 +121,73 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
-    const result = await Reservation.findByIdAndDelete(id);
-    if (!result) {
-        return res.status(404).json({ message: 'Reservation not found.' });
+    // Show SweetAlert 2 confirmation popup
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        // If user confirms the deletion
+        if (result.isConfirmed) {
+            const deletedReservation = await Reservation.findByIdAndDelete(id);
+
+            if (!deletedReservation) {
+                return res.status(404).json({ message: 'Reservation not found.' });
+            }
+
+            // Show success message with SweetAlert 2
+            await Swal.fire({
+                title: 'Deleted!',
+                text: 'Reservation has been deleted.',
+                icon: 'success',
+            });
+
+            res.send({ message: 'Reservation deleted successfully.' });
+        } else {
+            // If user cancels the deletion
+            res.send({ message: 'Deletion canceled by the user.' });
+        }
+    });
+});
+
+exports.deleteReservation = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+
+    // Show SweetAlert 2 confirmation popup
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    });
+
+    // If user confirms the deletion
+    if (result.isConfirmed) {
+        const deletedReservation = await Reservation.findByIdAndDelete(id);
+
+        if (!deletedReservation) {
+            return res.status(404).json({ message: 'Reservation not found.' });
+        }
+
+        // Show success message with SweetAlert 2
+        await Swal.fire({
+            title: 'Deleted!',
+            text: 'Reservation has been deleted.',
+            icon: 'success',
+        });
+
+        res.send({ message: 'Reservation deleted successfully.' });
+    } else {
+        // If user cancels the deletion
+        res.send({ message: 'Deletion canceled by the user.' });
     }
-    res.send({ message: 'Reservation deleted successfully.' });
 });
 
 exports.servePayment = asyncHandler(async (req, res, next) => {
