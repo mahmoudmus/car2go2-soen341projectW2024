@@ -49,13 +49,18 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
         });
 
         // Get the IDs of vehicles from overlapping reservations
-        const reservedVehicleIds = overlappingReservations.map(reservation => reservation.vehicle);
+        const reservedVehicleIds = overlappingReservations.map(
+            (reservation) => reservation.vehicle
+        );
 
         // Find available vehicles that do not have reservations in the given date range
-        const availableVehicles = await Vehicle.find({
-            _id: { $nin: reservedVehicleIds },
-            available: true, // Assuming you have an 'available' field in your Vehicle model
-        }, 'details imageUrl');
+        const availableVehicles = await Vehicle.find(
+            {
+                _id: { $nin: reservedVehicleIds },
+                // available: true, // Assuming you have an 'available' field in your Vehicle model
+            },
+            'details imageUrl hourlyPrice'
+        );
 
         res.json({ vehicles: availableVehicles });
     } catch (e) {

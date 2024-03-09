@@ -147,13 +147,11 @@ class ReservationForm extends HTMLElement {
     }
 
     successfulStart(html) {
-        const paymentUrl =
-            window.location.protocol +
-            '//' +
-            window.location.hostname +
-            (window.location.port ? ':' + window.location.port : '') +
-            '/reservations/checkout';
-        window.location.href = paymentUrl;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        const model = div.querySelector('.reservation-model').innerHTML;
+        const message = `You have successfully reserved a ${model.trim()}! <a href="myreservations">Click here to view.</a>`;
+        document.querySelector('#toast').notify(message);
     }
 
     async setFields(reservationId) {
@@ -171,8 +169,9 @@ class ReservationForm extends HTMLElement {
         } else {
             const reservation = (await response.json()).reservation;
             this.calendar.setDate([reservation.startDate, reservation.endDate]);
-            await this.fetchAvailableVehicles();
             this.form.querySelector('#email').value = reservation.user.email;
+            await this.fetchAvailableVehicles();
+            this.addVehicleOption(reservation.vehicle);
             this.form.querySelector('#vehicleId').value =
                 reservation.vehicle._id;
         }
@@ -260,11 +259,15 @@ class ReservationForm extends HTMLElement {
         chooseVehicleInput.innerHTML = '';
 
         vehicles.forEach((vehicle) => {
-            const option = document.createElement('option');
-            option.value = vehicle._id;
-            option.textContent = `${vehicle.details.model} ${vehicle.details.year}`;
-            chooseVehicleInput.appendChild(option);
+            this.addVehicleOption(vehicle);
         });
+    }
+
+    addVehicleOption(vehicle) {
+        const option = document.createElement('option');
+        option.value = vehicle._id;
+        option.textContent = `${vehicle.details.model} ${vehicle.details.year}`;
+        this.querySelector('#vehicleId').appendChild(option);
     }
 
     async setVehicle(vehicleId) {
@@ -323,6 +326,14 @@ class ReservationForm extends HTMLElement {
     enableFields() {
         document.querySelector('#email').disabled = false;
         document.querySelector('#vehicleId').disabled = false;
+    }
+
+    set dates(dates) {
+        if (dates === null) {
+            this.calendar.clear();
+        } else {
+            this.calendar.setDate(dates);
+        }
     }
 }
 
