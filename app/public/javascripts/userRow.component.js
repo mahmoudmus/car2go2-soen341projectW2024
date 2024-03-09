@@ -10,7 +10,11 @@ class UserRow extends HTMLElement {
 
     async deleteUser() {
         const popup = document.querySelector('confirmation-popup');
-        if (!(await popup.confirm())) {
+        var swalTitle = 'Delete User?';
+        var swalText = undefined;
+        var swalTitleSuccess = "User Deleted!";
+        var swalTextSuccess = "User ID: " + this.userId;
+        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
             return;
         }
         const response = await fetch(`/users/${this.userId}`, {

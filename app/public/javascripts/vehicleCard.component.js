@@ -16,7 +16,17 @@ class VehicleCard extends HTMLElement {
         }
     }
 
-    deleteVehicle() {
+    async deleteVehicle() {
+        const popup = document.querySelector('confirmation-popup');
+        var swalTitle = 'Delete Vehicle?';
+        var swalText = undefined;
+        var swalTitleSuccess = "Vehicle Deleted!";
+        var swalTextSuccess = "Vehicle ID: " + this.vehicleId;
+
+        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+            return;
+        }
+
         fetch(`/vehicles/${this.vehicleId}`, {
             method: 'DELETE',
         })
