@@ -2,7 +2,6 @@ const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
-const Swal = require('sweetalert2');
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
     if (!req.user) {

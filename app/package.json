@@ -27,7 +27,6 @@
         "passport-jwt": "^4.0.1",
         "sinon": "^17.0.1",
         "supertest": "^6.3.4",
-        "sweetalert": "^2.1.2",
         "sweetalert2": "^11.10.6"
     },
     "devDependencies": {
