@@ -101,7 +101,7 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
 
 exports.deleteVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-
+    await Reservation.deleteMany({ vehicle: id });
     const result = await Vehicle.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'Vehicle not found.' });
