@@ -11,6 +11,14 @@ class ReservationCard extends HTMLElement {
     }
 
     async deleteReservation() {
+        const popup = document.querySelector('confirmation-popup');
+        var swalTitle = 'Delete Reservation?';
+        var swalText = undefined;
+        var swalTitleSuccess = "Reservation Deleted!";
+        var swalTextSuccess = "Reservation ID: " + this.reservationId;
+        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+            return;
+        }
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'DELETE',
             headers: {

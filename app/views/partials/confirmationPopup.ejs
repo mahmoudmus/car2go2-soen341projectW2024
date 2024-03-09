@@ -1,0 +1,28 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<confirmation-popup></confirmation-popup>
+
+<script>
+    const popup = document.querySelector('confirmation-popup');
+    popup.confirm = async (title = "Are you sure?", text = "You will not be able to revert this!", successTitle = "Success", successText) => {
+        const result = await Swal.fire({
+        title: title,
+        text: text,
+        icon: 'warning',
+        showCancelButton: true,
+        focusCancel: true,
+        confirmButtonText: "Yes I'm sure!",
+        iconColor: '#f25c54',
+        confirmButtonColor: '#f4845f',
+        cancelButtonColor: '#f25c54',
+        });
+
+        if (result.isConfirmed) {
+          await Swal.fire({
+            title: successTitle,
+            text: successText,
+            icon: 'success'
+          })
+            return true;
+        }
+    }
+</script>
