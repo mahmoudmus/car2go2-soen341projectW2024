@@ -45,6 +45,13 @@ exports.login = asyncHandler(async (req, res, next) => {
         sameSite: 'strict',
         path: '/',
     });
+    res.cookie('justLoggedIn', 'true', {
+        httpOnly: true,
+        secure: false,
+        maxAge: 3600000,
+        sameSite: 'None',
+        path: '/',
+    });
     res.redirect('/');
 });
 
