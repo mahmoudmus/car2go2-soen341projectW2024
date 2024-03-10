@@ -113,3 +113,7 @@ exports.deleteVehicle = asyncHandler(async (req, res, next) => {
     }
     res.send({ message: 'Vehicle deleted successfully.' });
 });
+
+exports.readUnavailabilities = asyncHandler(async (req, res, next) => {
+    // Todo
+});
