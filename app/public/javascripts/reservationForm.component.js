@@ -153,6 +153,9 @@ class ReservationForm extends HTMLElement {
         const model = div.querySelector('.reservation-model').innerHTML;
         const message = `You have successfully reserved a ${model.trim()}! <a href="myreservations">Click here to view.</a>`;
         document.querySelector('#toast').notify(message);
+
+        this.modal.hide();
+        this.form.reset();
     }
 
     async setFields(reservationId) {
