@@ -7,7 +7,7 @@ exports.signUp = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, hash } = req.body;
     if (age < 18) {
         return res.render('user/signup', {
-            error: 'You must be atleast 18 years of age to sign up.',
+            error: 'You must be at least 18 years of age to sign up.',
         });
     }
     const user = new User({
