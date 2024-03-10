@@ -142,6 +142,7 @@ class ReservationForm extends HTMLElement {
         reservationCard.imageUrl = reservation.vehicle.imageUrl;
         reservationCard.model = reservation.vehicle.details.model;
         reservationCard.year = reservation.vehicle.details.year;
+        reservationCard.cost = reservation.cost;
 
         this.modal.hide();
         this.form.reset();
