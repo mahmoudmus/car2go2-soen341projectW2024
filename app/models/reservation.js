@@ -23,9 +23,9 @@ const reservationSchema = new Schema({
 });
 
 reservationSchema.virtual('cost').get(function () {
-    if (this.vehicle && this.vehicle.hourlyPrice) {
+    if (this.vehicle && this.vehicle.dailyPrice) {
         const days = (this.endDate - this.startDate) / (1000 * 60 * 60 * 24);
-        const totalCost = days * this.vehicle.hourlyPrice;
+        const totalCost = days * this.vehicle.dailyPrice;
         return Math.round(totalCost * 100) / 100;
     }
     return null;

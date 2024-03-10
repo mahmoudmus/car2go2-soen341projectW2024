@@ -17,7 +17,7 @@
             >&nbsp;|&nbsp;<span class="vehicle-make"
             ><%= vehicle.details.make %></span
             >&nbsp;|
-            $<span class="vehicle-price"><%= vehicle.hourlyPrice %></span><small class="text-secondary">/hr</small>
+            $<span class="vehicle-price"><%= vehicle.dailyPrice %></span><small class="text-secondary">/day</small>
         </p>
         <% if (user && user.type === 'admin') { %>
         <div>
