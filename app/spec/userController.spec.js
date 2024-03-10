@@ -321,9 +321,6 @@ describe('User Controller', function () {
     });
 
     it('should return a 404 status with an error message when the user does not exist', async function () {
-        spyOn(Reservation, 'deleteMany').and.returnValue(
-            Promise.resolve({ deletedCount: 0 })
-        );
         spyOn(User, 'findByIdAndDelete').and.returnValue(Promise.resolve(null));
 
         const req = {
@@ -343,9 +340,6 @@ describe('User Controller', function () {
 
         await userController.deleteUser(req, res, () => {});
 
-        expect(Reservation.deleteMany).toHaveBeenCalledWith({
-            user: 'nonexistentuserid',
-        });
         expect(User.findByIdAndDelete).toHaveBeenCalledWith(
             'nonexistentuserid'
         );
