@@ -119,7 +119,7 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
 
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    
+
     const result = await Reservation.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'Reservation not found.' });

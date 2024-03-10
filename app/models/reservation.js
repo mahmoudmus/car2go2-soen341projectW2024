@@ -22,4 +22,16 @@ const reservationSchema = new Schema({
     status: { type: String, default: 'Pending' },
 });
 
+reservationSchema.virtual('cost').get(function () {
+    if (this.vehicle && this.vehicle.hourlyPrice) {
+        const days = (this.endDate - this.startDate) / (1000 * 60 * 60 * 24);
+        const totalCost = days * this.vehicle.hourlyPrice;
+        return Math.round(totalCost * 100) / 100;
+    }
+    return null;
+});
+
+reservationSchema.set('toJSON', { virtuals: true });
+reservationSchema.set('toObject', { virtuals: true });
+
 module.exports = mongoose.model('Reservation', reservationSchema);
