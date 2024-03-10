@@ -176,7 +176,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
 exports.deleteUser = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    await Reservation.deleteMany({ user: id });
+    
     const result = await User.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'User not found.' });

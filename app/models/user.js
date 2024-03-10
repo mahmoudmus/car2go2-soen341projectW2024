@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const Reservation = require('./reservation');
 
 const UserSchema = new Schema({
     name: { type: String, required: true },
@@ -38,6 +39,11 @@ UserSchema.pre('save', async function (next) {
         this.hash = await bcrypt.hash(this.hash, salt);
     }
     next();
+});
+
+UserSchema.pre('deleteOne', async function (next) {
+    var user = this;
+    user.model('Reservation').deleteMany({ user: this._id }, next());
 });
 
 UserSchema.methods.verifyPassword = async function (password) {
