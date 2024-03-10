@@ -60,7 +60,7 @@ class VehicleCarousel extends HTMLElement {
                         >&nbsp;|&nbsp;<span class="vehicle-make"
                         >${vehicle.details.make}</span
                         >&nbsp;|
-                        $<span class="vehicle-price">${vehicle.dailyPrice}</span><small class="text-secondary">/hr</small>
+                        $<span class="vehicle-price">${vehicle.dailyPrice}</span><small class="text-secondary">/day</small>
                     </p>
                     <button class="btn btn-dark start-reservation">
                         <i class="bi bi-calendar3-range"></i> Reserve
