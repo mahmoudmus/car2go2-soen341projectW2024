@@ -84,7 +84,10 @@ exports.readReservation = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateReservation = asyncHandler(async (req, res, next) => {
-    if (!req.user || (req.body.email && req.user.type !== 'admin')) {
+    if (
+        !req.user ||
+        (req.body.email !== req.user.email && req.user.type !== 'admin')
+    ) {
         return res.sendStatus(401);
     }
 
@@ -119,7 +122,7 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
 
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    
+
     const result = await Reservation.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'Reservation not found.' });

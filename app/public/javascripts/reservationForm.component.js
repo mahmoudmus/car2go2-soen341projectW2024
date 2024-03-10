@@ -39,6 +39,7 @@ class ReservationForm extends HTMLElement {
                 this.successfulStart(data);
             }
         });
+        this.userType = this.getAttribute('user-type');
         this.mode = 'creating';
     }
 
@@ -152,6 +153,9 @@ class ReservationForm extends HTMLElement {
         const model = div.querySelector('.reservation-model').innerHTML;
         const message = `You have successfully reserved a ${model.trim()}! <a href="myreservations">Click here to view.</a>`;
         document.querySelector('#toast').notify(message);
+
+        this.modal.hide();
+        this.form.reset();
     }
 
     async setFields(reservationId) {
@@ -189,12 +193,20 @@ class ReservationForm extends HTMLElement {
                 this.title = 'New Reservation';
                 this.submitButtonText = 'Create';
                 this.enableFields();
+                if (this.userType === 'customer' || this.userType === 'csr') {
+                    this.setEmail();
+                    this.disableField('email');
+                }
                 break;
             case 'updating':
                 this._mode = mode;
                 this.title = 'Update Reservation';
                 this.submitButtonText = 'Update';
                 this.enableFields();
+                if (this.userType === 'customer' || this.userType === 'csr') {
+                    this.setEmail();
+                    this.disableField('email');
+                }
                 break;
             case 'starting':
                 this._mode = mode;
@@ -319,8 +331,12 @@ class ReservationForm extends HTMLElement {
     }
 
     disableFields() {
-        document.querySelector('#email').disabled = true;
-        document.querySelector('#vehicleId').disabled = true;
+        this.disableField('email');
+        this.disableField('vehicleId');
+    }
+
+    disableField(id) {
+        document.querySelector(`#${id}`).disabled = true;
     }
 
     enableFields() {
