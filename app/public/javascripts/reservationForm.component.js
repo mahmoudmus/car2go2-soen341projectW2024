@@ -39,6 +39,7 @@ class ReservationForm extends HTMLElement {
                 this.successfulStart(data);
             }
         });
+        this.userType = this.getAttribute('user-type');
         this.mode = 'creating';
     }
 
@@ -189,12 +190,20 @@ class ReservationForm extends HTMLElement {
                 this.title = 'New Reservation';
                 this.submitButtonText = 'Create';
                 this.enableFields();
+                if (this.userType !== 'admin') {
+                    this.setEmail();
+                    this.disableField('email');
+                }
                 break;
             case 'updating':
                 this._mode = mode;
                 this.title = 'Update Reservation';
                 this.submitButtonText = 'Update';
                 this.enableFields();
+                if (this.userType !== 'admin') {
+                    this.setEmail();
+                    this.disableField('email');
+                }
                 break;
             case 'starting':
                 this._mode = mode;
@@ -319,8 +328,12 @@ class ReservationForm extends HTMLElement {
     }
 
     disableFields() {
-        document.querySelector('#email').disabled = true;
-        document.querySelector('#vehicleId').disabled = true;
+        this.disableField('email');
+        this.disableField('vehicleId');
+    }
+
+    disableField(id) {
+        document.querySelector(`#${id}`).disabled = true;
     }
 
     enableFields() {
