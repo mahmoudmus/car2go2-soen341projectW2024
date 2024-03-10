@@ -121,16 +121,30 @@ exports.readUnavailabilities = asyncHandler(async (req, res, next) => {
             return res.status(404).json({ message: 'Vehicle not found' });
         }
 
-        // Get the current date
-        const today = new Date();
+        // Get reservations for the specific vehicle
+        const reservations = await Reservation.find({ vehicle: req.params.id });
 
-        // Get the date two days from now
-        const tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 2);
+        // Extract the dates during which the vehicle is unavailable
+        const unavailabilities = reservations.reduce((dates, reservation) => {
+            const currentStartDate = new Date(reservation.startDate);
+            const currentEndDate = new Date(reservation.endDate);
+
+            // Generate an array of dates between start and end (inclusive)
+            const dateArray = [];
+            for (
+                let date = currentStartDate;
+                date <= currentEndDate;
+                date.setDate(date.getDate() + 1)
+            ) {
+                dateArray.push(date.toISOString());
+            }
+
+            return dates.concat(dateArray);
+        }, []);
 
         res.json({
             vehicle,
-            unavailabilities: [today.toISOString(), tomorrow.toISOString()],
+            unavailabilities,
         });
     } catch (e) {
         res.status(500).json({ message: 'Server error' });
