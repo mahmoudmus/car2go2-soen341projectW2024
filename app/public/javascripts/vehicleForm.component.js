@@ -11,7 +11,7 @@ class VehicleForm extends HTMLElement {
                 imageUrl: formData.get('imageUrl'),
                 branch: formData.get('branch'),
                 available: formData.get('available') === 'on',
-                hourlyPrice: formData.get('hourlyPrice'),
+                dailyPrice: formData.get('dailyPrice'),
                 details: {
                     make: formData.get('make'),
                     model: formData.get('model'),
@@ -118,7 +118,7 @@ class VehicleForm extends HTMLElement {
         vehicleCard.querySelector('.vehicle-make').innerHTML =
             vehicle.details.make;
         vehicleCard.querySelector('.vehicle-price').innerHTML =
-            vehicle.hourlyPrice;
+            vehicle.dailyPrice;
 
         document
             .querySelector('#toast')
@@ -152,8 +152,8 @@ class VehicleForm extends HTMLElement {
                 this.form.querySelector('#category').value = vehicle.category;
                 this.form.querySelector('#imageUrl').value = vehicle.imageUrl;
                 this.form.querySelector('#branch').value = vehicle.branch;
-                this.form.querySelector('#hourlyPrice').value =
-                    vehicle.hourlyPrice;
+                this.form.querySelector('#dailyPrice').value =
+                    vehicle.dailyPrice;
                 this.form.querySelector('#available').checked =
                     vehicle.available;
 

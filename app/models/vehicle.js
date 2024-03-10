@@ -24,7 +24,7 @@ const VehicleSchema = new Schema({
         type: Boolean,
         default: true,
     },
-    hourlyPrice: { type: Number, required: true, min: 0 },
+    dailyPrice: { type: Number, required: true, min: 0 },
     branch: {
         type: String,
         enum: ['montreal', 'toronto', 'winnipeg', 'calgary', 'vancouver'],

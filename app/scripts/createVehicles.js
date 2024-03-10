@@ -78,7 +78,7 @@ const createVehicleInstances = async () => {
                     engineType: chooseRandom(engineTypes),
                 },
                 available: randomBool(),
-                hourlyPrice: 50,
+                dailyPrice: randomHourlyPrice(),
                 branch: chooseRandom(branches),
                 imageUrl: chooseRandom(imageUrls),
             });

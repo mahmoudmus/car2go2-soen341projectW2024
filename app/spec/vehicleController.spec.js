@@ -22,7 +22,7 @@ describe('Vehicle Controller', () => {
                     size: 45,
                 },
                 available: true,
-                hourlyPrice: 20,
+                dailyPrice: 20,
                 branch: 'Branch1',
             },
             params: {

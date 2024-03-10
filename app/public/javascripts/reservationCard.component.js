@@ -14,9 +14,16 @@ class ReservationCard extends HTMLElement {
         const popup = document.querySelector('confirmation-popup');
         var swalTitle = 'Delete Reservation?';
         var swalText = undefined;
-        var swalTitleSuccess = "Reservation Deleted!";
-        var swalTextSuccess = "Reservation ID: " + this.reservationId;
-        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+        var swalTitleSuccess = 'Reservation Deleted!';
+        var swalTextSuccess = 'Reservation ID: ' + this.reservationId;
+        if (
+            !(await popup.confirm(
+                swalTitle,
+                swalText,
+                swalTitleSuccess,
+                swalTextSuccess
+            ))
+        ) {
             return;
         }
         const response = await fetch(`/reservations/${this.reservationId}`, {
@@ -84,6 +91,10 @@ class ReservationCard extends HTMLElement {
 
     set endDate(endDate) {
         this.querySelector('.reservation-end-date').innerHTML = endDate;
+    }
+
+    set cost(cost) {
+        this.querySelector('.reservation-cost').innerHTML = cost;
     }
 }
 

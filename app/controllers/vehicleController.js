@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler');
 exports.createVehicle = asyncHandler(async (req, res, next) => {
     const { type, category, details, branch, imageUrl } = req.body;
     const available = Boolean(req.body.available);
-    const hourlyPrice = parseFloat(req.body.hourlyPrice);
+    const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const newVehicle = new Vehicle({
         type,
@@ -14,7 +14,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         branch,
         imageUrl,
         available,
-        hourlyPrice,
+        dailyPrice,
     });
 
     let savedVehicle;
@@ -29,7 +29,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     const vehicleList = await Vehicle.find(
         {},
-        'details type available imageUrl hourlyPrice'
+        'details type available imageUrl dailyPrice'
     );
     res.render('vehicle/list', { vehicleList });
 });
@@ -59,7 +59,7 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
                 _id: { $nin: reservedVehicleIds },
                 // available: true, // Assuming you have an 'available' field in your Vehicle model
             },
-            'details imageUrl hourlyPrice'
+            'details imageUrl dailyPrice'
         );
 
         res.json({ vehicles: availableVehicles });
@@ -85,7 +85,7 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const { type, category, details, branch, imageUrl } = req.body;
     const available = Boolean(req.body.available);
-    const hourlyPrice = parseFloat(req.body.hourlyPrice);
+    const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const vehicle = await Vehicle.findById(id);
     if (!vehicle) {
@@ -98,7 +98,7 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     vehicle.branch = branch;
     vehicle.imageUrl = imageUrl;
     vehicle.available = available;
-    vehicle.hourlyPrice = hourlyPrice;
+    vehicle.dailyPrice = dailyPrice;
 
     const updatedVehicle = await vehicle.save();
     res.send({ updatedVehicle });

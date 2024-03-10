@@ -37,7 +37,9 @@
             <span class="reservation-end-date">
                 <%= reservation.endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
             </span>
-            
+        </div>
+        <div class="text-secondary">
+            $<span class="reservation-cost"><%= reservation.cost %></span>
         </div>
         </div>
         <div class="d-flex justify-content-end gap-2 m-2">
