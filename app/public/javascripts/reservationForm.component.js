@@ -289,8 +289,7 @@ class ReservationForm extends HTMLElement {
             return false;
         }
         const response = await fetch(
-            // `/vehicles/${vehicleId}/unavailabilities`,
-            `/vehicles/${vehicleId}`,
+            `/vehicles/${vehicleId}/unavailabilities`,
             {
                 method: 'GET',
                 headers: {
@@ -304,10 +303,13 @@ class ReservationForm extends HTMLElement {
                 .warn('Could not get reservation data.');
             return false;
         } else {
-            const vehicle = (await response.json()).vehicle;
-            // @todo Use availabilities to restrict reservation dates.
-            // this.calendar.setDate([reservation.startDate, reservation.endDate]);
+            const data = await response.json();
+            const vehicle = data.vehicle;
             this.updateVehicleOptions([vehicle]);
+
+            const unavailabilities = data.unavailabilities;
+            console.log(unavailabilities);
+            this.calendar.set('disable', unavailabilities);
             this.form.querySelector('#vehicleId').value = vehicle._id;
             return true;
         }
