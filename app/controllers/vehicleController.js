@@ -115,5 +115,24 @@ exports.deleteVehicle = asyncHandler(async (req, res, next) => {
 });
 
 exports.readUnavailabilities = asyncHandler(async (req, res, next) => {
-    // Todo
+    try {
+        const vehicle = await Vehicle.findById(req.params.id);
+        if (!vehicle) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+
+        // Get the current date
+        const today = new Date();
+
+        // Get the date two days from now
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 2);
+
+        res.json({
+            vehicle,
+            unavailabilities: [today.toISOString(), tomorrow.toISOString()],
+        });
+    } catch (e) {
+        res.status(500).json({ message: 'Server error' });
+    }
 });
