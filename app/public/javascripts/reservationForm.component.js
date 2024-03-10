@@ -190,7 +190,7 @@ class ReservationForm extends HTMLElement {
                 this.title = 'New Reservation';
                 this.submitButtonText = 'Create';
                 this.enableFields();
-                if (this.userType !== 'admin') {
+                if (this.userType === 'customer' || this.userType === 'csr') {
                     this.setEmail();
                     this.disableField('email');
                 }
@@ -200,7 +200,7 @@ class ReservationForm extends HTMLElement {
                 this.title = 'Update Reservation';
                 this.submitButtonText = 'Update';
                 this.enableFields();
-                if (this.userType !== 'admin') {
+                if (this.userType === 'customer' || this.userType === 'csr') {
                     this.setEmail();
                     this.disableField('email');
                 }

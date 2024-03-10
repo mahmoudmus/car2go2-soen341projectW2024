@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Reservation = require('../models/reservation');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
@@ -164,6 +165,9 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
     const result = await User.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'User not found.' });
+    }
+    if (id === req.user.id) {
+        res.clearCookie('jwt');
     }
     res.json({ message: 'User deleted successfully.' });
 });
