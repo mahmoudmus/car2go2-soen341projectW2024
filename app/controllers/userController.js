@@ -54,7 +54,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, type, hash } = req.body;
     if (age < 18) {
         return res.status(400).json({
-            message: 'Users must be atleast 18 years of age.',
+            message: 'Users must be at least 18 years of age.',
         });
     }
     const user = new User({
