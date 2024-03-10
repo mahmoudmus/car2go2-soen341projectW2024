@@ -41,9 +41,9 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-UserSchema.pre('remove', async function (next) {
-    await Reservation.deleteMany({ user: this._id });
-    next();
+UserSchema.pre('deleteOne', async function (next) {
+    var user = this;
+    user.model('Reservation').deleteMany({ user: this._id }, next());
 });
 
 UserSchema.methods.verifyPassword = async function (password) {
