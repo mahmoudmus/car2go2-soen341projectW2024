@@ -77,7 +77,6 @@ const createVehicleInstances = async () => {
                     isAutomatic: randomBool(),
                     engineType: chooseRandom(engineTypes),
                 },
-                available: randomBool(),
                 dailyPrice: randomHourlyPrice(),
                 branch: chooseRandom(branches),
                 imageUrl: chooseRandom(imageUrls),

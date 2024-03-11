@@ -4,7 +4,6 @@ const asyncHandler = require('express-async-handler');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
     const { type, category, details, branch, imageUrl } = req.body;
-    const available = Boolean(req.body.available);
     const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const newVehicle = new Vehicle({
@@ -13,7 +12,6 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         details,
         branch,
         imageUrl,
-        available,
         dailyPrice,
     });
 
@@ -29,12 +27,11 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     const vehicleList = await Vehicle.find(
         {},
-        'details type available imageUrl dailyPrice'
+        'details type imageUrl dailyPrice'
     );
     res.render('vehicle/list', { vehicleList });
 });
 
-// const { start, end } = req.query;
 exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
     try {
         const startDate = new Date(req.query.start);
@@ -57,7 +54,6 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
         const availableVehicles = await Vehicle.find(
             {
                 _id: { $nin: reservedVehicleIds },
-                // available: true, // Assuming you have an 'available' field in your Vehicle model
             },
             'details imageUrl dailyPrice'
         );
@@ -84,7 +80,6 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const { type, category, details, branch, imageUrl } = req.body;
-    const available = Boolean(req.body.available);
     const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const vehicle = await Vehicle.findById(id);
@@ -97,7 +92,6 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     vehicle.details = details;
     vehicle.branch = branch;
     vehicle.imageUrl = imageUrl;
-    vehicle.available = available;
     vehicle.dailyPrice = dailyPrice;
 
     const updatedVehicle = await vehicle.save();
