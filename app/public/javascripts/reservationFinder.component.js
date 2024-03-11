@@ -9,6 +9,7 @@ class ReservationFinder extends HTMLElement {
             this.calendar = flatpickr('#dateRangeFinder', {
                 mode: 'range',
                 showMonths: 2,
+                minDate: new Date().toISOString().split('T')[0],
             });
             const updateCalendarMode = () => {
                 if (window.matchMedia('(min-width: 768px)').matches) {
