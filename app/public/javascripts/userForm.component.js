@@ -86,6 +86,7 @@ class UserForm extends HTMLElement {
 
         this.modal.hide();
         this.form.reset();
+        document.querySelector('#toast').notify('Successfully updated user.');
     }
 
     async setFields(userId) {

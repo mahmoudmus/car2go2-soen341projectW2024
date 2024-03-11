@@ -7,7 +7,7 @@ exports.signUp = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, hash } = req.body;
     if (age < 18) {
         return res.render('user/signup', {
-            error: 'You must be atleast 18 years of age to sign up.',
+            error: 'You must be at least 18 years of age to sign up.',
         });
     }
     const user = new User({
@@ -52,10 +52,9 @@ exports.signUp = asyncHandler(async (req, res, next) => {
 
 exports.createUser = asyncHandler(async (req, res, next) => {
     const { name, email, age, address, type, hash } = req.body;
-    console.log({ name, email, age, address, hash });
     if (age < 18) {
         return res.status(400).json({
-            message: 'Users must be atleast 18 years of age.',
+            message: 'Users must be at least 18 years of age.',
         });
     }
     const user = new User({
@@ -140,28 +139,44 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if (req.user && req.user.type === 'admin') {
-        const { name, age, email, address, type, hash } = req.body;
-        user.name = name;
-        user.age = age;
-        user.email = email;
-        user.address = address;
-        user.type = type;
+    if (!(req.user && req.user.type === 'admin')) {
+        return res
+            .status(401)
+            .json({ message: 'You do not have admin privileges.' });
+    }
 
-        if (hash) {
-            user.hash = hash;
-        }
+    const { name, age, email, address, type, hash } = req.body;
+    if (age < 18) {
+        return res
+            .status(400)
+            .json({ message: 'Users must be atleast 18 years of age.' });
+    }
+    user.name = name;
+    user.age = age;
+    user.email = email;
+    user.address = address;
+    user.type = type;
+    if (hash) {
+        user.hash = hash;
+    }
 
+    try {
         const updatedUser = await user.save();
         res.status(200).json({ updatedUser });
-    } else {
-        res.status(401).json({ message: 'You do not have admin privileges.' });
+    } catch (e) {
+        if (e.code === 11000) {
+            res.status(400).json({
+                message: `${email} is already in use.`,
+            });
+        } else {
+            res.status(500).json({ message: 'An unexpected error occurred.' });
+        }
     }
 });
 
 exports.deleteUser = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    await Reservation.deleteMany({ user: id });
+    
     const result = await User.findByIdAndDelete(id);
     if (!result) {
         return res.status(404).json({ message: 'User not found.' });
