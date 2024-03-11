@@ -1,0 +1,64 @@
+<div
+    class="offcanvas offcanvas-start"
+    tabindex="-1"
+    id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel"
+>
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
+        <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+        ></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="list-group list-group-flush">
+            <a
+                href="/"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-house-fill px-2"></i>
+                Home
+            </a>
+            <a
+                href="/vehicles"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-car-front-fill px-2"></i>
+                Vehicles Catalogue
+            </a>
+            <% if (user && user.type === 'admin') { %>
+            <a
+                href="/users"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-people-fill px-2"></i>
+                All Users
+            </a>
+            <a
+                href="/reservations"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-calendar3-range px-2"></i>
+                All Reservations
+            </a>
+            <% } %>
+            <% if (user) { %>
+            <a
+                href="/myreservations"
+                class="list-group-item list-group-item-action"
+                aria-current="true"
+            >
+                <i class="bi bi-calendar3-range px-2"></i>
+                My Reservations
+            </a>   
+            <% } %> 
+        </div>
+    </div>
+</div>

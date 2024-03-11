@@ -1,0 +1,40 @@
+<script type="module" src="/javascripts/reservationForm.component.js"></script>
+<reservation-form class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="newVehicleModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+
+                    <div class="form-group mb-3">
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                        <label for="type" class="mb-1">Reservation Period</label>
+                        <input type="text" id="dateRange" class="form-control" placeholder="select">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="email" class="mb-1">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="vehicleId" class="mb-1">Vehicle</label>
+                        <select class="form-control" id="vehicleId" name="vehicleId" required>
+                            <option value="" disabled selected>Select Dates First</option>
+                            <!-- Dynamic options will be added here by reservationForm.component.js -->
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</reservation-form>
