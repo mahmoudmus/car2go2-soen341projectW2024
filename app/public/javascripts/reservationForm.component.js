@@ -2,7 +2,9 @@ class ReservationForm extends HTMLElement {
     connectedCallback() {
         this.modal = new bootstrap.Modal(this);
         this.form = this.querySelector('form');
-        this.initializeDateRangePicker();
+        this.initializeDateRangePicker().then(() => {
+            this.initializeVehicleSelect();
+        });
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const requestBody = {
@@ -40,7 +42,6 @@ class ReservationForm extends HTMLElement {
             }
         });
         this.userType = this.getAttribute('user-type');
-        this.mode = 'creating';
     }
 
     async initializeDateRangePicker() {
@@ -62,6 +63,39 @@ class ReservationForm extends HTMLElement {
                 this.fetchAvailableVehicles()
             );
         });
+    }
+
+    initializeVehicleSelect() {
+        this.vehicleSelect = this.querySelector('#vehicleId');
+        this.vehicleSelect.addEventListener('change', () => {
+            this.setUnavailabilities();
+        });
+    }
+
+    async setUnavailabilities() {
+        const response = await fetch(
+            `/vehicles/${this.vehicleSelect.value}/unavailabilities`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        if (!response.ok) {
+            document
+                .querySelector('#toast')
+                .warn('Could not get vehicle unavailabilities.');
+        } else {
+            const data = await response.json();
+            const unavailabilities = data.unavailabilities.filter((date) => {
+                return (
+                    date < this.reservationDates[0] ||
+                    date > this.reservationDates[1]
+                );
+            });
+            this.calendar.set('disable', unavailabilities);
+        }
     }
 
     requestMethod() {
@@ -115,7 +149,7 @@ class ReservationForm extends HTMLElement {
             .querySelector('#toast')
             .notify('Successfully created reservation.');
         this.modal.hide();
-        this.form.reset();
+        this.reset();
     }
 
     successfulUpdate(data) {
@@ -145,7 +179,7 @@ class ReservationForm extends HTMLElement {
         reservationCard.cost = reservation.cost;
 
         this.modal.hide();
-        this.form.reset();
+        this.reset();
     }
 
     successfulStart(html) {
@@ -156,7 +190,7 @@ class ReservationForm extends HTMLElement {
         document.querySelector('#toast').notify(message);
 
         this.modal.hide();
-        this.form.reset();
+        this.reset();
     }
 
     async setFields(reservationId) {
@@ -173,12 +207,19 @@ class ReservationForm extends HTMLElement {
                 .warn('Could not get reservation data.');
         } else {
             const reservation = (await response.json()).reservation;
-            this.calendar.setDate([reservation.startDate, reservation.endDate]);
+            this.reservationDates = [
+                reservation.startDate,
+                reservation.endDate,
+            ];
+
+            console.log(this.reservationDates);
             this.form.querySelector('#email').value = reservation.user.email;
-            await this.fetchAvailableVehicles();
             this.addVehicleOption(reservation.vehicle);
             this.form.querySelector('#vehicleId').value =
                 reservation.vehicle._id;
+            await this.setUnavailabilities();
+            this.calendar.setDate(this.reservationDates);
+            await this.fetchAvailableVehicles();
         }
     }
 
@@ -190,7 +231,7 @@ class ReservationForm extends HTMLElement {
         switch (mode) {
             case 'creating':
                 this._mode = mode;
-                this.form.reset();
+                this.reset();
                 this.title = 'New Reservation';
                 this.submitButtonText = 'Create';
                 this.enableFields();
@@ -268,11 +309,18 @@ class ReservationForm extends HTMLElement {
     }
 
     updateVehicleOptions(vehicles) {
-        const chooseVehicleInput = this.querySelector('#vehicleId');
-        chooseVehicleInput.innerHTML = '';
+        const ignoreValue = this.vehicleSelect.value;
+        const vehicleSelect = this.querySelector('#vehicleId');
+        Array.from(vehicleSelect.options).forEach((option) => {
+            if (ignoreValue === '' || option.value !== ignoreValue) {
+                vehicleSelect.removeChild(option);
+            }
+        });
 
         vehicles.forEach((vehicle) => {
-            this.addVehicleOption(vehicle);
+            if (vehicle._id !== ignoreValue) {
+                this.addVehicleOption(vehicle);
+            }
         });
     }
 
@@ -289,8 +337,7 @@ class ReservationForm extends HTMLElement {
             return false;
         }
         const response = await fetch(
-            // `/vehicles/${vehicleId}/unavailabilities`,
-            `/vehicles/${vehicleId}`,
+            `/vehicles/${vehicleId}/unavailabilities`,
             {
                 method: 'GET',
                 headers: {
@@ -304,10 +351,12 @@ class ReservationForm extends HTMLElement {
                 .warn('Could not get reservation data.');
             return false;
         } else {
-            const vehicle = (await response.json()).vehicle;
-            // @todo Use availabilities to restrict reservation dates.
-            // this.calendar.setDate([reservation.startDate, reservation.endDate]);
+            const data = await response.json();
+            const vehicle = data.vehicle;
             this.updateVehicleOptions([vehicle]);
+
+            const unavailabilities = data.unavailabilities;
+            this.calendar.set('disable', unavailabilities);
             this.form.querySelector('#vehicleId').value = vehicle._id;
             return true;
         }
@@ -343,6 +392,12 @@ class ReservationForm extends HTMLElement {
     enableFields() {
         document.querySelector('#email').disabled = false;
         document.querySelector('#vehicleId').disabled = false;
+    }
+
+    reset() {
+        this.form.reset();
+        this.vehicleSelect.innerHTML =
+            '<option value="" disabled selected>Select Dates First</option>';
     }
 
     set dates(dates) {

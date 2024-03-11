@@ -10,6 +10,7 @@ router.post('/', vehicleController.createVehicle);
 router.get('/', vehicleController.readAllVehicles);
 router.get('/available', vehicleController.readAvailableVehicles);
 router.get('/:id', vehicleController.readVehicle);
+router.get('/:id/unavailabilities', vehicleController.readUnavailabilities);
 
 // Update
 router.put('/:id', vehicleController.updateVehicle);
