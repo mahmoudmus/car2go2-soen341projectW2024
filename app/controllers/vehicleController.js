@@ -113,3 +113,40 @@ exports.deleteVehicle = asyncHandler(async (req, res, next) => {
     }
     res.send({ message: 'Vehicle deleted successfully.' });
 });
+
+exports.readUnavailabilities = asyncHandler(async (req, res, next) => {
+    try {
+        const vehicle = await Vehicle.findById(req.params.id);
+        if (!vehicle) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+
+        // Get reservations for the specific vehicle
+        const reservations = await Reservation.find({ vehicle: req.params.id });
+
+        // Extract the dates during which the vehicle is unavailable
+        const unavailabilities = reservations.reduce((dates, reservation) => {
+            const currentStartDate = new Date(reservation.startDate);
+            const currentEndDate = new Date(reservation.endDate);
+
+            // Generate an array of dates between start and end (inclusive)
+            const dateArray = [];
+            for (
+                let date = currentStartDate;
+                date <= currentEndDate;
+                date.setDate(date.getDate() + 1)
+            ) {
+                dateArray.push(date.toISOString());
+            }
+
+            return dates.concat(dateArray);
+        }, []);
+
+        res.json({
+            vehicle,
+            unavailabilities,
+        });
+    } catch (e) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
