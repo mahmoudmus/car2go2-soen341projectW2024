@@ -13,3 +13,7 @@ deleteVehicleOperation.mov
 conflictingDates.mov
 
 - Showcases how our application prevents users from reserving the same car at the same time, by blocking out dates on the calendar date picker.
+
+pastReservationPrevention.mov
+
+- Showcases an addition to the reservation date picker functionality, made on March 11th. Previously, reservations could be made on past dates - a flaw discovered by the team only a day before the end of the sprint. Thanks to our dedicated team and our automated, test driven development, the fix was implemented prior to submission.
