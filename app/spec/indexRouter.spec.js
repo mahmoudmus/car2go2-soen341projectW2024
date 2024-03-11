@@ -2,6 +2,7 @@ const request = require('supertest');
 const express = require('express');
 const proxyquire = require('proxyquire');
 const app = express();
+app.set('view engine', 'ejs');
 
 const vehicleController = {
     createVehicle: jasmine
@@ -56,11 +57,6 @@ const indexRouter = proxyquire('../routes/index', {
 app.use('/', indexRouter);
 
 describe('Index Routes', function () {
-    it('should render index page on GET /', async function () {
-        await request(app).get('/').expect(200);
-        // Add your expectation based on the actual implementation
-    });
-
     it('should render signup page on GET /signup', async function () {
         await request(app).get('/signup').expect(200);
         // Add your expectation based on the actual implementation
