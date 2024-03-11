@@ -109,6 +109,8 @@ You might have noticed that this file does not yet exist in your local copy of t
 
 ```jsx
 MONGO_DB=<database-uri>
+USER_AUTH_JWT_SECRET=<auth_key>
+SALT_WORK_FACTOR=<int>
 ```
 
 Create a `.env` file in the root of the repository, and replace `<database-uri>` with the actual URI. Ask a team member for this credential.
