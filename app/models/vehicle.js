@@ -20,10 +20,6 @@ const VehicleSchema = new Schema({
         type: String,
         trim: true,
     },
-    available: {
-        type: Boolean,
-        default: true,
-    },
     dailyPrice: { type: Number, required: true, min: 0 },
     branch: {
         type: String,

@@ -21,7 +21,6 @@ describe('Vehicle Controller', () => {
                     engineType: 'Gas',
                     size: 45,
                 },
-                available: true,
                 dailyPrice: 20,
                 branch: 'Branch1',
             },
@@ -80,10 +79,7 @@ describe('Vehicle Controller', () => {
     });
 
     it('should fetch all vehicles and render them', async () => {
-        const vehicles = [
-            { type: 'car', available: true },
-            { type: 'suv', available: false },
-        ];
+        const vehicles = [{ type: 'car' }, { type: 'suv' }];
         vehicleFindStub.resolves(vehicles);
 
         await vehicleController.readAllVehicles(req, res, next);
@@ -97,7 +93,6 @@ describe('Vehicle Controller', () => {
     it('should fetch a specific vehicle and send it as a response', async () => {
         const vehicle = {
             type: 'car',
-            available: true,
         };
         vehicleFindByIdStub.resolves(vehicle);
 
