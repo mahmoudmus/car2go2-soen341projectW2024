@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row rounded-5 overflow-hidden gradient-bg p-4 mb-4">
+        <div class="col-12 col-lg-7">
+            <h1 class="gradient-text massive-text">Book now, pay&nbsp;later.</h1>
+            <p class="lead">Welcome to Gas - your flexibile car rental solution.</p>
+        </div>
+        <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center my-5">
+            <script type="module" src="/javascripts/reservationFinder.component.js"></script>
+            <reservation-finder class="w-100">
+                <div class="input-group">
+                    <input type="text" id="dateRangeFinder" class="form-control rounded-start-5 p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username" aria-describedby="button-addon">
+                    <button class="btn border-end border-top border-bottom bg-white rounded-end-5 p-3" type="button" id="button-addon">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </reservation-finder>
+        </div>
+    </div>
+    <div class="row">
+        <p class="lead fw-bold bold gradient-text" id="results-label">Explore our selection:</p>
+    </div>
+    <vehicle-carousel get-vehicles></vehicle-carousel>
+</div>
+<% if (typeof notification !== 'undefined' && notification) { %>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#toast').notify("<%= notification %>");
+    });
+</script>
+<% } %>
+<script type="module" src="/javascripts/vehicleCarousel.component.js"></script>
+<%- include('./reservation/form')  %>

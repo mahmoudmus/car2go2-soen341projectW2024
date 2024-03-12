@@ -1,0 +1,12 @@
+<button id="new-reservation-button" type="button" class="btn btn-dark">
+    <i class="bi bi-plus-lg pe-2"></i>New Reservation
+</button>
+<script>
+    document
+        .querySelector('#new-reservation-button')
+        .addEventListener('click', () => {
+            const reservationForm = document.querySelector('reservation-form');
+            reservationForm.mode = 'creating';
+            reservationForm.modal.show();
+        });
+</script>
