@@ -6,7 +6,8 @@
         "start": "node ./bin/www",
         "devstart": "nodemon ./bin/www",
         "test": "jasmine",
-        "cv": "node scripts/createVehicles.js"
+        "cv": "node scripts/createVehicles.js",
+        "cb": "node scripts/createBranches.js"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
