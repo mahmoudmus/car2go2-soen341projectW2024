@@ -1,5 +1,5 @@
+<div class="container py-2 my-3 rounded bg-light d-flex justify-content-between">    
 <% if (user && user.type === 'admin') { %>
-<div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
 <%- include('./newButton') %>
 <% } %>
 </div>
@@ -13,9 +13,13 @@
     }
 </style>
 <div class="container" id="vehicle-list">
-       <% vehicleList.forEach(function(vehicle) { %>
-                <%- include('./row', { vehicle }) %>
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger alert-dismissible fade show"><%= error %></div>
+    <% } else { %>
+        <% vehicleList.forEach(function(vehicle) { %>
+            <%- include('./row', { vehicle }) %>
         <% }) %>
+    <% } %>
 </div>
 <%- include('./form') %>
 <%- include('../reservation/form') %>

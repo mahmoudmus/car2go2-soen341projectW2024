@@ -31,19 +31,23 @@ const createBranches = async () => {
         {
             name: 'Montreal Branch',
             address: '444 Lakeshore Dr Dorval QC H9S 2A6 Canada',
+            location: [-73.7304953, 45.4406357],
         },
         {
             name: 'Quebec City Branch',
             address:
                 "1345 Route de L'Aéroport L'Ancienne-Lorette QC G2G 1G5 Canada",
+            location: [-71.3547944, 46.79004320000001],
         },
         {
             name: 'Sherbrooke Branch',
             address: '645 Rue Principale E Cookshire-Eaton QC J0B 1M0 Canada',
+            location: [-71.6211059, 45.4155214],
         },
         {
             name: 'Trois-Rivières Branch',
             address: '7067 Boul des Forges Trois-Rivières QC G8Y 1Y5 Canada',
+            location: [-72.6080749, 46.3710956],
         },
     ];
     try {

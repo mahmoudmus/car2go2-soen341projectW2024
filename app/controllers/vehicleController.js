@@ -1,6 +1,8 @@
 const Vehicle = require('../models/vehicle');
 const Reservation = require('../models/reservation');
+const Branch = require('../models/branch');
 const asyncHandler = require('express-async-handler');
+const axios = require('axios');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
     const { type, category, details, branch, imageUrl } = req.body;
@@ -25,8 +27,73 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
+    const { start, end, postal } = req.query;
+
+    if (Boolean(start) ^ Boolean(end)) {
+        return res.render('vehicle/list', {
+            vehicleList: [],
+            error: 'Please select both a start date and end date.',
+        });
+    }
+
+    let query = {};
+    if (Boolean(start) && Boolean(end)) {
+        const overlappingReservations = await Reservation.find({
+            startDate: { $lt: new Date(end) },
+            endDate: { $gt: new Date(start) },
+        });
+        const reservedVehicleIds = overlappingReservations.map(
+            (reservation) => reservation.vehicle
+        );
+        query._id = { $nin: reservedVehicleIds };
+    }
+
+    if (Boolean(postal) && !process.env.key) {
+        console.log(
+            'GEOCODE_KEY environment variable is not set. Using random branch'
+        );
+        query.branch = (await Branch.findOne())._id;
+    } else if (Boolean(postal)) {
+        const key = process.env.GEOCODE_KEY;
+
+        const targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            postal
+        )}&key=${key}`;
+        let userLocation; // [longitude, latitude];
+        try {
+            const response = await axios.get(targetUrl);
+            const bounds = response.data.results[0].geometry.bounds;
+            userLocation = [
+                (bounds.northeast.lng + bounds.southwest.lng) / 2,
+                (bounds.northeast.lat + bounds.southwest.lat) / 2,
+            ];
+        } catch (error) {
+            return res.render('vehicle/list', {
+                vehicleList: [],
+                error: 'An error occured while verifying your location. Please try another postal or zip code.',
+            });
+        }
+        const closestBranch = await Branch.find({
+            location: {
+                $near: {
+                    $geometry: {
+                        type: 'Point',
+                        coordinates: userLocation,
+                    },
+                },
+            },
+        }).limit(1);
+        if (closestBranch.length === 0) {
+            return res.render('vehicle/list', {
+                vehicleList: [],
+                error: 'No branches found near your location.',
+            });
+        }
+        query.branch = closestBranch[0]._id;
+    }
+
     const vehicleList = await Vehicle.find(
-        {},
+        query,
         'details type imageUrl dailyPrice'
     );
     res.render('vehicle/list', { vehicleList });
@@ -36,8 +103,6 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
     try {
         const startDate = new Date(req.query.start);
         const endDate = new Date(req.query.end);
-        console.log(`Start Date: ${startDate}`);
-        console.log(`End Date: ${endDate}`);
 
         // Find reservations that overlap with the requested date range
         const overlappingReservations = await Reservation.find({

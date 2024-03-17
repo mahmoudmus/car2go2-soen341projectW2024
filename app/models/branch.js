@@ -14,6 +14,11 @@ const BranchSchema = new Schema({
         trim: true,
         unique: true,
     },
+    location: {
+        type: [Number],
+        index: '2dsphere',
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('Branch', BranchSchema);
