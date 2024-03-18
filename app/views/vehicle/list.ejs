@@ -1,4 +1,12 @@
-<div class="container py-2 my-3 rounded bg-light d-flex justify-content-between">    
+<script type="module" src="/javascripts/reservationFinder.component.js"></script>
+<div class="container py-2 my-3 rounded bg-light d-flex justify-content-between gap-2">
+    <reservation-finder class="w-100 d-flex flex-row gap-2" mode="catalogue">
+        <input type="text" id="dateRangeFinder" class="form-control p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username">
+        <input id="postal" name="postal" class="form-control px-4 p-3 postal-group" placeholder="Postal or Zip Code" aria-label="postal-code">
+        <button class="btn border p-3" type="button" id="search-vehicles">
+            Search
+        </button>
+    </reservation-finder>
 <% if (user && user.type === 'admin') { %>
 <%- include('./newButton') %>
 <% } %>

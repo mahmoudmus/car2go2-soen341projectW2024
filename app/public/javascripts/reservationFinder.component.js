@@ -30,6 +30,15 @@ class ReservationFinder extends HTMLElement {
                     this.showPostalInput();
                 }
             });
+
+            if (this.mode === 'catalogue') {
+                const params = new URLSearchParams(window.location.search);
+                this.querySelector('#postal').value = params.get('postal');
+
+                const start = new Date(params.get('start'));
+                const end = new Date(params.get('end'));
+                this.calendar.setDate([start, end]);
+            }
         });
     }
 
@@ -77,6 +86,10 @@ class ReservationFinder extends HTMLElement {
             month: 'long',
             day: 'numeric',
         });
+    }
+
+    get mode() {
+        return this.getAttribute('mode');
     }
 }
 
