@@ -7,6 +7,7 @@ describe('Vehicle Controller', () => {
 
     beforeEach(() => {
         req = {
+            query: {},
             body: {
                 type: 'car',
                 details: {
