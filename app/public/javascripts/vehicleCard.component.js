@@ -14,16 +14,27 @@ class VehicleCard extends HTMLElement {
                 this.startReservation()
             );
         }
+        const detailsButton = this.querySelector('.see-details');
+        if (detailsButton) {
+            detailsButton.addEventListener('click', () => this.seeDetails());
+        }
     }
 
     async deleteVehicle() {
         const popup = document.querySelector('confirmation-popup');
         var swalTitle = 'Delete Vehicle?';
         var swalText = undefined;
-        var swalTitleSuccess = "Vehicle Deleted!";
-        var swalTextSuccess = "Vehicle ID: " + this.vehicleId;
+        var swalTitleSuccess = 'Vehicle Deleted!';
+        var swalTextSuccess = 'Vehicle ID: ' + this.vehicleId;
 
-        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+        if (
+            !(await popup.confirm(
+                swalTitle,
+                swalText,
+                swalTitleSuccess,
+                swalTextSuccess
+            ))
+        ) {
             return;
         }
 
@@ -60,6 +71,15 @@ class VehicleCard extends HTMLElement {
         const result = await reservationForm.setVehicle(this.vehicleId);
         if (result) {
             reservationForm.modal.show();
+        }
+    }
+
+    async seeDetails() {
+        const vehicleDetails = document.querySelector('vehicle-details');
+        vehicleDetails.setReserveButtonCallback(this);
+        const result = await vehicleDetails.setVehicle(this.vehicleId);
+        if (result) {
+            vehicleDetails.modal.show();
         }
     }
 
