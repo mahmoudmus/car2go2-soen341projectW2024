@@ -48,7 +48,7 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         query._id = { $nin: reservedVehicleIds };
     }
 
-    if (Boolean(postal) && !process.env.key) {
+    if (Boolean(postal) && !process.env.GEOCODE_KEY) {
         console.log(
             'GEOCODE_KEY environment variable is not set. Using random branch'
         );
