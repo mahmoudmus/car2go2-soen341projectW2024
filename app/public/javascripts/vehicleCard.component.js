@@ -66,12 +66,20 @@ class VehicleCard extends HTMLElement {
     }
 
     async startReservation() {
-        const reservationForm = document.querySelector('reservation-form');
-        reservationForm.mode = 'starting';
-        const result = await reservationForm.setVehicle(this.vehicleId);
-        if (result) {
-            reservationForm.modal.show();
-        }
+        const baseUrl = window.location.protocol + '//' + window.location.host;
+        const newUrl = `${baseUrl}/vehicles/booking/${this.vehicleId}`;
+
+        const params = new URLSearchParams(
+            new URL(window.location.href).search
+        );
+        window.location.href = `${newUrl}?${params.toString()}`;
+
+        // const reservationForm = document.querySelector('reservation-form');
+        // reservationForm.mode = 'starting';
+        // const result = await reservationForm.setVehicle(this.vehicleId);
+        // if (result) {
+        //     reservationForm.modal.show();
+        // }
     }
 
     async seeDetails() {

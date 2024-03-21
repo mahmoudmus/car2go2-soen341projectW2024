@@ -1,0 +1,125 @@
+<script type="module" src="/javascripts/bookingForm.component.js"></script>
+<script type="module" src="/javascripts/branchPicker.component.js"></script>
+<div class="container">
+    <booking-form vehicle-id="<%= vehicle._id %>" vehicle-price="<%= vehicle.dailyPrice %>">
+        <div class="d-flex d-row justify-content-between align-items-center flex-wrap pb-3">
+            <h1>Booking Details</h1>
+            <div><a id="catalogue-link">Return to catalogue&nbsp;<i class="bi bi-box-arrow-in-up-left"></i></a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pb-3">
+                <div class="rounded-4 border shadow p-3 d-flex flex-column gap-2">
+                    <img src="<%= vehicle.imageUrl %>" class="rounded w-100" alt="Vehicle Image">
+                    <h3 class="gradient-text "><%= vehicle.details.model %></h3>
+                    <div>
+                        <%= vehicle.details.year %> |
+                        <%= vehicle.details.make %> |
+                        $<%= vehicle.dailyPrice %><small class="text-secondary">/day</small>
+                    </div>
+                    <div class="text-success"><i class="bi bi-geo-alt-fill"></i>&nbsp;<%= vehicle.branch.name %></div>
+                </div>
+            </div>
+            <div class="col-md-6 pb-3">
+                <div class="rounded-4 border shadow p-3 d-flex flex-column gap-4">
+                    <div>
+                        <label for="flatpickr" class="form-label">Reservation dates</label>
+                        <input type="text" id="flatpickr" class="form-control" placeholder="What day(s) do you need a car?">
+                        <div class="form-text">Click to choose alternative dates.</div>
+                    </div>
+                    <div>
+                        <label class="form-label d-flex flex-row justify-content-between">
+                            <div>Pickup Location</div>
+                            <div class="text-success">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <%= vehicle.branch.name %>
+                            </div>
+                        </label>
+                        <input type="text" class="form-control" placeholder="Pickup Location" value="<%= vehicle.branch.address %>" disabled>
+                    </div>
+                    <div>
+                        <label class="form-label d-flex flex-row justify-content-between">
+                            <div>Dropoff Location</div>
+                            <div class="text-success">
+                                <i class="bi bi-geo-alt-fill"></i>&nbsp;
+                                <span id="drop-off-label">...</span>
+                            </div>
+                        </label>
+                        <branch-picker address="true"></branch-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pb-3 px-4">
+                <div class="rounded-4 border shadow p-3 row">
+                    <div class="col-md-6 p-3">
+                        <div class="pb-4">
+                            <h4>Accessories</h4>
+                            <div class="text-secondary">Upgrade your ride for a one-time fee.</div>
+                        </div>
+                        <div style="max-width: 400px;" class="d-flex flex-column gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gpsCheck" price="10">
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="gpsCheck">
+                                    GPS Navigation System
+                                    <span class="text-secondary">($10)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="roofRackCheck" price="25">
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="roofRackCheck">
+                                    Roof Rack
+                                    <span class="text-secondary">($25)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="skiRackCheck" price="20">
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="skiRackCheck">
+                                    Ski Rack
+                                    <span class="text-secondary">($20)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="childSeatCheck" price="20">
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="childSeatCheck">
+                                    Child Safety Seat
+                                    <span class="text-secondary">($20)</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="seatCoverCheck" price="8">
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="seatCoverCheck">
+                                    Car Seat Covers
+                                    <span class="text-secondary">($8)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-3 d-flex flex-column gap-2">
+                        <div class="pb-2">
+                            <h4>Total</h4>
+                            <div class="text-secondary">Insurance & tax included.</div>
+                        </div>
+                        <div id="calculations" class="text-secondary">
+                            <div>
+                                <span id="n-days">8</span> days x $<%= vehicle.dailyPrice %>/day = $<span id="basePrice">108</span>
+                            </div>
+                            <div id="addOns">
+                                <div for="gpsCheck" style="display:none;">+ GPS Navigation System ($10)</div>
+                                <div for="roofRackCheck" style="display:none;">+ Roof Rack ($25)</div>
+                                <div for="skiRackCheck" style="display:none;">+ Ski Rack ($20)</div>
+                                <div for="childSeatCheck" style="display:none;">+ Child Safety Seat ($20)</div>
+                                <div for="seatCoverCheck" style="display:none;">+ Car Seat Covers ($8)</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex flex-row justify-content-between">
+                            <h2>$<span id="total">120.00</span></h2>
+                            <button type="button" class="btn btn-primary" id="continue">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </booking-form>
+</div>

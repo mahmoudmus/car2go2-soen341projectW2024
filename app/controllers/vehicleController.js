@@ -130,6 +130,16 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.getBooking = asyncHandler(async (req, res, next) => {
+    const vehicle = await Vehicle.findById(req.params.id)
+        .populate('branch')
+        .exec();
+    if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle not found' });
+    }
+    res.render('reservation/booking', { vehicle });
+});
+
 exports.readVehicle = asyncHandler(async (req, res, next) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id);

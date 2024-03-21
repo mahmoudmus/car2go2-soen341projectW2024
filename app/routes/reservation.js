@@ -14,9 +14,7 @@ router.get('/checkout', function (req, res, next) {
     try {
         //res.render('reservation/checkout', { error: 'card' });
         res.render('reservation/checkout');
-
-    }
-    catch(error){
+    } catch (error) {
         console.log(error);
     }
 });
