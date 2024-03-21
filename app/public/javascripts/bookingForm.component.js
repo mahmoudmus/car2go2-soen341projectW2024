@@ -130,10 +130,10 @@ class BookingForm extends HTMLElement {
     }
 
     calculateTotal() {
-        let price = parseInt(this.querySelector('#basePrice').innerHTML, 10);
+        let price = parseFloat(this.querySelector('#basePrice').innerHTML, 10);
         for (const checkbox of this.checkboxes) {
             if (checkbox.checked) {
-                price += parseInt(checkbox.getAttribute('price'));
+                price += parseFloat(checkbox.getAttribute('price'), 10);
             }
         }
         price *= 1.14975; // Quebec & Canadian Tax
@@ -157,6 +157,7 @@ class BookingForm extends HTMLElement {
             vehicleId: this.vehicleId,
             dropoffLocation,
             accessories,
+            cost: parseFloat(this.querySelector('#total').innerHTML, 10),
         };
         console.log(reservationData);
         const response = await fetch('/reservations/booking', {
