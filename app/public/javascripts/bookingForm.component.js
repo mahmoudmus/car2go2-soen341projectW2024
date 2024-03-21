@@ -93,12 +93,11 @@ class BookingForm extends HTMLElement {
                 // @todo
                 // set the confirmModal details, see createReservation() for an example of how res details are extracted
                 // this.confirmModal.show();
-                this.createReservation(); // @delete
             }
         });
         // @todo
-        // this.confirmModal = new bootstrap.Modal(this.querySelector(''));
-        // this.querySelector('').addEventListener('click', this.createReservation); // for the confirm button
+        // this.confirmModal = new bootstrap.Modal(this.querySelector('#modalid'));
+        // this.querySelector('#confirm').addEventListener('click', this.createReservation); // for the confirm button
     }
 
     renderInvoiceAccessory(checkbox) {
@@ -147,7 +146,6 @@ class BookingForm extends HTMLElement {
     }
 
     async createReservation() {
-        const dropoffLocation = this.branchPicker.value;
         const accessories = this.selectedCheckboxes.map(
             (checkbox) => checkbox.value
         );
@@ -155,7 +153,7 @@ class BookingForm extends HTMLElement {
             startDate: this.calendar.selectedDates[0],
             endDate: this.calendar.selectedDates[1],
             vehicleId: this.vehicleId,
-            dropoffLocation,
+            dropoffLocation: this.branchPicker.value,
             accessories,
         };
         console.log(reservationData);
@@ -172,7 +170,7 @@ class BookingForm extends HTMLElement {
                 // make api call to send confirmation email
                 window.location.href = '/';
             } else {
-                // window.location.href = '/'; @todo redirect to payment form to collect payment details
+                // window.location.href = '/payment'; @todo redirect to payment form to collect payment details
                 // payment form confirmation will make api call to send confirmation email
             }
         } else {
