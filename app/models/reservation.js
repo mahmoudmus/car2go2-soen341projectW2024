@@ -16,10 +16,15 @@ const reservationSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
 
-    // TBD
-    pickup_location_id: { type: String },
-    dropoff_location_id: { type: String },
+    pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
+    dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     status: { type: String, default: 'Pending' },
+    accessories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Accessory',
+        },
+    ],
 });
 
 reservationSchema.virtual('cost').get(function () {

@@ -5,6 +5,7 @@ const reservationController = require('../controllers/reservationController');
 
 // Create
 router.post('/', reservationController.createReservation);
+router.post('/booking', reservationController.bookVehicle);
 
 // Read
 router.get('/', reservationController.readAllReservations);
@@ -14,9 +15,7 @@ router.get('/checkout', function (req, res, next) {
     try {
         //res.render('reservation/checkout', { error: 'card' });
         res.render('reservation/checkout');
-
-    }
-    catch(error){
+    } catch (error) {
         console.log(error);
     }
 });

@@ -45,6 +45,39 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.bookVehicle = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+
+    const { startDate, endDate, vehicleId, dropoffLocation, accessories } =
+        req.body;
+    const pickupLocation = (await Vehicle.findById(vehicleId)).branch;
+    const newReservation = new Reservation({
+        user: req.user._id,
+        vehicle: vehicleId,
+        startDate,
+        endDate,
+        pickupLocation,
+        dropoffLocation,
+        accessories,
+    });
+
+    try {
+        await newReservation.save();
+        // @todo check for all billingInfo elements! all must be present.
+        const billingInformation = Boolean(
+            req.user.billingInformation.cardNumber
+        );
+        res.status(200).send({
+            billingInformation,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(400).send({ message: 'Could not create reservation.' });
+    }
+});
+
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
     if (!req.user || req.user.type !== 'admin') {
         return res.render('user/login', {

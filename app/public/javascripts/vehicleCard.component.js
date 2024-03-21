@@ -66,12 +66,23 @@ class VehicleCard extends HTMLElement {
     }
 
     async startReservation() {
-        const reservationForm = document.querySelector('reservation-form');
-        reservationForm.mode = 'starting';
-        const result = await reservationForm.setVehicle(this.vehicleId);
-        if (result) {
-            reservationForm.modal.show();
+        if (!(await this.checkEmail())) {
+            return;
         }
+        const baseUrl = window.location.protocol + '//' + window.location.host;
+        const newUrl = `${baseUrl}/vehicles/booking/${this.vehicleId}`;
+
+        const params = new URLSearchParams(
+            new URL(window.location.href).search
+        );
+        window.location.href = `${newUrl}?${params.toString()}`;
+
+        // const reservationForm = document.querySelector('reservation-form');
+        // reservationForm.mode = 'starting';
+        // const result = await reservationForm.setVehicle(this.vehicleId);
+        // if (result) {
+        //     reservationForm.modal.show();
+        // }
     }
 
     async seeDetails() {
@@ -80,6 +91,22 @@ class VehicleCard extends HTMLElement {
         const result = await vehicleDetails.setVehicle(this.vehicleId);
         if (result) {
             vehicleDetails.modal.show();
+        }
+    }
+
+    async checkEmail() {
+        const response = await fetch(`users/myemail`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            const message = (await response.json()).message;
+            document.querySelector('#toast').warn(message);
+            return false;
         }
     }
 
