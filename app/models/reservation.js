@@ -16,7 +16,6 @@ const reservationSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
 
-    // TBD
     pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     status: { type: String, default: 'Pending' },

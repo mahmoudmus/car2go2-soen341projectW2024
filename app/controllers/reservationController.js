@@ -64,15 +64,14 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
     });
 
     try {
-        const savedReservation = await newReservation.save();
-        const populatedReservation = await Reservation.populate(
-            savedReservation,
-            ['user', 'vehicle']
+        await newReservation.save();
+        // @todo check for all billingInfo elements! all must be present.
+        const billingInformation = Boolean(
+            req.user.billingInformation.cardNumber
         );
-
-        const billingInformation =
-            populatedReservation.user.billingInformation !== null;
-        res.status(200).send({ reservation: populatedReservation });
+        res.status(200).send({
+            billingInformation,
+        });
     } catch (e) {
         console.log(e);
         res.status(400).send({ message: 'Could not create reservation.' });

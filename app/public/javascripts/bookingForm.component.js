@@ -83,7 +83,6 @@ class BookingForm extends HTMLElement {
 
     initializeContinueButton() {
         this.continueButton = this.querySelector('#continue');
-        // this.confirmModal = new bootstrap.Modal(this.querySelector(''));
         this.continueButton.addEventListener('click', () => {
             if (!this.branchPicker.value) {
                 this.branchPicker.select.style.border = '1px solid red';
@@ -91,10 +90,15 @@ class BookingForm extends HTMLElement {
                     .querySelector('#toast')
                     .warn('Please select a dropoff location.');
             } else {
-                // setConfirmModal innerhtml
+                // @todo
+                // set the confirmModal details, see createReservation() for an example of how res details are extracted
                 // this.confirmModal.show();
+                this.createReservation(); // @delete
             }
         });
+        // @todo
+        // this.confirmModal = new bootstrap.Modal(this.querySelector(''));
+        // this.querySelector('').addEventListener('click', this.createReservation); // for the confirm button
     }
 
     renderInvoiceAccessory(checkbox) {
@@ -132,8 +136,60 @@ class BookingForm extends HTMLElement {
                 price += parseInt(checkbox.getAttribute('price'));
             }
         }
-        this.querySelector('#total').innerHTML = price.toFixed(2);
+        price *= 1.14975; // Quebec & Canadian Tax
+        if (isNaN(price)) {
+            price = '...';
+        } else {
+            price = price.toFixed(2);
+        }
+        this.querySelector('#total').innerHTML = price;
         this.price = price;
+    }
+
+    async createReservation() {
+        const dropoffLocation = this.branchPicker.value;
+        const accessories = this.selectedCheckboxes.map(
+            (checkbox) => checkbox.value
+        );
+        const reservationData = {
+            startDate: this.calendar.selectedDates[0],
+            endDate: this.calendar.selectedDates[1],
+            vehicleId: this.vehicleId,
+            dropoffLocation,
+            accessories,
+        };
+        console.log(reservationData);
+        const response = await fetch('/reservations/booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservationData),
+        });
+        if (response.ok) {
+            if ((await response.json()).billingInformation) {
+                // @todo use query param to trigger success / thank you modal on home page
+                // make api call to send confirmation email
+                window.location.href = '/';
+            } else {
+                // window.location.href = '/'; @todo redirect to payment form to collect payment details
+                // payment form confirmation will make api call to send confirmation email
+            }
+        } else {
+            document
+                .querySelector('#toast')
+                .caution('Error creating reservation.');
+        }
+    }
+
+    get selectedCheckboxes() {
+        let selectedCheckboxes = [];
+        for (const checkbox of this.checkboxes) {
+            if (checkbox.checked) {
+                selectedCheckboxes.push(checkbox);
+            }
+        }
+        return selectedCheckboxes;
     }
 
     get vehicleId() {
