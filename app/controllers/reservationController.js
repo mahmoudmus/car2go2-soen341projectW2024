@@ -51,6 +51,10 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
             error: 'This page is restricted.',
         });
     }
+
+    const userEmail = req.query.email ? req.query.email : null;
+    const query = userEmail ? { email: userEmail } : {};
+
     const reservationList = await Reservation.find()
         .populate('user')
         .populate('vehicle')
@@ -63,14 +67,20 @@ exports.readUserReservations = asyncHandler(async (req, res, next) => {
             error: 'Please Login',
         });
     }
+    const userEmail = req.query.email ? req.query.email : null;
+
+    // Build the query based on whether email is provided
     const currentUser = await User.findById(req.user._id);
-    var query = { user: currentUser };
+    const query = userEmail ? { 'user.email': userEmail } : { user: currentUser._id };
+
     const reservationList = await Reservation.find(query)
         .populate('user')
         .populate('vehicle')
         .exec();
-    res.render('reservation/list', { reservationList });
+    
+    res.render('reservation/list', { reservationList, userEmail });
 });
+
 
 exports.readReservation = asyncHandler(async (req, res, next) => {
     try {
@@ -145,4 +155,15 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
         return res.render('reservation/checkout', { error: 'Invalid CVV.' });
     }
     res.redirect('/myreservations');
+});
+exports.searchReservationsByEmail = asyncHandler(async (req, res, next) => {
+    const { email } = req.query;
+
+    // Fetch reservations based on the provided email
+    const reservations = await Reservation.find({ 'user.email': email })
+        .populate('user')
+        .populate('vehicle')
+        .exec();
+
+    res.render('reservation/list', { reservationList: reservations });
 });
