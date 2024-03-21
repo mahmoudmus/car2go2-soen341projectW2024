@@ -7,7 +7,9 @@
         "devstart": "nodemon ./bin/www",
         "test": "jasmine",
         "cv": "node scripts/createVehicles.js",
-        "cb": "node scripts/createBranches.js"
+        "cb": "node scripts/createBranches.js",
+        "ca": "node scripts/createAccessories.js",
+        "cr": "node scripts/createReservations.js"
     },
     "dependencies": {
         "axios": "^1.6.8",

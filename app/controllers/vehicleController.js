@@ -3,6 +3,7 @@ const Reservation = require('../models/reservation');
 const Branch = require('../models/branch');
 const asyncHandler = require('express-async-handler');
 const axios = require('axios');
+const Accessory = require('../models/accessory');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
     const { type, category, details, branch, imageUrl } = req.body;
@@ -131,13 +132,19 @@ exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
 });
 
 exports.getBooking = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        return res.render('user/login', {
+            error: 'You must be logged in to make a reservation.',
+        });
+    }
     const vehicle = await Vehicle.findById(req.params.id)
         .populate('branch')
         .exec();
     if (!vehicle) {
         return res.status(404).json({ message: 'Vehicle not found' });
     }
-    res.render('reservation/booking', { vehicle });
+    const accessories = await Accessory.find({}, 'name price');
+    res.render('reservation/booking', { vehicle, accessories });
 });
 
 exports.readVehicle = asyncHandler(async (req, res, next) => {

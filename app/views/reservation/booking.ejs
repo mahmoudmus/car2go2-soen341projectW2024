@@ -54,67 +54,46 @@
                 <div class="rounded-4 border shadow p-3 row">
                     <div class="col-md-6 p-3">
                         <div class="pb-4">
-                            <h4>Accessories</h4>
+                            <h4>Additional Services</h4>
                             <div class="text-secondary">Upgrade your ride for a one-time fee.</div>
                         </div>
                         <div style="max-width: 400px;" class="d-flex flex-column gap-2">
+                            <% for (accessory of accessories) { %>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gpsCheck" price="10">
-                                <label class="form-check-label d-flex flex-row justify-content-between" for="gpsCheck">
-                                    GPS Navigation System
-                                    <span class="text-secondary">($10)</span>
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="<%= accessory.name %>Check"
+                                    price="<%= accessory.price %>"
+                                    value="<%= accessory._id %>"
+                                >
+                                <label class="form-check-label d-flex flex-row justify-content-between" for="<%= accessory.name %>Check">
+                                    <%= accessory.name %>
+                                    <span class="text-secondary">($<%= accessory.price %>)</span>
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="roofRackCheck" price="25">
-                                <label class="form-check-label d-flex flex-row justify-content-between" for="roofRackCheck">
-                                    Roof Rack
-                                    <span class="text-secondary">($25)</span>
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="skiRackCheck" price="20">
-                                <label class="form-check-label d-flex flex-row justify-content-between" for="skiRackCheck">
-                                    Ski Rack
-                                    <span class="text-secondary">($20)</span>
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="childSeatCheck" price="20">
-                                <label class="form-check-label d-flex flex-row justify-content-between" for="childSeatCheck">
-                                    Child Safety Seat
-                                    <span class="text-secondary">($20)</span>
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="seatCoverCheck" price="8">
-                                <label class="form-check-label d-flex flex-row justify-content-between" for="seatCoverCheck">
-                                    Car Seat Covers
-                                    <span class="text-secondary">($8)</span>
-                                </label>
-                            </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="col-md-6 p-3 d-flex flex-column gap-2">
                         <div class="pb-2">
                             <h4>Total</h4>
-                            <div class="text-secondary">Insurance & tax included.</div>
+                            <div class="text-secondary">Tax included.</div>
                         </div>
                         <div id="calculations" class="text-secondary">
                             <div>
-                                <span id="n-days">8</span> days x $<%= vehicle.dailyPrice %>/day = $<span id="basePrice">108</span>
+                                <span id="n-days">?</span> days x $<%= vehicle.dailyPrice %>/day = $<span id="basePrice">?</span>
                             </div>
                             <div id="addOns">
-                                <div for="gpsCheck" style="display:none;">+ GPS Navigation System ($10)</div>
-                                <div for="roofRackCheck" style="display:none;">+ Roof Rack ($25)</div>
-                                <div for="skiRackCheck" style="display:none;">+ Ski Rack ($20)</div>
-                                <div for="childSeatCheck" style="display:none;">+ Child Safety Seat ($20)</div>
-                                <div for="seatCoverCheck" style="display:none;">+ Car Seat Covers ($8)</div>
+                                <% for (accessory of accessories) { %>
+                                <div for="<%= accessory.name %>Check" style="display:none;">+ <%= accessory.name %> ($<%= accessory.price %>)</div>
+                                <% } %>
                             </div>
+                            <div>+ QST & GST (15%)</div>
                         </div>
                         <hr>
                         <div class="d-flex flex-row justify-content-between">
-                            <h2>$<span id="total">120.00</span></h2>
+                            <h2>$<span id="total">...</span></h2>
                             <button type="button" class="btn btn-primary" id="continue">Continue</button>
                         </div>
                     </div>

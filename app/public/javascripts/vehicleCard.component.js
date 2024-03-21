@@ -66,6 +66,9 @@ class VehicleCard extends HTMLElement {
     }
 
     async startReservation() {
+        if (!(await this.checkEmail())) {
+            return;
+        }
         const baseUrl = window.location.protocol + '//' + window.location.host;
         const newUrl = `${baseUrl}/vehicles/booking/${this.vehicleId}`;
 
@@ -88,6 +91,22 @@ class VehicleCard extends HTMLElement {
         const result = await vehicleDetails.setVehicle(this.vehicleId);
         if (result) {
             vehicleDetails.modal.show();
+        }
+    }
+
+    async checkEmail() {
+        const response = await fetch(`users/myemail`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            const message = (await response.json()).message;
+            document.querySelector('#toast').warn(message);
+            return false;
         }
     }
 

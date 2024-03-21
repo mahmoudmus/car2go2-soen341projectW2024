@@ -45,6 +45,40 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.bookVehicle = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+
+    const { startDate, endDate, vehicleId, dropoffLocation, accessories } =
+        req.body;
+    const pickupLocation = (await Vehicle.findById(vehicleId)).branch;
+    const newReservation = new Reservation({
+        user: req.user._id,
+        vehicle: vehicleId,
+        startDate,
+        endDate,
+        pickupLocation,
+        dropoffLocation,
+        accessories,
+    });
+
+    try {
+        const savedReservation = await newReservation.save();
+        const populatedReservation = await Reservation.populate(
+            savedReservation,
+            ['user', 'vehicle']
+        );
+
+        const billingInformation =
+            populatedReservation.user.billingInformation !== null;
+        res.status(200).send({ reservation: populatedReservation });
+    } catch (e) {
+        console.log(e);
+        res.status(400).send({ message: 'Could not create reservation.' });
+    }
+});
+
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
     if (!req.user || req.user.type !== 'admin') {
         return res.render('user/login', {
