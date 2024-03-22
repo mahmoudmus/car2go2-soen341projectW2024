@@ -49,6 +49,11 @@
             <button class="btn btn-danger delete-reservation"
                 ><i class="bi bi-trash3-fill"></i>
             </button>
+            <% if (['admin', 'csr'].includes(user.type)) { %>
+            <button class="btn btn-dark checkin-reservation">
+                <i class="bi bi-clipboard-check-fill"></i>&nbsp;Check in
+            </button>
+            <% } %>
         </div>
       </div>
     </div>

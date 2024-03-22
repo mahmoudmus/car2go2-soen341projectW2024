@@ -107,29 +107,61 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
-    if (!req.user || req.user.type !== 'admin') {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
         return res.render('user/login', {
             error: 'This page is restricted.',
         });
     }
-    const reservationList = await Reservation.find()
-        .populate('user')
-        .populate('vehicle')
-        .exec();
-    res.render('reservation/list', { reservationList });
+
+    const userEmail = req.query.email || null;
+
+    try {
+        let query = {};
+        let userQuery = {};
+
+        if (userEmail) {
+            // Build the user query to find the user with the specified email
+            userQuery = { email: userEmail };
+            const user = await User.findOne(userQuery);
+
+            // If user exists, filter reservations by user ID
+            if (user) {
+                query = { user: user._id };
+            } else {
+                // If user doesn't exist, return empty reservation list
+                return res.render('reservation/list', {
+                    reservationList: [],
+                    userEmail,
+                });
+            }
+        }
+
+        const reservationList = await Reservation.find(query)
+            .populate('user')
+            .populate('vehicle')
+            .exec();
+
+        res.render('reservation/list', { reservationList, userEmail });
+    } catch (error) {
+        console.error('Error fetching reservations:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
+
 exports.readUserReservations = asyncHandler(async (req, res, next) => {
     if (!req.user) {
         return res.render('user/login', {
             error: 'Please Login',
         });
     }
+
     const currentUser = await User.findById(req.user._id);
     var query = { user: currentUser };
     const reservationList = await Reservation.find(query)
         .populate('user')
         .populate('vehicle')
         .exec();
+
     res.render('reservation/list', { reservationList });
 });
 
@@ -179,6 +211,22 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
         ['user', 'vehicle']
     );
     res.send({ reservation: populatedReservation });
+});
+
+exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
+        return res.sendStatus(401);
+    }
+
+    const { status } = req.body;
+    const reservation = await Reservation.findById(req.params.id);
+    if (!reservation) {
+        return res.status(404).send({ message: 'Reservation not found.' });
+    }
+
+    reservation.status = status;
+    await reservation.save();
+    res.sendStatus(200);
 });
 
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
@@ -234,4 +282,16 @@ exports.emailConfirmation = asyncHandler(async (req, res, next) => {
 
     const response = await mg.messages.create('gassycar.com', message);
     res.send(response);
+});
+
+exports.startCheckin = asyncHandler(async (req, res, next) => {
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(reservationId)
+        .populate('user')
+        .populate('vehicle')
+        .populate('accessories')
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
+        .exec();
+    res.render('reservation/checkin', { reservation });
 });

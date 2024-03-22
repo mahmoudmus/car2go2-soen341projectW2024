@@ -139,7 +139,7 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if (!(req.user && req.user.type === 'admin')) {
+    if (!(req.user && (req.user.type === 'admin' || req.user.type === 'csr'))) {
         return res
             .status(401)
             .json({ message: 'You do not have admin privileges.' });
@@ -151,14 +151,16 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
             .status(400)
             .json({ message: 'Users must be atleast 18 years of age.' });
     }
-    user.name = name;
-    user.age = age;
-    user.email = email;
-    user.address = address;
-    user.type = type;
-    if (hash) {
-        user.hash = hash;
-    }
+    
+    const allowedFields = (req.user.type === 'admin') ?
+        ['name', 'age', 'email', 'address', 'type', 'hash'] :
+        ['name', 'age', 'address'];
+
+    Object.keys(req.body).forEach((key) => {
+        if (allowedFields.includes(key)) {
+            user[key] = req.body[key];
+        }
+    });
 
     try {
         const updatedUser = await user.save();
