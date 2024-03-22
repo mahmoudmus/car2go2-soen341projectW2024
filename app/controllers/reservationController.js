@@ -91,13 +91,14 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
     });
 
     try {
-        await newReservation.save();
+        const reservation = await newReservation.save();
         // @todo check for all billingInfo elements! all must be present.
         const billingInformation = Boolean(
             req.user.billingInformation.cardNumber
         );
         res.status(200).send({
             billingInformation,
+            reservation,
         });
     } catch (e) {
         console.log(e);
@@ -239,7 +240,7 @@ exports.deleteReservation = asyncHandler(async (req, res, next) => {
 });
 
 exports.servePayment = asyncHandler(async (req, res, next) => {
-    res.render('reservation/checkout');
+    res.render('reservation/payment');
 });
 
 exports.returnCar = (req, res) => {
@@ -250,11 +251,11 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
     const { cardNumber, cvv, expiryDate, cardHolderName, address, postalCode } =
         req.body;
     if (cardNumber < 1000000000000000 || cardNumber > 9999999999999999) {
-        return res.render('reservation/checkout', {
+        return res.render('reservation/payment', {
             error: 'Invalid card number.',
         });
     } else if (cvv < 100 || cvv > 9999) {
-        return res.render('reservation/checkout', { error: 'Invalid CVV.' });
+        return res.render('reservation/payment', { error: 'Invalid CVV.' });
     }
     res.redirect('/myreservations');
 });

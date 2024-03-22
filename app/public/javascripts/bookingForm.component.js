@@ -5,7 +5,6 @@ class BookingForm extends HTMLElement {
         this.initializeAccessories();
         this.initializeDateRangePicker();
         this.initializeContinueButton();
-        
     }
 
     async initializeDateRangePicker() {
@@ -81,8 +80,8 @@ class BookingForm extends HTMLElement {
             this.renderInvoiceAccessory(checkbox);
         }
     }
-    
-    initializeContinueButton() { 
+
+    initializeContinueButton() {
         this.continueButton = this.querySelector('#continue');
         this.continueButton.addEventListener('click', () => {
             if (!this.branchPicker.value) {
@@ -90,19 +89,17 @@ class BookingForm extends HTMLElement {
                 document
                     .querySelector('#toast')
                     .warn('Please select a dropoff location.');
-                
-                
             } else {
                 this.showConfirmationModal();
-                // @todo
-                // set the confirmModal details, see createReservation() for an example of how res details are extracted
-                // this.confirmModal.show();
             }
         });
-        this.confirmModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-        // @todo
-        // this.confirmModal = new bootstrap.Modal(this.querySelector('#modalid'));
-        // this.querySelector('#confirm').addEventListener('click', this.createReservation); // for the confirm button
+        this.confirmModal = new bootstrap.Modal(
+            document.getElementById('confirmationModal')
+        );
+        this.querySelector('#final-confirm-button').addEventListener(
+            'click',
+            () => this.createReservation()
+        );
     }
 
     showConfirmationModal() {
@@ -110,19 +107,23 @@ class BookingForm extends HTMLElement {
         if (selectedDates.length === 2) {
             const startDateStr = selectedDates[0].toLocaleDateString();
             const endDateStr = selectedDates[1].toLocaleDateString();
-            document.getElementById('confirm-dates').textContent = `${startDateStr} to ${endDateStr}`;
-    }
-    document.getElementById('confirm-dropoff-location').textContent = this.querySelector('#drop-off-label').textContent;
+            document.getElementById(
+                'confirm-dates'
+            ).textContent = `${startDateStr} to ${endDateStr}`;
+        }
+        document.getElementById('confirm-dropoff-location').textContent =
+            this.querySelector('#drop-off-label').textContent;
 
-    const servicesList = document.getElementById('confirm-services');
-    servicesList.innerHTML = ''; // Clear existing list items
-    this.selectedCheckboxes.forEach(checkbox => {
-        const serviceItem = document.createElement('li');
-        serviceItem.textContent = checkbox.nextElementSibling.textContent.trim(); // Assuming the label text is next to the checkbox
-        servicesList.appendChild(serviceItem);
-    });
-    document.getElementById('confirm-total-price').textContent = this.price;
-    this.confirmModal.show();
+        const servicesList = document.getElementById('confirm-services');
+        servicesList.innerHTML = '';
+        this.selectedCheckboxes.forEach((checkbox) => {
+            const serviceItem = document.createElement('li');
+            serviceItem.textContent =
+                checkbox.nextElementSibling.textContent.trim();
+            servicesList.appendChild(serviceItem);
+        });
+        document.getElementById('confirm-total-price').textContent = this.price;
+        this.confirmModal.show();
     }
     renderInvoiceAccessory(checkbox) {
         const label = this.querySelector(`div[for="${checkbox.id}"]`);
@@ -190,13 +191,11 @@ class BookingForm extends HTMLElement {
             body: JSON.stringify(reservationData),
         });
         if (response.ok) {
-            if ((await response.json()).billingInformation) {
-                // @todo use query param to trigger success / thank you modal on home page
-                // make api call to send confirmation email
-                window.location.href = '/';
+            const data = await response.json();
+            if (data.billingInformation) {
+                window.location.href = `/?success=${data.reservation._id}`;
             } else {
-                // window.location.href = '/payment'; @todo redirect to payment form to collect payment details
-                // payment form confirmation will make api call to send confirmation email
+                window.location.href = `/reservations/payment?success=${data.reservation._id}`;
             }
         } else {
             document
