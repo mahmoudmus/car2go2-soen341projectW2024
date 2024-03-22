@@ -174,3 +174,35 @@ describe('Reservation Controller', function () {
         expect(res.send).toHaveBeenCalledWith({ message: 'Reservation deleted successfully.' });
     });
 });
+it('should fetch all reservations based on user email and render the reservation list', async function () {
+    const mockUser = { _id: 'userId', email: 'user@example.com', type: 'admin' };
+    spyOn(User, 'findOne').and.returnValue(Promise.resolve(mockUser));
+
+    const userEmail = 'user@example.com'; // Set the user email
+
+    const mockReservationFind = jasmine.createSpy('find').and.returnValue({
+        populate: jasmine.createSpy('populate').and.returnValue({
+            populate: jasmine.createSpy('populate').and.returnValue({
+                exec: jasmine.createSpy('exec').and.returnValue(Promise.resolve([
+                    { user: 'userId', vehicle: 'vehicle1', startDate: '2022-01-01', endDate: '2022-01-07' },
+                    { user: 'userId', vehicle: 'vehicle2', startDate: '2022-02-01', endDate: '2022-02-07' }
+                ]))
+            })
+        })
+    });
+    spyOn(Reservation, 'find').and.callFake(mockReservationFind);
+
+    const req = { user: { type: 'admin' }, query: { email: userEmail } }; // Set the email query parameter
+    const res = {
+        render: jasmine.createSpy(),
+    };
+
+    await reservationController.readAllReservations(req, res);
+
+    expect(User.findOne).toHaveBeenCalledWith({ email: userEmail });
+    expect(Reservation.find).toHaveBeenCalledWith({ user: mockUser._id });
+    expect(res.render).toHaveBeenCalledWith('reservation/list', {
+        reservationList: jasmine.any(Array),
+        userEmail: userEmail // Verify that userEmail is passed to the view
+    });
+});
