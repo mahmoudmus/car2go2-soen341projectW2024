@@ -11,7 +11,6 @@ class ReservationCard extends HTMLElement {
         const checkinButton = this.querySelector('.checkin-reservation');
         if (checkinButton) {
             checkinButton.addEventListener('click', () => {
-                // @todo update this route if mahmoud already implemented one.
                 document.location.href = `reservations/checkin/${this.reservationId}`;
             });
         }

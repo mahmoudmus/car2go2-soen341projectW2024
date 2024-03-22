@@ -1,0 +1,7 @@
+<div class="container">
+    <h1>Check In Process</h1>
+    <div><%= reservation.vehicle._id %></div>
+    <% for (const accessory of reservation.accessories) { %>
+        <%= accessory.name %>
+    <% } %>
+</div>

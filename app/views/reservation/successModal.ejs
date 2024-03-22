@@ -1,0 +1,31 @@
+<script type="module" src="/javascripts/successModal.component.js"></script>
+<success-modal
+    class="modal fade"
+    tabindex="-1"
+    aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"><i class="bi bi-fire red-hot"></i></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <h1 class="gradient-text">Booking confirmed.</h1>
+                    <div>Your reservation has been successfully processed.</div>
+                    <br>
+                    <div>
+                        <a href="/myreservations">Click here</a> to view or modify your booking.
+                        You will receive a confirmation email with your reservation details and pickup instructions. 
+                    </div>
+                    <br>
+                    <div>Thank you for choosing <span class="gradient-text">Gas</span>.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</success-modal>

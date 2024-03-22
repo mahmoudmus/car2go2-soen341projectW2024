@@ -13,6 +13,13 @@
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
+                <div class="mt-3 input-group postal-group" style="display: none;">
+                    <input id="postal" name="postal" class="form-control rounded-start-5 px-4 p-3" placeholder="Postal or Zip Code" aria-label="postal-code" aria-describedby="search-vehicles">
+                    <button class="btn rounded-end-5 border p-3 text-white btn-glow-hover" type="button" id="search-vehicles">
+                        Search
+                        <i class="ms-2 bi bi-arrow-right"></i>
+                    </button>
+                </div>
             </reservation-finder>
         </div>
     </div>
@@ -30,3 +37,4 @@
 <% } %>
 <script type="module" src="/javascripts/vehicleCarousel.component.js"></script>
 <%- include('./reservation/form')  %>
+<%- include('./reservation/successModal') %>

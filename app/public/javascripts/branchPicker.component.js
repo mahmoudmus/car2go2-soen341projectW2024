@@ -14,9 +14,10 @@ class BranchPicker extends HTMLElement {
                 'Content-Type': 'application/json',
             },
         });
-        const branches = (await response.json()).branches;
-        for (branch of branches) {
-            this.addOption({ value: branch._id, name: branch.name });
+        this.branches = (await response.json()).branches;
+        const display = this.getAttribute('address') ? 'address' : 'name';
+        for (const branch of this.branches) {
+            this.addOption({ value: branch._id, name: branch[display] });
         }
     }
     addOption({ value, name }) {
@@ -24,6 +25,21 @@ class BranchPicker extends HTMLElement {
         option.value = value;
         option.innerHTML = name.trim();
         this.select.appendChild(option);
+    }
+
+    get selectedBranch() {
+        if (!this.branches || this.select.value === '') {
+            return null;
+        }
+        for (const branch of this.branches) {
+            if (branch._id === this.select.value) {
+                return branch;
+            }
+        }
+    }
+
+    get value() {
+        return this.select.value;
     }
 }
 
