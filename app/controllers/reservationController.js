@@ -212,6 +212,22 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
     res.send({ reservation: populatedReservation });
 });
 
+exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
+        return res.sendStatus(401);
+    }
+
+    const { status } = req.body;
+    const reservation = await Reservation.findById(req.params.id);
+    if (!reservation) {
+        return res.status(404).send({ message: 'Reservation not found.' });
+    }
+
+    reservation.status = status;
+    await reservation.save();
+    res.sendStatus(200);
+});
+
 exports.deleteReservation = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
@@ -277,6 +293,8 @@ exports.startCheckin = asyncHandler(async (req, res, next) => {
         .populate('user')
         .populate('vehicle')
         .populate('accessories')
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
         .exec();
     res.render('reservation/checkin', { reservation });
 });
