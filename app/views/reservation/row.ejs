@@ -41,6 +41,13 @@
         <div class="text-secondary">
             $<span class="reservation-cost"><%= reservation.cost %></span>
         </div>
+        <% if(reservation.status == 'CheckedIn'){ %>
+            <div>
+                <span class="text-secondary">Leave the car in the parking lot with the keys inside and check out with a customer service representative</span>
+            </div>
+          <% } else{ %>  
+            <div></div>
+         <% } %>
         </div>
         <div class="d-flex justify-content-end gap-2 m-2">
             <button class="btn btn-dark edit-reservation"
