@@ -1,6 +1,5 @@
 const router = require('express').Router();
 
-
 // Require controller modules.
 const reservationController = require('../controllers/reservationController');
 
@@ -31,6 +30,7 @@ router.get('/:id', reservationController.readReservation);
 
 // Update
 router.put('/:id', reservationController.updateReservation);
+router.patch('/:id', reservationController.updateReservationStatus);
 
 // Delete
 router.delete('/:id', reservationController.deleteReservation);

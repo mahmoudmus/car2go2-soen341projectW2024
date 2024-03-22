@@ -18,7 +18,11 @@ const reservationSchema = new Schema({
 
     pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
-    status: { type: String, default: 'Pending' },
+    status: {
+        type: String,
+        enum: ['upcoming', 'checked-in', 'checked-out'],
+        default: 'upcoming',
+    },
     accessories: [
         {
             type: Schema.Types.ObjectId,
@@ -29,7 +33,7 @@ const reservationSchema = new Schema({
 });
 
 reservationSchema.virtual('duration').get(function () {
-    return (this.endDate - this.startDate)/(1000 * 60 * 60 * 24);
+    return (this.endDate - this.startDate) / (1000 * 60 * 60 * 24);
 });
 
 reservationSchema.set('toJSON', { virtuals: true });

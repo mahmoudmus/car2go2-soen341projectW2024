@@ -32,12 +32,31 @@ class CheckinForm extends HTMLElement {
             }, 1500);
         });
 
-        this.finalizeButton.addEventListener('click', () => {
-            window.location.href = '/?checkin=true';
-        });
+        this.finalizeButton.addEventListener('click', () => this.postCheckin());
         this.printButton.addEventListener('click', function () {
             window.print();
         });
+    }
+
+    async postCheckin() {
+        const response = await fetch(`/reservations/${this.reservationId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'checked-in' }),
+        });
+        if (response.ok) {
+            window.location.href = '/?checkin=true';
+        } else {
+            document
+                .querySelector('#toast')
+                .caution('Could not set reservation status.');
+        }
+    }
+
+    get reservationId() {
+        return this.getAttribute('reservation-id');
     }
 }
 
