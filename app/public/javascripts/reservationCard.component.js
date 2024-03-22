@@ -15,6 +15,13 @@ class ReservationCard extends HTMLElement {
                 document.location.href = `reservations/checkin/${this.reservationId}`;
             });
         }
+        const returnButton = this.querySelector('.return-reservation');
+        if (returnButton) {
+            returnButton.addEventListener('click', () => {
+                // @todo implement route
+                document.location.href = `reservations/return/${this.reservationId}`;
+            });
+        }
     }
 
     async deleteReservation() {

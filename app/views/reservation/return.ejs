@@ -1,0 +1,27 @@
+<script type="module" src="/javascripts/reservationForm.component.js"></script>
+<div class="modal-dialog m-5">
+    <div class="modal-content">
+        <form>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label for="type" class="mb-1">Car Damages</label>
+                    <textarea class="form-control"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="paymentMethodId" class="mb-1">Payment Method</label>
+                    <select class="form-control" id="paymentMethodId" name="paymentMethodId" required>
+                        <option value="" selected>Credit Card</option>
+                        <option value="" selected>Cash</option>
+                        <option value="" disabled selected>Select Payment Method</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer gap-2">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">Generate Final Bill</button>
+            </div>
+        </form>
+    </div>
+</div>

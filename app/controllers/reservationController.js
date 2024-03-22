@@ -164,6 +164,10 @@ exports.servePayment = asyncHandler(async (req, res, next) => {
     res.render('reservation/checkout');
 });
 
+exports.returnCar = (req, res) => {
+    res.render('reservation/return', { reservationId: req.params.id });
+};
+
 exports.processPayment = asyncHandler(async (req, res, next) => {
     const { cardNumber, cvv, expiryDate, cardHolderName, address, postalCode } =
         req.body;

@@ -41,9 +41,9 @@
         <div class="text-secondary">
             $<span class="reservation-cost"><%= reservation.cost %></span>
         </div>
-        <% if(reservation.status == 'CheckedIn'){ %>
-            <div>
-                <span class="text-secondary">Leave the car in the parking lot with the keys inside and check out with a customer service representative</span>
+        <% if(reservation.status == 'CheckedIn'){ %> 
+            <div class="text-secondary">
+                <span class="reservation-checkout-description">Leave the car in the parking lot with the keys inside and check out with a customer service representative</span>
             </div>
           <% } else{ %>  
             <div></div>
@@ -60,6 +60,11 @@
             <button class="btn btn-dark checkin-reservation">
                 <i class="bi bi-clipboard-check-fill"></i>&nbsp;Check in
             </button>
+            <% } %>
+            <% if (['admin', 'csr'].includes(user.type)) { %>
+                <button class="btn btn-dark return-reservation">
+                    <i class="bi bi-arrow-right"></i>&nbsp;Return Car
+                </button>
             <% } %>
         </div>
       </div>

@@ -13,6 +13,9 @@ router.get('/', reservationController.readAllReservations);
 // Checkin @todo delete this if mahmoud already made one
 // router.get('/checkin/:id', reservationController.startCheckin);
 
+// Return Car
+router.get('/return/:id', reservationController.returnCar);
+
 // Payment Form
 router.post('/checkout', reservationController.processPayment);
 router.get('/checkout', function (req, res, next) {
