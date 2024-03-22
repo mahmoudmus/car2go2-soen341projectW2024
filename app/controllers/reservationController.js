@@ -181,6 +181,10 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
 
 exports.startCheckin = asyncHandler(async (req, res, next) => {
     const reservationId = req.params.id;
-    const reservation = await Reservation.findById(vehicleId);
-    document.querySelector('reservation');
+    const reservation = await Reservation.findById(reservationId)
+        .populate('user')
+        .populate('vehicle')
+        .populate('accessories')
+        .exec();
+    res.render('reservation/checkin', { reservation });
 });
