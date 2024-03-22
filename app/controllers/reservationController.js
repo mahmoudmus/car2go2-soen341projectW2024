@@ -147,9 +147,8 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
     res.redirect('/myreservations');
 });
 
-// @todo delete if mahmoud already set this up
-// exports.startCheckin = asyncHandler(async (req, res, next) => {
-//     const reservationId = req.params.id;
-//     const reservation = await Reservation.findById(vehicleId);
-//     document.querySelector('reservation');
-// });
+exports.startCheckin = asyncHandler(async (req, res, next) => {
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(vehicleId);
+    document.querySelector('reservation');
+});

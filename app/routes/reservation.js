@@ -9,8 +9,8 @@ router.post('/', reservationController.createReservation);
 // Read
 router.get('/', reservationController.readAllReservations);
 
-// Checkin @todo delete this if mahmoud already made one
-// router.get('/checkin/:id', reservationController.startCheckin);
+// Checkin
+router.get('/checkin/:id', reservationController.startCheckin);
 
 // Payment Form
 router.post('/checkout', reservationController.processPayment);
