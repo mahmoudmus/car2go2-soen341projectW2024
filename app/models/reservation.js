@@ -28,6 +28,10 @@ const reservationSchema = new Schema({
     cost: { type: Number, required: true },
 });
 
+reservationSchema.virtual('duration').get(function () {
+    return this.endDate - this.startDate;
+});
+
 reservationSchema.set('toJSON', { virtuals: true });
 reservationSchema.set('toObject', { virtuals: true });
 

@@ -36,7 +36,7 @@
     <p>Drop-off Location: <% reservation.dropoffLocation %></p>
     
     <!--Rental Period: can i do -? -->
-    <p>Rental Period: <% %></p>
+    <p>Rental Period: <%= reservation.duration %></p>
     
     <p>Mileage Limit (if applicable): <% reservation.vehicle.Mileage %>km</p>
     <p>Rental Rate: <% reservation.vehicle.dailyPrice %>$/day</p>
