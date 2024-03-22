@@ -291,6 +291,38 @@ exports.emailConfirmation = asyncHandler(async (req, res, next) => {
     res.send(response);
 });
 
+// @todo change from preview mode to actually send email mode
+exports.emailBill = asyncHandler(async (req, res, next) => {
+    // const { reservationId } = req.body;
+    // const reservation = await Reservation.findById(reservationId)
+    console.log('here');
+    const reservation = await Reservation.findOne()
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
+        .populate('user')
+        .populate('vehicle')
+        .populate('accessories');
+
+    // const html = await ejs.renderFile(
+    //     path.join(__dirname, '../views/emails/confirmation.ejs'),
+    //     {
+    //         reservation,
+    //     }
+    // );
+
+    // const user = reservation.user;
+    // const message = {
+    //     html,
+    //     subject: 'Gas Booking Confirmation',
+    //     from: 'Gas <info@gassycar.com>',
+    //     to: [user.email, 'tommy.mahut@gmail.com'],
+    // };
+
+    // const response = await mg.messages.create('gassycar.com', message);
+    // res.send(response);
+    res.render('emails/bill', { reservation });
+});
+
 exports.startCheckin = asyncHandler(async (req, res, next) => {
     const reservationId = req.params.id;
     const reservation = await Reservation.findById(reservationId)
