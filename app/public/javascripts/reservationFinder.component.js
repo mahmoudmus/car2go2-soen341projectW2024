@@ -2,6 +2,7 @@ class ReservationFinder extends HTMLElement {
     connectedCallback() {
         this.searchVehiclesButton = this.querySelector('#button-addon');
         this.initializeDateRangePicker();
+       
     }
 
     async initializeDateRangePicker() {
@@ -27,7 +28,7 @@ class ReservationFinder extends HTMLElement {
             });
         });
     }
-
+   
     async fetchAvailableVehicles() {
         const selectedDates = this.calendar.selectedDates;
         document.querySelector('reservation-form').dates = selectedDates;
