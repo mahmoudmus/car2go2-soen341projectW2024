@@ -159,6 +159,7 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
     }
 });
 
+/*
 exports.filterVehicles = asyncHandler(async (req, res, next) =>{
     const filters = req.query;
     const filteredVehicles = Vehicle.aggregate(vehicle =>{
@@ -171,7 +172,7 @@ exports.filterVehicles = asyncHandler(async (req, res, next) =>{
     });
     res.send(filteredVehicles);
 })
-
+*/
 exports.filterVehicles = asyncHandler(async (req, res, next) => {
     try {
         let filter = {};
@@ -188,8 +189,8 @@ exports.filterVehicles = asyncHandler(async (req, res, next) => {
         if (req.query.model) {
             filter['details.model'] = req.query.model.toLowerCase();
         }
-        if (req.query.year) {
-            filter['details.year'] = req.query.year;
+        if (req.query.minYear) {
+            filter['details.year'] = { $gte: req.query.minYear };
         }
         if (req.query.isAutomatic){
             filter['details.isAutomatic'] = req.query.isAutomatic;
