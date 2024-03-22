@@ -159,6 +159,50 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.filterVehicles = asyncHandler(async (req, res, next) =>{
+    const filters = req.query;
+    const filteredVehicles = Vehicle.aggregate(vehicle =>{
+        let isValid = true;
+        for (key in filters) {
+            console.log(key,vehicle[key], filters[key]);
+            isValid = isValid && user[key] == filters[key];
+        }
+        return isValid;
+    });
+    res.send(filteredVehicles);
+})
+
+exports.filterVehicles = asyncHandler(async (req, res, next) => {
+    try {
+        let filter = {};
+
+        if (req.query.category) {
+            filter.category = req.query.category.toLowerCase();
+        }
+        if (req.query.type) {
+            filter.type = req.query.type.toLowerCase();
+        }
+        if (req.query.make) {
+            filter['details.make'] = req.query.make.toLowerCase();
+        }
+        if (req.query.model) {
+            filter['details.model'] = req.query.model.toLowerCase();
+        }
+        if (req.query.year) {
+            filter['details.year'] = req.query.year;
+        }
+        if (req.query.isAutomatic){
+            filter['details.isAutomatic'] = req.query.isAutomatic;
+        }
+    
+        const filteredVehicles = await Vehicle.find(filter);
+        res.json({ vehicles: filteredVehicles });
+    } catch (e) {
+        console.error('Error in filtering Vehicles:', e);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const { type, category, details, branch, imageUrl } = req.body;
