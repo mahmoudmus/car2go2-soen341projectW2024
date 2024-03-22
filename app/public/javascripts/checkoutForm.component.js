@@ -65,7 +65,23 @@ class CheckoutForm extends HTMLElement {
     }
 
     async sendBillEmail() {
-        this.postCheckout();
+        const response = await fetch('/reservations/emailbill', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                bill: this.htmlInvoice,
+                reservationId: this.reservationId,
+            }),
+        });
+        if (response.ok) {
+            this.postCheckout();
+        } else {
+            document
+                .querySelector('#toast')
+                .caution('Failed to send confirmation email.');
+        }
     }
 
     async postCheckout() {
