@@ -52,19 +52,38 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
         });
     }
 
-    // Extract email query parameter, if provided
     const userEmail = req.query.email || null;
 
-    // Build the query based on whether email is provided
-    const query = userEmail ? { 'user.email': userEmail } : {};
+    try {
+        let query = {};
+        let userQuery = {};
 
-    const reservationList = await Reservation.find(query)
-        .populate('user')
-        .populate('vehicle')
-        .exec();
-    
-    res.render('reservation/list', { reservationList, userEmail });
+        if (userEmail) {
+            // Build the user query to find the user with the specified email
+            userQuery = { email: userEmail };
+            const user = await User.findOne(userQuery);
+
+            // If user exists, filter reservations by user ID
+            if (user) {
+                query = { user: user._id };
+            } else {
+                // If user doesn't exist, return empty reservation list
+                return res.render('reservation/list', { reservationList: [], userEmail });
+            }
+        }
+
+        const reservationList = await Reservation.find(query)
+            .populate('user')
+            .populate('vehicle')
+            .exec();
+
+        res.render('reservation/list', { reservationList, userEmail });
+    } catch (error) {
+        console.error('Error fetching reservations:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
+
 
 exports.readUserReservations = asyncHandler(async (req, res, next) => {
     if (!req.user) {
@@ -164,14 +183,4 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
     }
     res.redirect('/myreservations');
 });
-exports.searchReservationsByEmail = asyncHandler(async (req, res, next) => {
-    const { email } = req.query;
 
-    // Fetch reservations based on the provided email
-    const reservations = await Reservation.find({ 'user.email': email })
-        .populate('user')
-        .populate('vehicle')
-        .exec();
-
-    res.render('reservation/list', { reservationList: reservations });
-});
