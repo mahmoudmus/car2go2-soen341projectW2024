@@ -82,8 +82,17 @@ describe('Reservation Controller', function () {
             }),
         });
         spyOn(Reservation, 'find').and.callFake(mockReservationFind);
+        const mockUser = {
+            _id: '60d5ecb4b4858e3848987654',
+            email: 'user@example.com',
+            type: 'admin',
+        };
+        spyOn(User, 'findOne').and.returnValue(Promise.resolve(mockUser));
 
-        const req = { user: { type: 'admin' } };
+        const req = {
+            user: { type: 'admin' },
+            query: { email: 'test@gmail.com' },
+        };
         const res = {
             render: jasmine.createSpy(),
         };
@@ -93,6 +102,7 @@ describe('Reservation Controller', function () {
         expect(Reservation.find).toHaveBeenCalled();
         expect(res.render).toHaveBeenCalledWith('reservation/list', {
             reservationList: jasmine.any(Array),
+            userEmail: 'test@gmail.com',
         });
     });
 
