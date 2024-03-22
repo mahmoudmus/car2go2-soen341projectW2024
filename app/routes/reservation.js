@@ -7,6 +7,9 @@ const reservationController = require('../controllers/reservationController');
 router.post('/', reservationController.createReservation);
 router.post('/booking', reservationController.bookVehicle);
 
+// Send confirmation email
+router.post('/emailconfirmation/', reservationController.emailConfirmation);
+
 // Read
 router.get('/', reservationController.readAllReservations);
 // Payment Form
