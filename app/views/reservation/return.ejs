@@ -1,31 +1,48 @@
 <script type="module" src="/javascripts/checkoutForm.component.js"></script>
 <checkout-form class="container" reservation-id="<%= reservationId %>">
-    <div class="row">
-        <form class="col-md-8 offset-md-2">
-            <div class="form-group mb-3">
-                <label for="type" class="mb-1">Damage Description</label>
-                <textarea class="form-control"></textarea>
-            </div>
-            <form class="col-md-8 offset-md-2">
-                <div class="form-group mb-3">
-                    <label for="type" class="mb-1">Estimated Cost</label>
-                    <textarea id="EstimatedCost" class="form-control"></textarea>
-                </div>
+        <div class="container my-5">
+            <h1 class="mb-4 text-center">Check-Out Process</h1>
+            <div class="card">
+                <div class="card-body">
+    
+                    <div class="form-group">
+                        <label for="damages">Please provide a list of any damages to the car, if applicable.</label>
+                        <textarea class="form-control" id="damages" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Add an image to show any damages, if applicable.</label>
+                        <input class="form-control" type="file" id="formFile">
 
-            <div class="form-group mb-3">
-                <label for="paymentMethodId" class="mb-1">Payment Method</label>
-                <select
-                    class="form-control"
-                    id="paymentMethodId"
-                    name="paymentMethodId"
-                    required
-                >
-                    <option value="" selected>Credit Card</option>
-                    <option value="" selected>Cash</option>
-                    <option value="" disabled selected>
-                        Select Payment Method
-                    </option>
-                </select>
+                    </div>
+
+                
+                        <div class="form-group ">
+                            <label for="type" class="mb-3">Estimated Cost</label>
+                            <textarea id="EstimatedCost" class="form-control"></textarea>
+                        </div>
+                
+    
+                    <div class="form-group mb-3">
+                        <label for="paymentMethodId" class="mb-1">Payment Method</label>
+                        <select
+                            class="form-control"
+                            id="paymentMethodId"
+                            name="paymentMethodId"
+                            required
+                        >
+                            <option value="" selected>Credit Card</option>
+                            <option value="" selected>Cash</option>
+                            <option value="" disabled selected>
+                                Select Payment Method
+                            </option>
+                        </select>
+                    </div>
+                    <button type="button" id="generateBill" class="btn btn-success">
+                        <i class="bi bi-receipt"></i>
+                        Generate Final Bill
+                    </button>
+    
+                </div>
             </div>
             <button id="generateBill" type="button" class="btn btn-success mb-3">
                 <i class="bi bi-receipt"></i>
