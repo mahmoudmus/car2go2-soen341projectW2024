@@ -1,5 +1,5 @@
 <script type="module" src="/javascripts/checkoutForm.component.js"></script>
-<checkout-form class="container">
+<checkout-form class="container" reservation-id="<%= reservationId %>">
     <div class="row">
         <form class="col-md-8 offset-md-2">
             <div class="form-group mb-3">
@@ -22,7 +22,7 @@
                     </option>
                 </select>
             </div>
-            <button type="button" class="btn btn-success">
+            <button id="generateBill" type="button" class="btn btn-success">
                 <i class="bi bi-receipt"></i>
                 Generate Final Bill
             </button>

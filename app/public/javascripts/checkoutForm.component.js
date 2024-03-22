@@ -1,8 +1,11 @@
 class CheckoutForm extends HTMLElement {
     connectedCallback() {
+        this.generateBillButton = this.querySelector('#generateBill');
+        this.generateBillButton.addEventListener('click', () =>
+            this.postCheckout()
+        );
         // this.agreementButton = this.querySelector('#submitAgreement');
         // this.depositButton = this.querySelector('#subdmitDeposit');
-        // this.finalizeButton = this.querySelector('#checkinSubmit');
         // this.printButton = this.querySelector('#printButton');
         // this.agreementButton.addEventListener('click', (e) => {
         //     e.target.parentElement.innerHTML = `
@@ -29,22 +32,21 @@ class CheckoutForm extends HTMLElement {
         //         document.querySelector('#success-div').style.display = '';
         //     }, 1500);
         // });
-        // this.finalizeButton.addEventListener('click', () => this.postCheckin());
         // this.printButton.addEventListener('click', function () {
         //     window.print();
         // });
     }
 
-    async postCheckin() {
+    async postCheckout() {
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ status: 'checked-in' }),
+            body: JSON.stringify({ status: 'checked-out' }),
         });
         if (response.ok) {
-            window.location.href = '/?checkin=true';
+            window.location.href = '/?checkout=true';
         } else {
             document
                 .querySelector('#toast')
