@@ -9,7 +9,7 @@
                     <textarea class="form-control" id="damages" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Add an image to show any damages, if applicable</label>
+                    <label for="formFile" class="form-label">Add an image to show any damages, if applicable.</label>
                     <input class="form-control" type="file" id="formFile">
                   </div>
 
@@ -202,6 +202,9 @@
                 </div>
             </div>
         </div>
+        <div class="text-center mt-4">
+            <button id="printButton" class="btn btn-secondary"><i class="bi bi-printer"></i> Print</button>
+        </div>
     </div>
 </form>
 
@@ -237,4 +240,8 @@
             document.querySelector("#agreement-success-div").style.display = '';
         }, 1000);
     })
+    
+    document.getElementById('printButton').addEventListener('click', function() {
+        window.print();
+    });
 </script>
