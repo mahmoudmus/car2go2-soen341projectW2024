@@ -53,6 +53,7 @@ class CheckoutForm extends HTMLElement {
         if (response.ok) {
             const html = await response.text();
             this.querySelector('#billTarget').innerHTML = html;
+            this.querySelector('#chargeButton').style.display = '';
         } else {
             document
                 .querySelector('#toast')
