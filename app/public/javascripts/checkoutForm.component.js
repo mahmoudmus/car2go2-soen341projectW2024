@@ -1,5 +1,8 @@
 class CheckoutForm extends HTMLElement {
     connectedCallback() {
+        this.chargeButton = this.querySelector('#chargeButton');
+        this.chargeButton.addEventListener('click', () => this.sendBillEmail());
+
         this.generateBillButton = this.querySelector('#generateBill');
         this.generateBillButton.addEventListener('click', () =>
             this.generateBill()
@@ -51,14 +54,18 @@ class CheckoutForm extends HTMLElement {
             }
         );
         if (response.ok) {
-            const html = await response.text();
-            this.querySelector('#billTarget').innerHTML = html;
-            this.querySelector('#chargeButton').style.display = '';
+            this.htmlInvoice = await response.text();
+            this.querySelector('#billTarget').innerHTML = this.htmlInvoice;
+            this.chargeButton.style.display = '';
         } else {
             document
                 .querySelector('#toast')
                 .caution('Could not generate final bill.');
         }
+    }
+
+    async sendBillEmail() {
+        this.postCheckout();
     }
 
     async postCheckout() {

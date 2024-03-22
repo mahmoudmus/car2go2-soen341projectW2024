@@ -295,7 +295,6 @@ exports.emailConfirmation = asyncHandler(async (req, res, next) => {
 exports.emailBill = asyncHandler(async (req, res, next) => {
     // const { reservationId } = req.body;
     // const reservation = await Reservation.findById(reservationId)
-    console.log('here');
     const reservation = await Reservation.findOne()
         .populate('pickupLocation')
         .populate('dropoffLocation')
