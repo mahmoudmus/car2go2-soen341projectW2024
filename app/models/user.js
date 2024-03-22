@@ -22,6 +22,11 @@ const UserSchema = new Schema({
     },
     createdAt: { type: Date, default: Date.now, immutable: true },
     updatedAt: { type: Date, default: Date.now },
+    billingInformation: {
+        // @todo: complete this attribute.
+        cardNumber: String,
+        cvv: String,
+    },
 });
 
 UserSchema.pre('save', function (next) {

@@ -5,18 +5,20 @@ const reservationController = require('../controllers/reservationController');
 
 // Create
 router.post('/', reservationController.createReservation);
+router.post('/booking', reservationController.bookVehicle);
+
+// Send confirmation email
+router.post('/emailconfirmation/', reservationController.emailConfirmation);
 
 // Read
 router.get('/', reservationController.readAllReservations);
 // Payment Form
-router.post('/checkout', reservationController.processPayment);
-router.get('/checkout', function (req, res, next) {
+router.post('/payment', reservationController.processPayment);
+router.get('/payment', function (req, res, next) {
     try {
-        //res.render('reservation/checkout', { error: 'card' });
-        res.render('reservation/checkout');
-
-    }
-    catch(error){
+        //res.render('reservation/payment', { error: 'card' });
+        res.render('reservation/payment');
+    } catch (error) {
         console.log(error);
     }
 });

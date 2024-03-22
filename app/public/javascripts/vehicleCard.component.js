@@ -14,16 +14,27 @@ class VehicleCard extends HTMLElement {
                 this.startReservation()
             );
         }
+        const detailsButton = this.querySelector('.see-details');
+        if (detailsButton) {
+            detailsButton.addEventListener('click', () => this.seeDetails());
+        }
     }
 
     async deleteVehicle() {
         const popup = document.querySelector('confirmation-popup');
         var swalTitle = 'Delete Vehicle?';
         var swalText = undefined;
-        var swalTitleSuccess = "Vehicle Deleted!";
-        var swalTextSuccess = "Vehicle ID: " + this.vehicleId;
+        var swalTitleSuccess = 'Vehicle Deleted!';
+        var swalTextSuccess = 'Vehicle ID: ' + this.vehicleId;
 
-        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+        if (
+            !(await popup.confirm(
+                swalTitle,
+                swalText,
+                swalTitleSuccess,
+                swalTextSuccess
+            ))
+        ) {
             return;
         }
 
@@ -55,11 +66,47 @@ class VehicleCard extends HTMLElement {
     }
 
     async startReservation() {
-        const reservationForm = document.querySelector('reservation-form');
-        reservationForm.mode = 'starting';
-        const result = await reservationForm.setVehicle(this.vehicleId);
+        if (!(await this.checkEmail())) {
+            return;
+        }
+        const baseUrl = window.location.protocol + '//' + window.location.host;
+        const newUrl = `${baseUrl}/vehicles/booking/${this.vehicleId}`;
+
+        const params = new URLSearchParams(
+            new URL(window.location.href).search
+        );
+        window.location.href = `${newUrl}?${params.toString()}`;
+
+        // const reservationForm = document.querySelector('reservation-form');
+        // reservationForm.mode = 'starting';
+        // const result = await reservationForm.setVehicle(this.vehicleId);
+        // if (result) {
+        //     reservationForm.modal.show();
+        // }
+    }
+
+    async seeDetails() {
+        const vehicleDetails = document.querySelector('vehicle-details');
+        vehicleDetails.setReserveButtonCallback(this);
+        const result = await vehicleDetails.setVehicle(this.vehicleId);
         if (result) {
-            reservationForm.modal.show();
+            vehicleDetails.modal.show();
+        }
+    }
+
+    async checkEmail() {
+        const response = await fetch(`users/myemail`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            const message = (await response.json()).message;
+            document.querySelector('#toast').warn(message);
+            return false;
         }
     }
 
