@@ -93,4 +93,38 @@
             </div>
         </div>
     </div>
+    <div class="card mt-4">
+        <div class="card-body">
+            <p class="text-secondary">
+                Inform the customer that a $500 CAD deposit will be taken from their
+                account, using the credit card on file.
+            </p>
+            <div>
+                <button id="deposit" type="submit" class="btn btn-primary">Perform Deposit</button>
+            </div>
+            <div id="success-div" class="d-flex gap-2 justify-content-between" style="display: none !important;">
+                <h4>Deposit was successful.</h4>
+                <button id="finalize" class="btn btn-success">Finalize Check-in</button>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    document.getElementById('finalize').addEventListener('click', function(event) {
+        window.location.href = '/?checkin=true';
+    });
+    const depsosit = document.querySelector('#deposit');
+    deposit.addEventListener('click', (e) => {
+        deposit.parentElement.innerHTML =
+        `
+        <button id="loader-button" class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span role="status">Loading...</span>
+        </button>
+        `
+        setTimeout(() => {
+            document.querySelector('#loader-button').style.display = 'none';
+            document.querySelector("#success-div").style.display = '';
+        }, 1500);
+    })
+</script>
