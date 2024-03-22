@@ -4,7 +4,7 @@ class CheckoutForm extends HTMLElement {
         this.generateBillButton.addEventListener('click', () =>
             this.postCheckout()
         );
-        this.estimatedCostTextarea = this.querySelector('#estimatedCost');
+        this.estimatedCostTextarea = this.querySelector('#EstimatedCost');
         // this.agreementButton = this.querySelector('#submitAgreement');
         // this.depositButton = this.querySelector('#subdmitDeposit');
         // this.printButton = this.querySelector('#printButton');
