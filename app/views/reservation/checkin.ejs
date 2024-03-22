@@ -1,4 +1,5 @@
-<form>
+<script type="module" src="/javascripts/checkinForm.component.js"></script>
+<checkin-form>
     <div class="container my-5">
         <h1 class="mb-4 text-center">Check-In Process</h1>
         <div class="card">
@@ -73,21 +74,18 @@
                 <p>Rental Rate: <b><%= reservation.vehicle.dailyPrice %>$/day</b></p>
                 <p>Additional Services (if any): 
                     <b>
-                    <%
-                        if (reservation.accessories.length > 0) {
-                            for (let i = 0; i < reservation.accessories.length; i++) {
-                                if (i === reservation.accessories.length - 2) { // Second to last item
-                                    %><%= reservation.accessories[i].name %> and <% 
-                                } else if (i === reservation.accessories.length - 1) { // Last item
-                                    %><%= reservation.accessories[i].name %><%
-                                } else { // Other items
-                                    %><%= reservation.accessories[i].name %>, <% 
-                                }
-                            }
-                        }
-                    %>
+                    <% if (reservation.accessories.length > 0) { %>
+                        <% for (let i = 0; i < reservation.accessories.length; i++) { %>
+                            <% if (i === reservation.accessories.length - 2) { %>
+                                <%= reservation.accessories[i].name %> and  
+                            <% } else if (i === reservation.accessories.length - 1) { %>
+                                <%= reservation.accessories[i].name %>
+                            <% } else { %>
+                                <%= reservation.accessories[i].name %>,
+                            <% } %>
+                        <% } %>
+                    <% } %>
                     </b>
-
                 </p>
 
                 <h3 class="mt-4">4. Rental Terms and Conditions:</h3>  
@@ -180,7 +178,7 @@
                 
 
                 <div id="agreement-div" class="text-center">
-                    <button type="submit" id="agreement" class="btn btn-primary">Submit Agreement</button>
+                    <button type="submit" id="submitAgreement" class="btn btn-primary"><i class="me-2 bi bi-pen"></i>Submit Agreement</button>
                 </div>
                 <div id="agreement-success-div" class="d-flex gap-2 justify-content-between" style="display: none !important;">
                     <h4>Agreement Submitted.</h4>
@@ -194,11 +192,11 @@
                     account, using the credit card on file.
                 </p>
                 <div>
-                    <button id="deposit" type="submit" class="btn btn-primary">Perform Deposit</button>
+                    <button id="subdmitDeposit" type="submit" class="btn btn-primary"><i class="me-2 bi bi-coin"></i>Perform Deposit</button>
                 </div>
                 <div id="success-div" class="d-flex gap-2 justify-content-between" style="display: none !important;">
                     <h4>Deposit was successful.</h4>
-                    <button id="finalize" class="btn btn-success">Finalize Check-in</button>
+                    <button id="checkinSubmit" class="btn btn-success">Finalize Check-in<i class="ms-2 bi bi-check2-all"></i></button>
                 </div>
             </div>
         </div>
@@ -206,42 +204,5 @@
             <button id="printButton" class="btn btn-secondary"><i class="bi bi-printer"></i> Print</button>
         </div>
     </div>
-</form>
-
-<script>
-    document.getElementById('finalize').addEventListener('click', function(event) {
-        window.location.href = '/?checkin=true';
-    });
-    const depsosit = document.querySelector('#deposit');
-    deposit.addEventListener('click', (e) => {
-        deposit.parentElement.innerHTML =
-        `
-        <button id="loader-button" class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span role="status">Loading...</span>
-        </button>
-        `
-        setTimeout(() => {
-            document.querySelector('#loader-button').style.display = 'none';
-            document.querySelector("#success-div").style.display = '';
-        }, 1500);
-    })
-    const agreement = document.querySelector('#agreement');
-    agreement.addEventListener('click', (e) => {
-        agreement.parentElement.innerHTML =
-        `
-        <button class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span role="status">Loading...</span>
-        </button>
-        `
-        setTimeout(() => {
-            document.querySelector('#agreement-div').style.display = 'none';
-            document.querySelector("#agreement-success-div").style.display = '';
-        }, 1000);
-    })
-    
-    document.getElementById('printButton').addEventListener('click', function() {
-        window.print();
-    });
-</script>
+<script type="module" src="/javascripts/checkinForm.component.js"></script>
+</checkin-form>
