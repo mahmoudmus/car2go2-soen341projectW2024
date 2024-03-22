@@ -16,7 +16,7 @@ class BranchPicker extends HTMLElement {
         });
         this.branches = (await response.json()).branches;
         const display = this.getAttribute('address') ? 'address' : 'name';
-        for (branch of this.branches) {
+        for (const branch of this.branches) {
             this.addOption({ value: branch._id, name: branch[display] });
         }
     }
