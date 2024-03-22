@@ -127,8 +127,11 @@
                 <label for="signatureRenter" class="form-label">Renter Signature:</label>
                 <input type="text" class="form-control" id="signatureRenter">
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit Agreement</button>
+            <div id="agreement-div" class="text-center">
+                <button type="submit" id="agreement" class="btn btn-primary">Submit Agreement</button>
+            </div>
+            <div id="agreement-success-div" class="d-flex gap-2 justify-content-between" style="display: none !important;">
+                <h4>Agreement Submitted.</h4>
             </div>
         </div>
     </div>
@@ -165,5 +168,19 @@
             document.querySelector('#loader-button').style.display = 'none';
             document.querySelector("#success-div").style.display = '';
         }, 1500);
+    })
+    const agreement = document.querySelector('#agreement');
+    agreement.addEventListener('click', (e) => {
+        agreement.parentElement.innerHTML =
+        `
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span role="status">Loading...</span>
+        </button>
+        `
+        setTimeout(() => {
+            document.querySelector('#agreement-div').style.display = 'none';
+            document.querySelector("#agreement-success-div").style.display = '';
+        }, 1000);
     })
 </script>
