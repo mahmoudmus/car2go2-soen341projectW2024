@@ -41,11 +41,14 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
         user = req.user;
     }
 
+    const vehicle = await Vehicle.findById(vehicleId, 'branch');
     const newReservation = new Reservation({
         user: user._id,
         vehicle: vehicleId,
         startDate,
         endDate,
+        pickupLocation: vehicle.branch,
+        dropoffLocation: vehicle.branch,
         cost,
     });
 
