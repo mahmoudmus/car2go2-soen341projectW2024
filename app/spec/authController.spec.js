@@ -1,5 +1,11 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { authenticate, login, logout, visitSignup } = require('../controllers/authController');
+const {
+    authenticate,
+    login,
+    logout,
+    visitSignup,
+} = require('../controllers/authController');
 const User = require('../models/user');
 
 describe('Auth Controller', function () {
@@ -7,11 +13,13 @@ describe('Auth Controller', function () {
         spyOn(jwt, 'verify').and.callFake((token, secret, callback) => {
             callback(null, { id: 'userId' }); // Simulate successful verification
         });
-        spyOn(User, 'findById').and.returnValue(Promise.resolve({
-            _id: 'userId',
-            email: 'user@example.com',
-            verifyPassword: jasmine.createSpy('verifyPassword'),
-        }));
+        spyOn(User, 'findById').and.returnValue(
+            Promise.resolve({
+                _id: 'userId',
+                email: 'user@example.com',
+                verifyPassword: jasmine.createSpy('verifyPassword'),
+            })
+        );
 
         const req = {
             cookies: { jwt: 'valid-token' },
@@ -30,11 +38,15 @@ describe('Auth Controller', function () {
     });
 
     it('should log in user, set cookie and redirect', async function () {
-        spyOn(User, 'findOne').and.returnValue(Promise.resolve({
-            _id: 'userId',
-            email: 'user@example.com',
-            verifyPassword: jasmine.createSpy('verifyPassword').and.returnValue(Promise.resolve(true)),
-        }));
+        spyOn(User, 'findOne').and.returnValue(
+            Promise.resolve({
+                _id: 'userId',
+                email: 'user@example.com',
+                verifyPassword: jasmine
+                    .createSpy('verifyPassword')
+                    .and.returnValue(Promise.resolve(true)),
+            })
+        );
         spyOn(jwt, 'sign').and.returnValue('signed-jwt-token');
 
         const req = {
@@ -48,8 +60,14 @@ describe('Auth Controller', function () {
 
         await login(req, res);
 
-        expect(User.findOne).toHaveBeenCalledWith({ email: 'user@example.com' });
-        expect(res.cookie).toHaveBeenCalledWith('jwt', 'signed-jwt-token', jasmine.any(Object));
+        expect(User.findOne).toHaveBeenCalledWith({
+            email: 'user@example.com',
+        });
+        expect(res.cookie).toHaveBeenCalledWith(
+            'jwt',
+            'signed-jwt-token',
+            jasmine.any(Object)
+        );
         expect(res.redirect).toHaveBeenCalledWith('/');
     });
 
