@@ -13,6 +13,7 @@ router.get('/emailbill/', reservationController.emailBill); // @todo change to p
 
 // Read
 router.get('/', reservationController.readAllReservations);
+router.post('/:id/bill', reservationController.generateBill);
 
 // Checkin
 router.get('/checkin/:id', reservationController.startCheckin);

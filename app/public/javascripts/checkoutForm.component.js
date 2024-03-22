@@ -2,7 +2,7 @@ class CheckoutForm extends HTMLElement {
     connectedCallback() {
         this.generateBillButton = this.querySelector('#generateBill');
         this.generateBillButton.addEventListener('click', () =>
-            this.postCheckout()
+            this.generateBill()
         );
         // this.agreementButton = this.querySelector('#submitAgreement');
         // this.depositButton = this.querySelector('#subdmitDeposit');
@@ -35,6 +35,27 @@ class CheckoutForm extends HTMLElement {
         // this.printButton.addEventListener('click', function () {
         //     window.print();
         // });
+    }
+
+    async generateBill() {
+        const response = await fetch(
+            `/reservations/${this.reservationId}/bill`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ damagesCost: 100 }),
+            }
+        );
+        if (response.ok) {
+            const html = await response.text();
+            this.querySelector('#billTarget').innerHTML = html;
+        } else {
+            document
+                .querySelector('#toast')
+                .caution('Could not generate final bill.');
+        }
     }
 
     async postCheckout() {

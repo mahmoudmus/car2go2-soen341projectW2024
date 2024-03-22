@@ -334,3 +334,15 @@ exports.startCheckin = asyncHandler(async (req, res, next) => {
         .exec();
     res.render('reservation/checkin', { reservation });
 });
+
+exports.generateBill = asyncHandler(async (req, res, next) => {
+    const { damagesCost } = req.body;
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(reservationId)
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
+        .populate('user')
+        .populate('vehicle')
+        .populate('accessories');
+    res.render('reservation/bill', { reservation, damagesCost, layout: false });
+});
