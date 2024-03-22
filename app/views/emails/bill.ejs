@@ -31,121 +31,29 @@
             }
         </style>
     </head>
-    <body class="container">
-        <!-- @todo: create final bill, change the content below -->
-        <h1 class="gradient-text fw-bold">Your Booking Confirmation</h1>
+    <div class="container">
+        <h1 class="gradient-text">Bill Confirmation</h1>
         <p class="text-secondary">Reservation ID: <%= reservation._id%></p>
         <p class="pb-2">
-            Please review the reservation details and pickup instructions
-            carefully to ensure a smooth rental experience.
+            Please review the bills details 
         </p>
-        <h3>Reservation Details</h3>
-        <hr />
-        <ul class="d-flex flex-column gap-3">
-            <li>
-                Your car will be ready for pickup at
-                <span class="gradient-text">noon</span> on
-                <span class="gradient-text"
-                    ><%= reservation.startDate.toLocaleString('en-US', { year:
-                    'numeric', month: 'long', day: 'numeric' }) %></span
-                >, at the
-                <span class="gradient-text"
-                    ><%= reservation.pickupLocation.name %></span
-                >. <br />(<%= reservation.pickupLocation.address %>)
-            </li>
-            <li>
-                Your are expected to drop off your car before
-                <span class="gradient-text">10:00 AM</span> on
-                <span class="gradient-text"
-                    ><%= reservation.endDate.toLocaleString('en-US', { year:
-                    'numeric', month: 'long', day: 'numeric' }) %></span
-                >, at the
-                <span class="gradient-text"
-                    ><%= reservation.pickupLocation.name %></span
-                >. <br />(<%= reservation.pickupLocation.address %>)
-            </li>
-            <li>
-                The total cost of your reservation is
-                <span class="gradient-text">$<%= reservation.cost %> CAD</span>.
-            </li>
-        </ul>
-        <p class="text-secondary">
-            Although you provided credit card information at the time of your
-            reservation, you are only expected to pay the total amount at
-            checkout.
-        </p>
-
-        <h3>Vehicle Details</h3>
-        <hr />
+        <hr>
+        <hr>
+        <h3>Payment Details</h3>
         <ul>
-            <li>
-                <%= reservation.vehicle.details.model %> (<%=
-                reservation.vehicle.details.colour %>)
-            </li>
-            <li>
-                <%= reservation.vehicle.details.seats %> seats, <%=
-                reservation.vehicle.details.doors %> doors, and <%=
-                reservation.vehicle.details.mileage %> km of mileage. This car
-                <%= reservation.vehicle.details.isAutomatic ? 'is' : 'is not' %>
-                automatic and has a <%= reservation.vehicle.details.engineType
-                %> engine. Built by <%= reservation.vehicle.details.make %> in
-                <%= reservation.vehicle.details.year %>.
-            </li>
+            <li>Payment Method: <span class="gradient-text">Credit Card</span></li>
+            <li>Card Number: <span class="gradient-text">**** **** **** 1234</span></li>
+            <li>Expiration Date: <span class="gradient-text">12/24</span></li>
         </ul>
-        <% if (reservation.accessories.length !== 0) { %>
-        <p>
-            Your vehicle will come equiped with the following accessories &
-            additional services:
-        </p>
+        <hr>
+        <h3>Transaction Summary</h3>
         <ul>
-            <% for (const accessory of reservation.accessories) { %>
-            <li><%= accessory.name %></li>
-            <% } %>
+            <li>Rental Charges: <span class="gradient-text">$300.00 CAD</span></li>
+            <li>Insurance Charges: <span class="gradient-text">$100.00 CAD</span></li>
+            <li>Taxes: <span class="gradient-text">$50.00 CAD</span></li>
         </ul>
-        <% } %>
-
-        <h3>Pickup Instructions</h3>
-        <hr />
-        <div>
-            <p>
-                On the day your reservation is scheduled to begin, please arrive
-                to the designated pick-up location as ealy as noon. You'll be
-                expected to present the following artifacts:
-            </p>
-            <ul>
-                <li>This email as your booking confirmation.</li>
-                <li>A valid driver's license.</li>
-                <li>
-                    The credit card used to make the reservation (that which is
-                    associated with your account).
-                </li>
-            </ul>
-            <p>The check-in process consists of the following steps:</p>
-            <ul>
-                <li>The vehicle is inspected for damages.</li>
-                <li>The rental agreement is signed.</li>
-                <li>A $500 CAD deposit is taken.</li>
-                <li>The keys are handed over.</li>
-            </ul>
-        </div>
-
-        <h3>Dropoff Instructions</h3>
-        <hr />
-        <p>
-            Upon returning the vehicle on the last day of your reservation, a
-            customer service representative will walk you through the following
-            checkout steps:
-        </p>
-        <ul>
-            <li>
-                The car is inspected for damages and a final bill is generated.
-            </li>
-            <li>The cost of the reservation is payed for in full.</li>
-            <li>The deposit is returned in full, barring any complications.</li>
-        </ul>
-        <p>
-            Thank you again for choosing <span class="gradient-text">Gas</span>.
-            See you soon!
-        </p>
-    </body>
+        <hr>
+        <p class="text-secondary">Thank you for your reservation. We appreciate your business!</p>
+    </div>
+</body>
 </html>
