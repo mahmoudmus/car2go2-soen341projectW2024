@@ -5,6 +5,7 @@ class BookingForm extends HTMLElement {
         this.initializeAccessories();
         this.initializeDateRangePicker();
         this.initializeContinueButton();
+        
     }
 
     async initializeDateRangePicker() {
@@ -80,8 +81,8 @@ class BookingForm extends HTMLElement {
             this.renderInvoiceAccessory(checkbox);
         }
     }
-
-    initializeContinueButton() {
+    
+    initializeContinueButton() { 
         this.continueButton = this.querySelector('#continue');
         this.continueButton.addEventListener('click', () => {
             if (!this.branchPicker.value) {
@@ -89,18 +90,40 @@ class BookingForm extends HTMLElement {
                 document
                     .querySelector('#toast')
                     .warn('Please select a dropoff location.');
+                
+                
             } else {
+                this.showConfirmationModal();
                 // @todo
                 // set the confirmModal details, see createReservation() for an example of how res details are extracted
                 // this.confirmModal.show();
-                this.createReservation(); // @delete
             }
         });
+        this.confirmModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
         // @todo
-        // this.confirmModal = new bootstrap.Modal(this.querySelector(''));
-        // this.querySelector('').addEventListener('click', this.createReservation); // for the confirm button
+        // this.confirmModal = new bootstrap.Modal(this.querySelector('#modalid'));
+        // this.querySelector('#confirm').addEventListener('click', this.createReservation); // for the confirm button
     }
 
+    showConfirmationModal() {
+        const selectedDates = this.calendar.selectedDates;
+        if (selectedDates.length === 2) {
+            const startDateStr = selectedDates[0].toLocaleDateString();
+            const endDateStr = selectedDates[1].toLocaleDateString();
+            document.getElementById('confirm-dates').textContent = `${startDateStr} to ${endDateStr}`;
+    }
+    document.getElementById('confirm-dropoff-location').textContent = this.querySelector('#drop-off-label').textContent;
+
+    const servicesList = document.getElementById('confirm-services');
+    servicesList.innerHTML = ''; // Clear existing list items
+    this.selectedCheckboxes.forEach(checkbox => {
+        const serviceItem = document.createElement('li');
+        serviceItem.textContent = checkbox.nextElementSibling.textContent.trim(); // Assuming the label text is next to the checkbox
+        servicesList.appendChild(serviceItem);
+    });
+    document.getElementById('confirm-total-price').textContent = this.price;
+    this.confirmModal.show();
+    }
     renderInvoiceAccessory(checkbox) {
         const label = this.querySelector(`div[for="${checkbox.id}"]`);
         if (checkbox.checked) {
@@ -147,7 +170,6 @@ class BookingForm extends HTMLElement {
     }
 
     async createReservation() {
-        const dropoffLocation = this.branchPicker.value;
         const accessories = this.selectedCheckboxes.map(
             (checkbox) => checkbox.value
         );
@@ -155,7 +177,7 @@ class BookingForm extends HTMLElement {
             startDate: this.calendar.selectedDates[0],
             endDate: this.calendar.selectedDates[1],
             vehicleId: this.vehicleId,
-            dropoffLocation,
+            dropoffLocation: this.branchPicker.value,
             accessories,
             cost: parseFloat(this.querySelector('#total').innerHTML, 10),
         };
@@ -173,7 +195,7 @@ class BookingForm extends HTMLElement {
                 // make api call to send confirmation email
                 window.location.href = '/';
             } else {
-                // window.location.href = '/'; @todo redirect to payment form to collect payment details
+                // window.location.href = '/payment'; @todo redirect to payment form to collect payment details
                 // payment form confirmation will make api call to send confirmation email
             }
         } else {
