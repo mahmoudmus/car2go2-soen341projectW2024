@@ -8,6 +8,13 @@ class ReservationCard extends HTMLElement {
         copyButton.addEventListener('click', () =>
             this.copyToClipboard('Reservation ID copied to clipboard.')
         );
+        const checkinButton = this.querySelector('.checkin-reservation');
+        if (checkinButton) {
+            checkinButton.addEventListener('click', () => {
+                // @todo update this route if mahmoud already implemented one.
+                document.location.href = `reservations/checkin/${this.reservationId}`;
+            });
+        }
     }
 
     async deleteReservation() {

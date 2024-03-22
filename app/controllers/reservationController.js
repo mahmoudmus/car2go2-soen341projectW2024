@@ -46,7 +46,7 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllReservations = asyncHandler(async (req, res, next) => {
-    if (!req.user || req.user.type !== 'admin') {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
         return res.render('user/login', {
             error: 'This page is restricted.',
         });
@@ -146,3 +146,10 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
     }
     res.redirect('/myreservations');
 });
+
+// @todo delete if mahmoud already set this up
+// exports.startCheckin = asyncHandler(async (req, res, next) => {
+//     const reservationId = req.params.id;
+//     const reservation = await Reservation.findById(vehicleId);
+//     document.querySelector('reservation');
+// });
