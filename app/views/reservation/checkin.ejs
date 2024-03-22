@@ -1,7 +1,89 @@
 <div class="container">
     <h1>Check In Process</h1>
-    <div><%= reservation.vehicle._id %></div>
-    <% for (const accessory of reservation.accessories) { %>
-        <%= accessory.name %>
-    <% } %>
+    <p>Car Rental Agreement</p>
+    <p>Rental Agreement Number: <% %></p>
+    <p>This Rental Agreement ("Agreement") is entered into between [Car Rental Agency Name], 
+        located at [Address], hereinafter referred to as the "Rental Company," and the individual or entity 
+        identified below, hereinafter referred to as the "Renter":</p>
+    <p><br>1. Renter's Information:</p>
+    <p>Name: <%= reservation.user.name %></p>
+    <p>Address: <% reservation.user.address %></p>
+    
+    <!-- @todo phone get phone number -->
+    <!-- <p>Contact Number: <% reservation.user.address %></p> -->
+    <p>Contact Number: 514 561 1738 </p>
+
+    <p>Email Address: <% reservation.user.email %></p>
+    
+    <!-- @todo get actual driver license number -->
+    <p>Driver's License Number: L1531-171274-08</p>
+
+    <p><br>2. Vehicle Information:</p>
+    <p>Make: <%  reservation.vehicle.details.make  %></p>
+    <p>Model: <%  reservation.vehicle.details.model  %></p>
+    <p>Year: <%  reservation.vehicle.details.year  %></p>
+    
+    <!-- @todo get actual License Plate Number-->
+    <p>License Plate Number: YBG 722</p>
+    
+    <p>Vehicle Identification Number (VIN): <%= reservation.vehicle._id %></p>
+    <p>Colour: <% reservation.vehicle.details.colour %></p>
+
+    <p><br>3. Rental Details:</p>
+    <p>Rental Start Date: <% reservation.startDate %></p>
+    <p>Rental End Date: <% reservation.endDate %></p>
+    <p>Pick-up Location: <% reservation.pickupLocation %></p>
+    <p>Drop-off Location: <% reservation.dropoffLocation %></p>
+    
+    <!--Rental Period: can i do -? -->
+    <p>Rental Period: <% %></p>
+    
+    <p>Mileage Limit (if applicable): <% reservation.vehicle.Mileage %>km</p>
+    <p>Rental Rate: <% reservation.vehicle.dailyPrice %>$/day</p>
+    <p>Additional Services (if any):
+        <% for (const accessory of reservation.accessories) { %>
+            <%= accessory.name %>
+        <% } %>
+    </p>
+    <p><br>4. Rental Terms and Conditions:</p>  
+    <p>The Renter acknowledges receiving the vehicle described above in good condition and agrees to return it to the Rental Company in the same condition, subject to normal wear and tear.
+        The Renter agrees to use the vehicle solely for personal or business purposes and not for any illegal activities.
+        The Renter agrees to pay the Rental Company the agreed-upon rental rate for the specified rental period. Additional charges may apply for exceeding the mileage limit, late returns, fuel refueling, or other damages.
+        The Renter agrees to bear all costs associated with traffic violations, tolls, and parking fines incurred during the rental period.
+        The Renter acknowledges that they are responsible for any loss or damage to the vehicle, including theft, vandalism, accidents, or negligence, and agrees to reimburse the Rental Company for all repair or replacement costs.
+        The Renter agrees to return the vehicle to the designated drop-off location at the agreed-upon date and time. Failure to do so may result in additional charges.
+        The Rental Company reserves the right to terminate this agreement and repossess the vehicle without prior notice if the Renter breaches any terms or conditions of this agreement.
+        The Renter acknowledges receiving and reviewing a copy of the vehicle's insurance coverage and agrees to comply with all insurance requirements during the rental period.
+        
+        5. Indemnification:
+        The Renter agrees to indemnify and hold harmless the Rental Company, its employees, agents, and affiliates from any claims, liabilities, damages, or expenses arising out of or related to the Renter's use of the vehicle.
+
+        6. Governing Law:
+
+        This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction]. Any disputes arising under or related to this Agreement shall be resolved exclusively by the courts of [Jurisdiction].
+
+        7. Entire Agreement:
+
+        This Agreement constitutes the entire understanding between the parties concerning the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral.
+
+        8. Signatures:
+
+        The parties hereto have executed this Agreement as of the date first written above.
+
+        Rental Company:
+
+        Signature: ___________________________
+
+        Print Name: __________________________
+
+        Date: _______________________________
+
+        Renter:
+
+        Signature: ___________________________
+
+        Print Name: __________________________
+
+        Date: _____________________________
+    </p>
 </div>
