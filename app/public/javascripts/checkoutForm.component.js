@@ -2,7 +2,7 @@ class CheckoutForm extends HTMLElement {
     connectedCallback() {
         this.generateBillButton = this.querySelector('#generateBill');
         this.generateBillButton.addEventListener('click', () =>
-            this.postCheckout()
+            this.generateBill()
         );
         this.estimatedCostTextarea = this.querySelector('#EstimatedCost');
         // this.agreementButton = this.querySelector('#submitAgreement');
@@ -39,6 +39,7 @@ class CheckoutForm extends HTMLElement {
     }
 
     async generateBill() {
+        const damagesCost = parseFloat(this.estimatedCostTextarea.value);
         const response = await fetch(
             `/reservations/${this.reservationId}/bill`,
             {
@@ -46,7 +47,7 @@ class CheckoutForm extends HTMLElement {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ damagesCost: 100 }),
+                body: JSON.stringify({ damagesCost }),
             }
         );
         if (response.ok) {
@@ -60,7 +61,6 @@ class CheckoutForm extends HTMLElement {
     }
 
     async postCheckout() {
-        const estimatedCost = this.estimatedCostTextarea.value;
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'PATCH',
             headers: {
