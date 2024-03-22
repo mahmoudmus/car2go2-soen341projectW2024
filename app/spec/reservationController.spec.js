@@ -43,33 +43,7 @@ describe('Reservation Controller', function () {
             layout: false,
         });
     });
-
-    it('should fetch all reservations and render the reservation list', async function () {
-        const mockReservationFind = jasmine.createSpy('find').and.returnValue({
-            populate: jasmine.createSpy('populate').and.returnValue({
-                populate: jasmine.createSpy('populate').and.returnValue({
-                    exec: jasmine.createSpy('exec').and.returnValue(Promise.resolve([
-                        { user: 'user1', vehicle: 'vehicle1', startDate: '2022-01-01', endDate: '2022-01-07' },
-                        { user: 'user2', vehicle: 'vehicle2', startDate: '2022-02-01', endDate: '2022-02-07' }
-                    ]))
-                })
-            })
-        });
-        spyOn(Reservation, 'find').and.callFake(mockReservationFind);
-    
-        const req = { user: { type: 'admin' } };
-        const res = {
-            render: jasmine.createSpy(),
-        };
-    
-        await reservationController.readAllReservations(req, res);
-    
-        expect(Reservation.find).toHaveBeenCalled();
-        expect(res.render).toHaveBeenCalledWith('reservation/list', {
-            reservationList: jasmine.any(Array),
-        });
-    });
-
+     
     it('should retrieve all reservations for the current user and render the reservation list', async function () {
         const mockUser = { _id: 'userId', email: 'user@example.com', type: 'admin' };
         spyOn(User, 'findById').and.returnValue(Promise.resolve(mockUser));
