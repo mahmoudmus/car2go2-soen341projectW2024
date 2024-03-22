@@ -246,9 +246,9 @@ exports.servePayment = asyncHandler(async (req, res, next) => {
     res.render('reservation/payment');
 });
 
-exports.returnCar = (req, res) => {
+exports.returnCar = asyncHandler(async (req, res, next) => {
     res.render('reservation/return', { reservationId: req.params.id });
-};
+});
 
 exports.processPayment = asyncHandler(async (req, res, next) => {
     const { cardNumber, cvv, expiryDate, cardHolderName, address, postalCode } =

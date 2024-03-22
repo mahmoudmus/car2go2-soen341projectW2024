@@ -1,38 +1,39 @@
-<div class="container"> 
-<div class="row">
-    <form class="col-md-8 offset-md-2">
-        <div class="form-group mb-3">
-            <label for="type" class="mb-1">Car Damages</label>
-            <textarea class="form-control"></textarea>
-        </div>
-        <div class="form-group mb-3">
-            <label for="depositAmount" class="mb-1">Deposit Amount</label>
-            <input type="number" class="form-control" id="depositAmount" name="depositAmount" max="500">
-        </div>
-        <button type="button" class="btn btn-success redeem-deposit mb-3">
-            <i class="bi bi-cash"></i>
-            Redeem Deposit
-        </button>
+<script type="module" src="/javascripts/checkoutForm.component.js"></script>
+<checkout-form class="container" reservation-id="<%= reservationId %>">
+    <div class="row">
+        <form class="col-md-8 offset-md-2">
+            <div class="form-group mb-3">
+                <label for="type" class="mb-1">Car Damages</label>
+                <textarea class="form-control"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="depositAmount" class="mb-1">Deposit Amount</label>
+                <input type="number" class="form-control" id="depositAmount" name="depositAmount" max="500">
+            </div>
+            <button type="button" class="btn btn-success redeem-deposit mb-3">
+                <i class="bi bi-cash"></i>
+                Redeem Deposit
+            </button>
+            <div class="form-group mb-3">
+                <label for="paymentMethodId" class="mb-1">Payment Method</label>
+                <select
+                    class="form-control"
+                    id="paymentMethodId"
+                    name="paymentMethodId"
+                    required
+                >
+                    <option value="" selected>Credit Card</option>
+                    <option value="" selected>Cash</option>
+                    <option value="" disabled selected>
+                        Select Payment Method
+                    </option>
+                </select>
+            </div>
+            <button id="generateBill" type="button" class="btn btn-success">
+                <i class="bi bi-receipt"></i>
+                Generate Final Bill
+            </button>
+        </form>
+    </div>
+</checkout-form>
 
-        <div class="form-group mb-3">
-            <label for="paymentMethodId" class="mb-1">Payment Method</label>
-            <select
-                class="form-control"
-                id="paymentMethodId"
-                name="paymentMethodId"
-                required
-            >
-                <option value="" selected>Credit Card</option>
-                <option value="" selected>Cash</option>
-                <option value="" disabled selected>
-                    Select Payment Method
-                </option>
-            </select>
-        </div>
-        <button type="button" class="btn btn-success">
-            <i class="bi bi-receipt"></i>
-            Generate Final Bill
-        </button>
-    </form>
-</div>
-</div>
