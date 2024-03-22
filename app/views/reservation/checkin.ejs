@@ -1,89 +1,96 @@
-<div class="container">
-    <h1>Check In Process</h1>
-    <p>Car Rental Agreement</p>
-    <p>Rental Agreement Number: <% %></p>
-    <p>This Rental Agreement ("Agreement") is entered into between [Car Rental Agency Name], 
-        located at [Address], hereinafter referred to as the "Rental Company," and the individual or entity 
-        identified below, hereinafter referred to as the "Renter":</p>
-    <p><br>1. Renter's Information:</p>
-    <p>Name: <%= reservation.user.name %></p>
-    <p>Address: <% reservation.user.address %></p>
-    
-    <!-- @todo phone get phone number -->
-    <!-- <p>Contact Number: <% reservation.user.address %></p> -->
-    <p>Contact Number: 514 561 1738 </p>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Check-In Process</h1>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Car Rental Agreement</h2>
+            <p class="card-text">Rental Agreement Number: <% %></p>
+            <p>This Rental Agreement ("Agreement") is entered into between Gas, located at <% reservation.pickupLocation %>, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":</p>
+            <h3 class="mt-4">1. Renter's Information:</h3>
+            <p>Name: <b><%= reservation.user.name %></b></p>
+            <p>Address: <b><%= reservation.user.address %></b></p>
+            <p>Contact Number: 514 561 1738 </p>
+            <p>Email Address: <b><%= reservation.user.email %></b></p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="driversLicenseNumber" class="form-label">Driver's License Number:</label>
+                        <input type="text" class="form-control form-control-sm" id="driversLicenseNumber" name="driversLicenseNumber" placeholder="L1531-171274-08">
+                    </div>
+                </div>
+                
+            </div>
+            
+            
 
-    <p>Email Address: <% reservation.user.email %></p>
-    
-    <!-- @todo get actual driver license number -->
-    <p>Driver's License Number: L1531-171274-08</p>
+            <h3 class="mt-4">2. Vehicle Information:</h3>
+            <p>Make: <b><%= reservation.vehicle.details.make %></b></p>
+            <p>Model: <b><%= reservation.vehicle.details.model %></b></p>
+            <p>Year: <b><%= reservation.vehicle.details.year %></b></p>
+            <p>License Plate Number: YBG 722</p>
+            <p>Vehicle Identification Number (VIN): <b><%= reservation.vehicle._id %></b></p>
+            <p>Colour: <b><%= reservation.vehicle.details.colour %></b></p>
 
-    <p><br>2. Vehicle Information:</p>
-    <p>Make: <%  reservation.vehicle.details.make  %></p>
-    <p>Model: <%  reservation.vehicle.details.model  %></p>
-    <p>Year: <%  reservation.vehicle.details.year  %></p>
-    
-    <!-- @todo get actual License Plate Number-->
-    <p>License Plate Number: YBG 722</p>
-    
-    <p>Vehicle Identification Number (VIN): <%= reservation.vehicle._id %></p>
-    <p>Colour: <% reservation.vehicle.details.colour %></p>
+            <h3 class="mt-4">3. Rental Details:</h3>
+            <p>Rental Start Date: <b><%= reservation.startDate %></b></p>
+            <p>Rental End Date: <b><%= reservation.endDate %></b></p>
+            <p>Pick-up Location: <%= reservation.pickupLocation %></p>
+            <p>Drop-off Location: <%= reservation.dropoffLocation %></p>
+            <p>Rental Period: <%= reservation.duration %></p>
+            <p>Mileage Limit (if applicable): <%= reservation.vehicle.details.mileage %> km</p>
+            <p>Rental Rate: <%= reservation.vehicle.dailyPrice %>$/day</p>
+            <p>Additional Services (if any): 
+                <%
+                    if (reservation.accessories.length > 0) {
+                        for (let i = 0; i < reservation.accessories.length; i++) {
+                            if (i === reservation.accessories.length - 2) { // Second to last item
+                                %><%= reservation.accessories[i].name %> and <% 
+                            } else if (i === reservation.accessories.length - 1) { // Last item
+                                %><%= reservation.accessories[i].name %><%
+                            } else { // Other items
+                                %><%= reservation.accessories[i].name %>, <% 
+                            }
+                        }
+                    }
+                %>
 
-    <p><br>3. Rental Details:</p>
-    <p>Rental Start Date: <% reservation.startDate %></p>
-    <p>Rental End Date: <% reservation.endDate %></p>
-    <p>Pick-up Location: <% reservation.pickupLocation %></p>
-    <p>Drop-off Location: <% reservation.dropoffLocation %></p>
-    
-    <!--Rental Period: can i do -? -->
-    <p>Rental Period: <%= reservation.duration %></p>
-    
-    <p>Mileage Limit (if applicable): <% reservation.vehicle.Mileage %>km</p>
-    <p>Rental Rate: <% reservation.vehicle.dailyPrice %>$/day</p>
-    <p>Additional Services (if any):
-        <% for (const accessory of reservation.accessories) { %>
-            <%= accessory.name %>
-        <% } %>
-    </p>
-    <p><br>4. Rental Terms and Conditions:</p>  
-    <p>The Renter acknowledges receiving the vehicle described above in good condition and agrees to return it to the Rental Company in the same condition, subject to normal wear and tear.
-        The Renter agrees to use the vehicle solely for personal or business purposes and not for any illegal activities.
-        The Renter agrees to pay the Rental Company the agreed-upon rental rate for the specified rental period. Additional charges may apply for exceeding the mileage limit, late returns, fuel refueling, or other damages.
-        The Renter agrees to bear all costs associated with traffic violations, tolls, and parking fines incurred during the rental period.
-        The Renter acknowledges that they are responsible for any loss or damage to the vehicle, including theft, vandalism, accidents, or negligence, and agrees to reimburse the Rental Company for all repair or replacement costs.
-        The Renter agrees to return the vehicle to the designated drop-off location at the agreed-upon date and time. Failure to do so may result in additional charges.
-        The Rental Company reserves the right to terminate this agreement and repossess the vehicle without prior notice if the Renter breaches any terms or conditions of this agreement.
-        The Renter acknowledges receiving and reviewing a copy of the vehicle's insurance coverage and agrees to comply with all insurance requirements during the rental period.
-        
-        5. Indemnification:
-        The Renter agrees to indemnify and hold harmless the Rental Company, its employees, agents, and affiliates from any claims, liabilities, damages, or expenses arising out of or related to the Renter's use of the vehicle.
+            </p>
 
-        6. Governing Law:
+            <h3 class="mt-4">4. Rental Terms and Conditions:</h3>  
+            <p>- The Renter acknowledges receiving the vehicle described above in good condition and agrees to return it to the Rental Company in the same condition, subject to normal wear and tear.
+                <br>- The Renter agrees to use the vehicle solely for personal or business purposes and not for any illegal activities.
+                <br>- The Renter agrees to pay the Rental Company the agreed-upon rental rate for the specified rental period. Additional charges may apply for exceeding the mileage limit, late returns, fuel refueling, or other damages.
+                <br>- The Renter agrees to bear all costs associated with traffic violations, tolls, and parking fines incurred during the rental period.
+                <br>- The Renter acknowledges that they are responsible for any loss or damage to the vehicle, including theft, vandalism, accidents, or negligence, and agrees to reimburse the Rental Company for all repair or replacement costs.
+                <br>- The Renter agrees to return the vehicle to the designated drop-off location at the agreed-upon date and time. Failure to do so may result in additional charges.
+                <br>- The Rental Company reserves the right to terminate this agreement and repossess the vehicle without prior notice if the renter breaches any terms or conditions of this agreement.
+                <br>- The Renter acknowledges receiving and reviewing a copy of the vehicle's insurance coverage and agrees to comply with all insurance requirements during the rental period.
+                
+            </p>
+            
+            <h3 class="mt-4">5. Indemnification:</h3>
+            <p>- The Renter agrees to indemnify and hold harmless the Rental Company, its employees, agents, and affiliates from any claims, liabilities, damages, or expenses arising out of or related to the Renter's use of the vehicle.</p>
 
-        This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction]. Any disputes arising under or related to this Agreement shall be resolved exclusively by the courts of [Jurisdiction].
+            <h3 class="mt-4">6. Governing Law:</h3>
+            <!-- Jurisdiction-->
+            <p>This Agreement shall be governed by and construed in accordance with the laws of the Province of Quebec. Any disputes arising under or related to this Agreement shall be resolved exclusively by the courts of the Province of Quebec.</p>
 
-        7. Entire Agreement:
+            <h3 class="mt-4">7. Entire Agreement:</h3>
+            <p>This Agreement constitutes the entire understanding between the parties concerning the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral.
+            </p>
 
-        This Agreement constitutes the entire understanding between the parties concerning the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral.
-
-        8. Signatures:
-
-        The parties hereto have executed this Agreement as of the date first written above.
-
-        Rental Company:
-
-        Signature: ___________________________
-
-        Print Name: __________________________
-
-        Date: _______________________________
-
-        Renter:
-
-        Signature: ___________________________
-
-        Print Name: __________________________
-
-        Date: _____________________________
-    </p>
+            <h3 class="mt-4">8. Signatures:</h3>
+            <div class="mb-3">
+                <label for="signatureRentalCompany" class="form-label">Rental Company Signature:</label>
+                <input type="text" class="form-control" id="signatureRentalCompany">
+            </div>
+            <div class="mb-3">
+                <label for="signatureRenter" class="form-label">Renter Signature:</label>
+                <input type="text" class="form-control" id="signatureRenter">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Agreement</button>
+            </div>
+        </div>
+    </div>
 </div>
