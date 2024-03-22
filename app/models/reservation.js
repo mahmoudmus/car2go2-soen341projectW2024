@@ -29,7 +29,7 @@ const reservationSchema = new Schema({
 });
 
 reservationSchema.virtual('duration').get(function () {
-    return this.endDate - this.startDate;
+    return (this.endDate - this.startDate)/(1000 * 60 * 60 * 24);
 });
 
 reservationSchema.set('toJSON', { virtuals: true });

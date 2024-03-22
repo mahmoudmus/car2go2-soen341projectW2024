@@ -3,43 +3,60 @@
     <div class="card">
         <div class="card-body">
             <h2 class="card-title">Car Rental Agreement</h2>
-            <p class="card-text">Rental Agreement Number: <% %></p>
+            <p class="card-text">Rental Agreement Number: <% reservation._id %></p>
             <p>This Rental Agreement ("Agreement") is entered into between Gas, located at <% reservation.pickupLocation %>, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":</p>
             <h3 class="mt-4">1. Renter's Information:</h3>
-            <p>Name: <b><%= reservation.user.name %></b></p>
-            <p>Address: <b><%= reservation.user.address %></b></p>
-            <p>Contact Number: 514 561 1738 </p>
-            <p>Email Address: <b><%= reservation.user.email %></b></p>
             
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="driversLicenseNumber" class="form-label">Driver's License Number:</label>
-                        <input type="text" class="form-control form-control-sm" id="driversLicenseNumber" name="driversLicenseNumber" placeholder="L1531-171274-08">
-                    </div>
+            <div class="row align-items-center">
+                <div>
+                    <p>Name: <b><%= reservation.user.name %></b></p>
                 </div>
-                
+                <div>
+                    <p>Address: <b><%= reservation.user.address %></b></p>
+                </div>
+                <div class="col-auto mb-3">
+                    <label for="contactNumber" class="form-label">Contact Number:</label>
+                </div>
+                <div class="col-auto mb-3">
+                    <input type="tel" class="form-control form-control-sm" id="contactNumber" name="contactNumber" placeholder="Phone Number">
+                </div>
+                <div>
+                    <p>Email Address: <b><%= reservation.user.email %></b></p>
+                </div>
+                <div class="col-auto mb-3">
+                    <label for="driversLicenseNumber" class="form-label">Driver's License Number:</label>
+                </div>
+                <div class="col-auto mb-3">
+                    <input type="text" class="form-control form-control-sm" id="driversLicenseNumber" name="driversLicenseNumber" placeholder="License Number">
+                </div>
             </div>
-            
             
 
             <h3 class="mt-4">2. Vehicle Information:</h3>
             <p>Make: <b><%= reservation.vehicle.details.make %></b></p>
             <p>Model: <b><%= reservation.vehicle.details.model %></b></p>
             <p>Year: <b><%= reservation.vehicle.details.year %></b></p>
-            <p>License Plate Number: YBG 722</p>
+            <div class="row align-items-center">
+                <div class="col-auto mb-3">
+                    <label for="licensePlateNumber" class="form-label">License Plate Number:</label>
+                </div>
+                <div class="col-auto mb-3">
+                    <input type="text" class="form-control form-control-sm" id="licensePlateNumber" name="licensePlateNumber" placeholder="XXX XXX">
+                </div>
+            </div>            
             <p>Vehicle Identification Number (VIN): <b><%= reservation.vehicle._id %></b></p>
             <p>Colour: <b><%= reservation.vehicle.details.colour %></b></p>
 
             <h3 class="mt-4">3. Rental Details:</h3>
             <p>Rental Start Date: <b><%= reservation.startDate %></b></p>
             <p>Rental End Date: <b><%= reservation.endDate %></b></p>
-            <p>Pick-up Location: <%= reservation.pickupLocation %></p>
-            <p>Drop-off Location: <%= reservation.dropoffLocation %></p>
-            <p>Rental Period: <%= reservation.duration %></p>
-            <p>Mileage Limit (if applicable): <%= reservation.vehicle.details.mileage %> km</p>
-            <p>Rental Rate: <%= reservation.vehicle.dailyPrice %>$/day</p>
+            <p>Pick-up Location: <b><%= reservation.pickupLocation %></b></p>
+            <p>Drop-off Location: <b><%= reservation.dropoffLocation %></b></p>
+            <p>Rental Period: <b><%= reservation.duration %> <%= reservation.duration === 1 ? 'day' : 'days' %></b></p>
+            <p>Mileage Limit (if applicable): <b><%= reservation.vehicle.details.mileage %> km</b></p>
+            <p>Rental Rate: <b><%= reservation.vehicle.dailyPrice %>$/day</b></p>
             <p>Additional Services (if any): 
+                <b>
                 <%
                     if (reservation.accessories.length > 0) {
                         for (let i = 0; i < reservation.accessories.length; i++) {
@@ -53,6 +70,7 @@
                         }
                     }
                 %>
+                </b>
 
             </p>
 
@@ -72,7 +90,7 @@
             <p>- The Renter agrees to indemnify and hold harmless the Rental Company, its employees, agents, and affiliates from any claims, liabilities, damages, or expenses arising out of or related to the Renter's use of the vehicle.</p>
 
             <h3 class="mt-4">6. Governing Law:</h3>
-            <!-- Jurisdiction-->
+            
             <p>This Agreement shall be governed by and construed in accordance with the laws of the Province of Quebec. Any disputes arising under or related to this Agreement shall be resolved exclusively by the courts of the Province of Quebec.</p>
 
             <h3 class="mt-4">7. Entire Agreement:</h3>
@@ -80,6 +98,27 @@
             </p>
 
             <h3 class="mt-4">8. Signatures:</h3>
+            <p>The parties hereto have executed this Agreement as of the date first written above.</p>
+            <div class="row align-items-center">
+                <div class="col-auto mb-3">
+                    <label for="userSign" class="form-label">Signature:</label>
+                    
+                </div>
+                <div class="col-auto mb-3">
+                    <input type="text" class="form-control form-control-sm" id="userSign">
+                </div>
+
+                <div class="col-auto mb-3">
+                    <label for="userName" class="form-label">Print Name:</label>
+                    
+                </div>
+                <div class="col-auto mb-3">
+                    <input type="text" class="form-control form-control-sm" id="userName">
+                </div>
+
+            </div>
+            
+            
             <div class="mb-3">
                 <label for="signatureRentalCompany" class="form-label">Rental Company Signature:</label>
                 <input type="text" class="form-control" id="signatureRentalCompany">
