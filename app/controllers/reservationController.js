@@ -52,24 +52,29 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
         });
     }
 
-    // check if email query param exists. If yes, user = User.find({email}) genre
-    // then, set query (for reservation) to { user: user._id }
-    const userEmail = req.query.email ? req.query.email : null;
-    const query = userEmail ? { email: userEmail } : {};
+    // Extract email query parameter, if provided
+    const userEmail = req.query.email || null;
+
+    // Build the query based on whether email is provided
+    const query = userEmail ? { 'user.email': userEmail } : {};
 
     const reservationList = await Reservation.find(query)
         .populate('user')
         .populate('vehicle')
         .exec();
-    res.render('reservation/list', { reservationList });
+    
+    res.render('reservation/list', { reservationList, userEmail });
 });
+
 exports.readUserReservations = asyncHandler(async (req, res, next) => {
     if (!req.user) {
         return res.render('user/login', {
             error: 'Please Login',
         });
     }
-    const userEmail = req.query.email ? req.query.email : null;
+
+    // Extract email query parameter, if provided
+    const userEmail = req.query.email || null;
 
     // Build the query based on whether email is provided
     const currentUser = await User.findById(req.user._id);
