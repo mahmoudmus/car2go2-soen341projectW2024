@@ -16,21 +16,16 @@ const reservationSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
 
-    // TBD
-    pickup_location_id: { type: String },
-    dropoff_location_id: { type: String },
+    pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
+    dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     status: { type: String, default: 'Pending' },
-});
-
-reservationSchema.virtual('cost').get(function () {
-    if (this.vehicle && this.vehicle.dailyPrice) {
-        const days = Math.floor(
-            (this.endDate - this.startDate) / (1000 * 60 * 60 * 24)
-        );
-        const totalCost = days * this.vehicle.dailyPrice;
-        return Math.round(totalCost * 100) / 100;
-    }
-    return null;
+    accessories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Accessory',
+        },
+    ],
+    cost: { type: Number, required: true },
 });
 
 reservationSchema.set('toJSON', { virtuals: true });
