@@ -13,11 +13,11 @@ router.post('/emailconfirmation/', reservationController.emailConfirmation);
 // Read
 router.get('/', reservationController.readAllReservations);
 // Payment Form
-router.post('/checkout', reservationController.processPayment);
-router.get('/checkout', function (req, res, next) {
+router.post('/payment', reservationController.processPayment);
+router.get('/payment', function (req, res, next) {
     try {
-        //res.render('reservation/checkout', { error: 'card' });
-        res.render('reservation/checkout');
+        //res.render('reservation/payment', { error: 'card' });
+        res.render('reservation/payment');
     } catch (error) {
         console.log(error);
     }
