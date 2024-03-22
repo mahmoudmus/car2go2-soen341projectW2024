@@ -25,6 +25,7 @@
         "express-ejs-layouts": "^2.5.1",
         "http-errors": "~1.6.3",
         "jsonwebtoken": "^9.0.2",
+        "mailgun.js": "^10.2.1",
         "mongoose": "^8.1.0",
         "morgan": "~1.9.1",
         "passport": "^0.7.0",

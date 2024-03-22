@@ -2,6 +2,24 @@ const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY,
+});
+const ejs = require('ejs');
+const path = require('path');
+
+exports.computeCost = async ({ startDate, endDate, vehicleId }) => {
+    const vehicle = await Vehicle.findById(vehicleId);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+    const cost = days * vehicle.dailyPrice * 1.14975;
+    return cost;
+};
 
 exports.createReservation = asyncHandler(async (req, res, next) => {
     if (!req.user) {
@@ -12,6 +30,7 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
     }
 
     const { startDate, endDate, vehicleId } = req.body;
+    const cost = await exports.computeCost({ startDate, endDate, vehicleId });
     let user;
     if (req.body.email) {
         user = await User.findOne({ email: req.body.email });
@@ -27,6 +46,7 @@ exports.createReservation = asyncHandler(async (req, res, next) => {
         vehicle: vehicleId,
         startDate,
         endDate,
+        cost,
     });
 
     try {
@@ -50,8 +70,14 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
         return res.sendStatus(401);
     }
 
-    const { startDate, endDate, vehicleId, dropoffLocation, accessories } =
-        req.body;
+    const {
+        startDate,
+        endDate,
+        vehicleId,
+        dropoffLocation,
+        accessories,
+        cost,
+    } = req.body;
     const pickupLocation = (await Vehicle.findById(vehicleId)).branch;
     const newReservation = new Reservation({
         user: req.user._id,
@@ -61,6 +87,7 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
         pickupLocation,
         dropoffLocation,
         accessories,
+        cost,
     });
 
     try {
@@ -178,4 +205,32 @@ exports.processPayment = asyncHandler(async (req, res, next) => {
         return res.render('reservation/checkout', { error: 'Invalid CVV.' });
     }
     res.redirect('/myreservations');
+});
+
+exports.emailConfirmation = asyncHandler(async (req, res, next) => {
+    const { reservationId } = req.body;
+    const reservation = await Reservation.findById(reservationId)
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
+        .populate('user')
+        .populate('vehicle')
+        .populate('accessories');
+
+    const html = await ejs.renderFile(
+        path.join(__dirname, '../views/emails/confirmation.ejs'),
+        {
+            reservation,
+        }
+    );
+
+    const user = reservation.user;
+    const message = {
+        html,
+        subject: 'Gas Booking Confirmation',
+        from: 'Gas <info@gassycar.com>',
+        to: [user.email, 'tommy.mahut@gmail.com'],
+    };
+
+    const response = await mg.messages.create('gassycar.com', message);
+    res.send(response);
 });
