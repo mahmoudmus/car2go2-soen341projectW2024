@@ -273,6 +273,8 @@ exports.startCheckin = asyncHandler(async (req, res, next) => {
         .populate('user')
         .populate('vehicle')
         .populate('accessories')
+        .populate('pickupLocation')
+        .populate('dropoffLocation')
         .exec();
     res.render('reservation/checkin', { reservation });
 });
