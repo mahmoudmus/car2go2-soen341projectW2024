@@ -1,5 +1,8 @@
-<div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
+<div class="container py-2 my-3 rounded bg-light d-flex justify-content-between align-items-center">
     <%- include('./newButton') %>
+    <%- include('./search') %>
+    
+    
 </div>
 <style>
     #reservation-list {
@@ -12,4 +15,7 @@
     <% reservationList.forEach(function(reservation) { %> <%- include('./row', {
     reservation }) %> <% }) %>
 </div>
+<!-- Reservation list container -->
+
+
 <%- include('./form') %>

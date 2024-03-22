@@ -51,24 +51,56 @@ exports.readAllReservations = asyncHandler(async (req, res, next) => {
             error: 'This page is restricted.',
         });
     }
-    const reservationList = await Reservation.find()
-        .populate('user')
-        .populate('vehicle')
-        .exec();
-    res.render('reservation/list', { reservationList });
+
+    const userEmail = req.query.email || null;
+
+    try {
+        let query = {};
+        let userQuery = {};
+
+        if (userEmail) {
+            // Build the user query to find the user with the specified email
+            userQuery = { email: userEmail };
+            const user = await User.findOne(userQuery);
+
+            // If user exists, filter reservations by user ID
+            if (user) {
+                query = { user: user._id };
+            } else {
+                // If user doesn't exist, return empty reservation list
+                return res.render('reservation/list', {
+                    reservationList: [],
+                    userEmail,
+                });
+            }
+        }
+
+        const reservationList = await Reservation.find(query)
+            .populate('user')
+            .populate('vehicle')
+            .exec();
+
+        res.render('reservation/list', { reservationList, userEmail });
+    } catch (error) {
+        console.error('Error fetching reservations:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
+
 exports.readUserReservations = asyncHandler(async (req, res, next) => {
     if (!req.user) {
         return res.render('user/login', {
             error: 'Please Login',
         });
     }
+
     const currentUser = await User.findById(req.user._id);
     var query = { user: currentUser };
     const reservationList = await Reservation.find(query)
         .populate('user')
         .populate('vehicle')
         .exec();
+
     res.render('reservation/list', { reservationList });
 });
 
