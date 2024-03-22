@@ -9,6 +9,7 @@ router.post('/booking', reservationController.bookVehicle);
 
 // Send confirmation email
 router.post('/emailconfirmation/', reservationController.emailConfirmation);
+router.get('/emailbill/', reservationController.emailBill); // @todo change to post, for sending mode
 
 // Read
 router.get('/', reservationController.readAllReservations);
