@@ -2,8 +2,9 @@ class CheckoutForm extends HTMLElement {
     connectedCallback() {
         this.generateBillButton = this.querySelector('#generateBill');
         this.generateBillButton.addEventListener('click', () =>
-            this.generateBill()
+            this.postCheckout()
         );
+        this.estimatedCostTextarea = this.querySelector('#estimatedCost');
         // this.agreementButton = this.querySelector('#submitAgreement');
         // this.depositButton = this.querySelector('#subdmitDeposit');
         // this.printButton = this.querySelector('#printButton');
@@ -59,6 +60,7 @@ class CheckoutForm extends HTMLElement {
     }
 
     async postCheckout() {
+        const estimatedCost = this.estimatedCostTextarea.value;
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'PATCH',
             headers: {
