@@ -77,10 +77,17 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
         dropoffLocation,
         accessories,
         cost,
+        email,
     } = req.body;
+
+    let user = req.user;
+    if (email) {
+        user = await User.findOne({ email });
+    }
+
     const pickupLocation = (await Vehicle.findById(vehicleId)).branch;
     const newReservation = new Reservation({
-        user: req.user._id,
+        user: user._id,
         vehicle: vehicleId,
         startDate,
         endDate,
@@ -294,4 +301,14 @@ exports.startCheckin = asyncHandler(async (req, res, next) => {
         .populate('dropoffLocation')
         .exec();
     res.render('reservation/checkin', { reservation });
+});
+
+exports.walkinDashboard = asyncHandler(async (req, res, next) => {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
+        res.render('user/login', {
+            error: 'This page is restricted.',
+        });
+    } else {
+        res.render('reservation/walkin');
+    }
 });
