@@ -1,0 +1,33 @@
+<%- include('../user/userForm') %>
+<form id="datePlaceModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Reservation Dates</h1>
+            </div>
+            
+            <script type="module" src="/javascripts/reservationFinder.component.js"></script>
+            <reservation-finder class="d-flex flex-column gap-2" mode="catalogue">
+                <div class="modal-body">
+                    <div class="form-text">Ask the customer for the desired dates of their reservation.</div>
+                    <input type="text" id="dateRangeFinder" class="form-control p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username">
+                    <div class="form-text">Ask the customer for the postal code of their location on pickup day.</div>
+                    <input id="postal" name="postal" class="form-control p-3 postal-group" placeholder="Postal or Zip Code" aria-label="postal-code">
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-dark" type="button" id="search-vehicles">
+                        <i class="me-1 bi bi-search"></i>
+                        Search for vehicles
+                    </button>
+                </div>
+            </reservation-finder>
+        </div>
+    </div>
+</form>
+<script type="module" src="/javascripts/walkinForm.component.js"></script>
+<div class="container">
+    <walkin-form>
+    </walkin-form>
+</div>

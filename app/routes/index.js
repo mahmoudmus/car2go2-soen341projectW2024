@@ -29,4 +29,6 @@ router.get('/profile', userController.readProfile);
 
 router.get('/myreservations', reservationController.readUserReservations);
 
+router.get('/walkin', reservationController.walkinDashboard);
+
 module.exports = router;
