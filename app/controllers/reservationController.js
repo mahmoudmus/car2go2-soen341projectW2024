@@ -300,13 +300,24 @@ exports.emailConfirmation = asyncHandler(async (req, res, next) => {
 });
 
 exports.emailBill = asyncHandler(async (req, res, next) => {
-    const { bill, reservationId } = req.body;
+    const { bill, reservationId, total } = req.body;
+
+    const newTransaction = new Transaction({
+        amount: total,
+        type: 'payment',
+    });
+
+    const savedTransaction = await newTransaction.save();
+
     const reservation = await Reservation.findById(reservationId)
         .populate('pickupLocation')
         .populate('dropoffLocation')
         .populate('user')
         .populate('vehicle')
         .populate('accessories');
+
+    reservation.payment = savedTransaction._id;
+    await reservation.save();
 
     const html = await ejs.renderFile(
         path.join(__dirname, '../views/emails/bill.ejs'),
