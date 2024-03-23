@@ -1,5 +1,6 @@
 const Reservation = require('../models/reservation');
 const User = require('../models/user');
+const Vehicle = require('../models/vehicle');
 const reservationController = require('../controllers/reservationController');
 
 describe('Reservation Controller', function () {
@@ -29,6 +30,11 @@ describe('Reservation Controller', function () {
                     _id: '60d5ecb4b4858e3848987654',
                     name: 'Vehicle Name',
                 },
+            })
+        );
+        spyOn(Vehicle, 'findById').and.returnValue(
+            Promise.resolve({
+                branch: '60d5ecb4b4858e3848987654',
             })
         );
 
