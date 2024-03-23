@@ -14,6 +14,10 @@ router.post('/emailbill/', reservationController.emailBill);
 // Read
 router.get('/', reservationController.readAllReservations);
 router.post('/:id/bill', reservationController.generateBill);
+router.post(
+    '/:id/billingInformation',
+    reservationController.saveBillingInformation
+);
 
 // Checkin
 router.get('/checkin/:id', reservationController.startCheckin);

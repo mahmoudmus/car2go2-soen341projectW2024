@@ -22,9 +22,12 @@ const UserSchema = new Schema({
     createdAt: { type: Date, default: Date.now, immutable: true },
     updatedAt: { type: Date, default: Date.now },
     billingInformation: {
-        // @todo: complete this attribute.
-        cardNumber: String,
-        cvv: String,
+        creditCardNumber: { type: String },
+        cardExpiryDate: { type: String },
+        cvv: { type: String },
+        cardHolderName: { type: String },
+        billingAddress: { type: String },
+        postalCode: { type: String },
     },
 });
 

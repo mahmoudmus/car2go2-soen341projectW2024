@@ -1,6 +1,7 @@
 const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
+const Transaction = require('../models/transaction');
 const asyncHandler = require('express-async-handler');
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
@@ -349,6 +350,18 @@ exports.generateBill = asyncHandler(async (req, res, next) => {
         .populate('vehicle')
         .populate('accessories');
     res.render('reservation/bill', { reservation, damagesCost, layout: false });
+});
+
+exports.saveBillingInformation = asyncHandler(async (req, res, next) => {
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(reservationId);
+    const user = await User.findById(reservation.user);
+
+    // @todo potential backend validation for billing information
+
+    user.billingInformation = req.body;
+    const updatedUser = await user.save();
+    res.sendStatus(200);
 });
 
 exports.walkinDashboard = asyncHandler(async (req, res, next) => {

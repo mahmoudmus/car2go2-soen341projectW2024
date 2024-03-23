@@ -16,6 +16,15 @@ const reservationSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
 
+    deposit: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+    },
+    payment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+    },
+
     pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
     status: {

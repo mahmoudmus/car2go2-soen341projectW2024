@@ -11,12 +11,12 @@
                     <% } %>
                 </div>
                 <div class="mb-3">
-                    <label for="cardNumber" class="form-label">Credit Card Number</label>
-                    <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
+                    <label for="creditCardNumber" class="form-label">Credit Card Number</label>
+                    <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" required>
                 </div>
                 <div class="mb-3">
-                    <label for="expiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                    <label for="cardExpiryDate" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="cardExpiryDate" name="cardExpiryDate" placeholder="MM/YY" required>
                 </div>
                 <div class="mb-3">
                     <label for="cvv" class="form-label">CVV</label>
@@ -27,8 +27,8 @@
                     <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" required>
                 </div>
                 <div class="mb-3">
-                    <label for="address" class="form-label">Address</label>
-                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                    <label for="billingAddress" class="form-label">Address</label>
+                    <textarea class="form-control" id="billingAddress" name="billingAddress" rows="3" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="postalCode" class="form-label">Postal Code</label>
@@ -40,10 +40,53 @@
     </div>
 </div>
 <script>
-    document.querySelector('form').addEventListener('submit', (e) => {
+    document.querySelector('form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const currentUrl = new URL(window.location.href);
-        const params = new URLSearchParams(currentUrl.search);
-        window.location.href = `/?${params.toString()}`;
+
+        // Extracting reservation Id from URL:
+        const url = new URL(window.location.href);
+        const reservationId = url.searchParams.get('success');
+
+        // Validate credit card number
+        const creditCardNumber =
+            document.querySelector('#creditCardNumber').value;
+
+        // Validate expiry date
+        const cardExpiryDate =
+            document.querySelector('#cardExpiryDate').value;
+
+        // Validate CVV
+        const cvv =
+            document.querySelector('#cvv').value;
+
+        // Validate card holder's name
+        const cardHolderName =
+            document.querySelector('#cardHolderName').value;
+
+
+        // Validate address
+        const billingAddress =
+            document.querySelector('#billingAddress').value;
+
+        // Validate postal code
+        const postalCode =
+            document.querySelector('#postalCode').value;
+
+        const body = { creditCardNumber, cardExpiryDate, cvv, cardHolderName, billingAddress, postalCode };
+        const response = await fetch(`/reservations/${reservationId}/billingInformation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+
+        if (response.ok) {
+            const currentUrl = new URL(window.location.href);
+            const params = new URLSearchParams(currentUrl.search);
+            window.location.href = `/?${params.toString()}`;
+        } else {
+            document.querySelector('#toast').warn('Could not save billing information.');
+        }
     });
 </script>
