@@ -85,7 +85,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
-    if (!req.user || req.user.type !== 'admin') {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
         res.render('user/login', {
             error: 'This page is restricted.',
         });
@@ -151,10 +151,11 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
             .status(400)
             .json({ message: 'Users must be atleast 18 years of age.' });
     }
-    
-    const allowedFields = (req.user.type === 'admin') ?
-        ['name', 'age', 'email', 'address', 'type', 'hash'] :
-        ['name', 'age', 'address'];
+
+    const allowedFields =
+        req.user.type === 'admin'
+            ? ['name', 'age', 'email', 'address', 'type', 'hash']
+            : ['name', 'age', 'address'];
 
     Object.keys(req.body).forEach((key) => {
         if (allowedFields.includes(key)) {

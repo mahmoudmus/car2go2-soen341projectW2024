@@ -38,6 +38,8 @@ class ReservationFinder extends HTMLElement {
                 const start = new Date(params.get('start'));
                 const end = new Date(params.get('end'));
                 this.calendar.setDate([start, end]);
+
+                this.email = new Date(params.get('email'));
             }
         });
     }
@@ -104,7 +106,16 @@ class ReservationFinder extends HTMLElement {
         const startURIComponent = encodeURIComponent(start.toISOString());
         const endURIComponent = encodeURIComponent(end.toISOString());
         const baseUrl = window.location.protocol + '//' + window.location.host;
-        window.location.href = `${baseUrl}/vehicles?start=${startURIComponent}&end=${endURIComponent}&postal=${code}`;
+        const newUrl = `${baseUrl}/vehicles?start=${startURIComponent}&end=${endURIComponent}&postal=${code}`;
+
+        const walkin = document.querySelector('walkin-form');
+        if (walkin) {
+            walkin.setVehiclePageUrl(newUrl);
+            return;
+        }
+        if (this.email) {
+            window.location.href = `newUrl&email=${this.email}`;
+        }
     }
 
     isValidPostal(postal) {
