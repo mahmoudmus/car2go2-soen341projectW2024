@@ -8,6 +8,19 @@ class ReservationCard extends HTMLElement {
         copyButton.addEventListener('click', () =>
             this.copyToClipboard('Reservation ID copied to clipboard.')
         );
+        const checkinButton = this.querySelector('.checkin-reservation');
+        if (checkinButton) {
+            checkinButton.addEventListener('click', () => {
+                document.location.href = `reservations/checkin/${this.reservationId}`;
+            });
+        }
+        const returnButton = this.querySelector('.return-reservation');
+        if (returnButton) {
+            returnButton.addEventListener('click', () => {
+                // @todo implement route
+                document.location.href = `reservations/return/${this.reservationId}`;
+            });
+        }
     }
 
     async deleteReservation() {

@@ -22,12 +22,10 @@ const VehicleSchema = new Schema({
     },
     dailyPrice: { type: Number, required: true, min: 0 },
     branch: {
-        type: String,
-        enum: ['montreal', 'toronto', 'winnipeg', 'calgary', 'vancouver'],
+        type: Schema.Types.ObjectId,
+        ref: 'Branch',
         required: true,
-        lowercase: true,
-        trim: true,
-    }, // @todo Replace with reference to branch model.
+    },
     details: {
         make: String, // Car manufacturer
         model: String, // Car model

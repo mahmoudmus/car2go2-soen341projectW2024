@@ -39,8 +39,15 @@
             </span>
         </div>
         <div class="text-secondary">
-            $<span class="reservation-cost"><%= reservation.cost %></span>
+            $<span class="reservation-cost"><%= reservation.cost.toFixed(2) %></span>
         </div>
+        <% if(reservation.status == 'CheckedIn'){ %> 
+            <div class="text-secondary">
+                <span class="reservation-checkout-description">Leave the car in the parking lot with the keys inside and check out with a customer service representative</span>
+            </div>
+          <% } else{ %>  
+            <div></div>
+         <% } %>
         </div>
         <div class="d-flex justify-content-end gap-2 m-2">
             <button class="btn btn-dark edit-reservation"
@@ -49,6 +56,14 @@
             <button class="btn btn-danger delete-reservation"
                 ><i class="bi bi-trash3-fill"></i>
             </button>
+            <% if (['admin', 'csr'].includes(user.type)) { %>
+                <button class="btn btn-dark checkin-reservation <% if (reservation.status !== 'checked-in') { %>visible<% } %>" <% if (reservation.status === 'checked-in') { %> style="display: none;" <% } %>>
+                    <i class="bi bi-clipboard-check-fill"></i>&nbsp;Check in
+                </button>
+                <button class="btn btn-dark return-reservation <% if (reservation.status === 'checked-in') { %>visible<% } %>" <% if (reservation.status !== 'checked-in') { %> style="display: none;" <% } %>>
+                    <i class="bi bi-arrow-right"></i>&nbsp;Return Car
+                </button>
+            <% } %>
         </div>
       </div>
     </div>
