@@ -181,8 +181,8 @@ class BookingForm extends HTMLElement {
             dropoffLocation: this.branchPicker.value,
             accessories,
             cost: parseFloat(this.querySelector('#total').innerHTML, 10),
+            email: this.userEmail,
         };
-        console.log(reservationData);
         const response = await fetch('/reservations/booking', {
             method: 'POST',
             headers: {
@@ -220,6 +220,14 @@ class BookingForm extends HTMLElement {
 
     get vehiclePrice() {
         return this.getAttribute('vehicle-price');
+    }
+
+    get userEmail() {
+        const emailField = this.querySelector('#email');
+        if (emailField) {
+            return emailField.value;
+        }
+        return null;
     }
 }
 customElements.define('booking-form', BookingForm);

@@ -144,7 +144,12 @@ exports.getBooking = asyncHandler(async (req, res, next) => {
         return res.status(404).json({ message: 'Vehicle not found' });
     }
     const accessories = await Accessory.find({}, 'name price');
-    res.render('reservation/booking', { vehicle, accessories });
+    const email = req.query.email ?? null;
+    res.render('reservation/booking', {
+        vehicle,
+        accessories,
+        email,
+    });
 });
 
 exports.readVehicle = asyncHandler(async (req, res, next) => {
