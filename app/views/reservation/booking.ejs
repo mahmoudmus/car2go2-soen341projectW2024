@@ -46,6 +46,12 @@
                         </label>
                         <branch-picker address="true"></branch-picker>
                     </div>
+                    <% if (email) { %>
+                    <div>
+                        <label for="flatpickr" class="form-label">Reservation for</label>
+                        <input id="email" type="text" class="form-control" placeholder="Customer email" value="<%= email %>" disabled>
+                    </div>
+                    <% } %>
                 </div>
             </div>
         </div>
