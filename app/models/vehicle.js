@@ -47,7 +47,7 @@ const VehicleSchema = new Schema({
         trim: true,
         required: true,
         unique: true,
-        match: /^[EKLMNPRTUVWXYZ]{3} \d{2}[ABCDEFGHIJKLMNOPQRSTUVWXYZ]$/,
+        match: /^[ABCDEFGHIJKLMNOPQRSTUVWXYZ]{3} \d{2}[ABCDEFGHIJKLMNOPQRSTUVWXYZ]$/,
     },
 });
 
