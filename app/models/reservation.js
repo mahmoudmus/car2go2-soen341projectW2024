@@ -39,6 +39,7 @@ const reservationSchema = new Schema({
         },
     ],
     cost: { type: Number, required: true },
+    madeByCSR: { type: Boolean, required: true, default: false },
     // @todomahmoud create type string field called initialDamages
 });
 

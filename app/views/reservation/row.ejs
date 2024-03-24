@@ -11,7 +11,8 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-        <h5 class="card-title"><span class="reservation-name"><%= reservation.user.name %></span>'s reservation</h5>
+        <% const csrIndicator = reservation.madeByCSR ? ' <a data-bs-toggle="tooltip" data-bs-title="Reservation Made By CSR." class="ms-1 gradient-text"><i class="bi bi-star-fill"></i></a>' : '' %>
+        <h5 class="card-title"><span class="reservation-name"><%= reservation.user.name %></span>'s reservation<%- csrIndicator %></h5>
         
         <small class="text-body-secondary text-truncate d-block">
         <a role="button" class="copy-on-click text-secondary text-decoration-none pointer">

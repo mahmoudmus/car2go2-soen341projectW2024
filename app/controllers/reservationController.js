@@ -85,8 +85,10 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
     } = req.body;
 
     let user = req.user;
+    let madeByCSR = false;
     if (email) {
         user = await User.findOne({ email });
+        madeByCSR = true;
     }
 
     const pickupLocation = (await Vehicle.findById(vehicleId)).branch;
@@ -99,6 +101,7 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
         dropoffLocation,
         accessories,
         cost,
+        madeByCSR,
     });
 
     try {
