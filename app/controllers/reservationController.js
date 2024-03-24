@@ -238,8 +238,10 @@ exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
     if (!reservation) {
         return res.status(404).send({ message: 'Reservation not found.' });
     }
-    reservation.initialDamages = initialDamages;
-    console.log(initialDamages);
+
+    if (initialDamages) {
+        reservation.initialDamages = initialDamages;
+    }
     reservation.status = status;
     await reservation.save();
     res.sendStatus(200);
@@ -307,11 +309,12 @@ exports.emailConfirmation = asyncHandler(async (req, res, next) => {
 });
 
 exports.emailBill = asyncHandler(async (req, res, next) => {
-    const { bill, reservationId, total } = req.body;
+    const { bill, reservationId, total, method } = req.body;
 
     const newTransaction = new Transaction({
         amount: total,
         type: 'payment',
+        method,
     });
 
     const savedTransaction = await newTransaction.save();
@@ -331,6 +334,7 @@ exports.emailBill = asyncHandler(async (req, res, next) => {
         {
             reservation,
             bill,
+            transaction: savedTransaction,
         }
     );
 

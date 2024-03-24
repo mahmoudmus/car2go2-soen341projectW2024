@@ -57,11 +57,14 @@
         <h3>Payment Details</h3>
         <hr>
         <ul>
-            <li>Payment Method: <span class="gradient-text">Credit Card</span></li>
-            <% const billingInformation = reservation.user.billingInformation %>
-            <li>Card Number: <span class="gradient-text">**** **** **** <%= reservation.user.billingInformation.creditCardNumber.slice(-4) %></span></li>
-            <li>Expiration Date: <span class="gradient-text"><%= reservation.user.billingInformation.cardExpiryDate.substring(0, 2) %>/<%= reservation.user.billingInformation.cardExpiryDate.slice(-2) %></span></li>
-            
+            <li>Payment Method: <span class="gradient-text"><%= transaction.method %></span></li>
+            <% if (transaction.method === 'cash' ) { %>
+                <li>The total amount was payed in cash, at checkout.</li>
+            <% } else if (transaction.method === 'card' ) { %>
+                <% const billingInformation = reservation.user.billingInformation %>
+                <li>Card Number: <span class="gradient-text">**** **** **** <%= billingInformation.creditCardNumber.slice(-4) %></span></li>
+                <li>Expiration Date: <span class="gradient-text"><%= billingInformation.cardExpiryDate.substring(0, 2) %>/<%= billingInformation.cardExpiryDate.slice(-2) %></span></li>
+            <% } %>
         </ul>
         
 

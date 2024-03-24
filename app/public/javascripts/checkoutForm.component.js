@@ -3,11 +3,18 @@ class CheckoutForm extends HTMLElement {
         this.chargeButton = this.querySelector('#chargeButton');
         this.chargeButton.addEventListener('click', () => this.sendBillEmail());
 
+        this.methodSelect = this.querySelector('#method');
+        this.methodSelect.addEventListener('input', () =>
+            this.setCashInstruction()
+        );
+        this.setCashInstruction();
+
+        this.estimatedCostTextarea = this.querySelector('#estimatedCost');
+
         this.generateBillButton = this.querySelector('#generateBill');
         this.generateBillButton.addEventListener('click', () =>
             this.generateBill()
         );
-        this.estimatedCostTextarea = this.querySelector('#EstimatedCost');
     }
 
     async generateBill() {
@@ -25,7 +32,7 @@ class CheckoutForm extends HTMLElement {
         if (response.ok) {
             this.htmlInvoice = await response.text();
             this.querySelector('#billTarget').innerHTML = this.htmlInvoice;
-            this.chargeButton.style.display = '';
+            this.querySelector('#chargeButtonDiv').style.display = '';
         } else {
             document
                 .querySelector('#toast')
@@ -35,6 +42,7 @@ class CheckoutForm extends HTMLElement {
 
     async sendBillEmail() {
         const total = parseFloat(this.querySelector('#total').innerHTML);
+        const method = this.methodSelect.value;
         const response = await fetch('/reservations/emailbill', {
             method: 'POST',
             headers: {
@@ -44,6 +52,7 @@ class CheckoutForm extends HTMLElement {
                 bill: this.htmlInvoice,
                 reservationId: this.reservationId,
                 total,
+                method,
             }),
         });
         if (response.ok) {
@@ -69,6 +78,20 @@ class CheckoutForm extends HTMLElement {
             document
                 .querySelector('#toast')
                 .caution('Could not set reservation status.');
+        }
+    }
+
+    setCashInstruction() {
+        const warning = this.querySelector('#methodWarning');
+        const info = this.querySelector('#methodInfo');
+        if (this.methodSelect.value === 'cash') {
+            warning.style.display = '';
+            info.style.display = '';
+            this.chargeButton.innerHTML = 'Return Deposit';
+        } else {
+            warning.style.display = 'None';
+            info.style.display = 'None';
+            this.chargeButton.innerHTML = 'Charge Client & Return Deposit';
         }
     }
 

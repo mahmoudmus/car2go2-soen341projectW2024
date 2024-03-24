@@ -9,6 +9,7 @@ const TransactionSchema = new Schema({
         required: true,
     },
     createdAt: { type: Date, default: Date.now, immutable: true },
+    method: { type: String, enum: ['card', 'cash'], required: true },
 });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);
