@@ -93,6 +93,8 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         query.branch = closestBranch[0]._id;
     }
 
+    // Throw it here, using "query" instead of "filter" @todo
+
     const vehicleList = await Vehicle.find(
         query,
         'details type imageUrl dailyPrice'
@@ -192,10 +194,10 @@ exports.filterVehicles = asyncHandler(async (req, res, next) => {
         if (req.query.minYear) {
             filter['details.year'] = { $gte: req.query.minYear };
         }
-        if (req.query.isAutomatic){
+        if (req.query.isAutomatic) {
             filter['details.isAutomatic'] = req.query.isAutomatic;
         }
-    
+
         const filteredVehicles = await Vehicle.find(filter);
         res.json({ vehicles: filteredVehicles });
     } catch (e) {
