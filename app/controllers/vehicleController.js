@@ -102,10 +102,10 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query.type = req.query.type.toLowerCase();
         }
         if (req.query.make) {
-            query['details.make'] = req.query.make;
+            query['details.make'].toLowerCase() = req.query.make.toLowerCase();
         }
         if (req.query.model) {
-            query['details.model'] = req.query.model;
+            query['details.model'].toLowerCase() = req.query.model.toLowerCase();
         }
         if (req.query.minYear) {
             query['details.year'] = { $gte: req.query.minYear };
@@ -114,7 +114,7 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query['details.year'] = { $lte: req.query.maxYear };
         }
         if (req.query.isAutomatic) {
-            query['details.isAutomatic'] = req.query.isAutomatic;
+            query['details.isAutomatic'] = req.query.isAutomatic === 'on' ? true : false;
         }
         if(req.query.minPrice){
             query.dailyPrice = { $gte: req.query.dailyPrice};
