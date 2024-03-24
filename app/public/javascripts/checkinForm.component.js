@@ -39,7 +39,7 @@ class CheckinForm extends HTMLElement {
     }
 
     async postCheckin() {
-        const initialDamages = ''; // @todomahmoud extract value from damages input field
+        const initialDamages = document.getElementById('damages').value;
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'PATCH',
             headers: {

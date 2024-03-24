@@ -238,7 +238,8 @@ exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
     if (!reservation) {
         return res.status(404).send({ message: 'Reservation not found.' });
     }
-
+    reservation.initialDamages = initialDamages;
+    console.log(initialDamages);
     reservation.status = status;
     await reservation.save();
     res.sendStatus(200);
@@ -259,7 +260,9 @@ exports.servePayment = asyncHandler(async (req, res, next) => {
 });
 
 exports.returnCar = asyncHandler(async (req, res, next) => {
-    res.render('reservation/return', { reservationId: req.params.id });
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(reservationId);
+    res.render('reservation/return', { reservationId, reservation });
 });
 
 exports.processPayment = asyncHandler(async (req, res, next) => {

@@ -1,10 +1,13 @@
 <script type="module" src="/javascripts/checkinForm.component.js"></script>
 <checkin-form reservation-id="<%= reservation._id %>">
+    <style>
+        .greytext {color: grey;}
+    </style>
     <div class="container my-5">
         <h1 class="mb-4 text-center">Check-In Process</h1>
-        <div class="card">
+        <div class="card text-secondary">
             <div class="card-body">
-                <p>Please veify the following:</p>
+                <p>Please verify the following:</p>
                 <ul>
                     <li>Verify that the resevation ID in the email matches the following reservation ID: <b><%= reservation._id %></b>.</li>
                     <li>Confirm that the customer possesses a <b>valid driver's license</b>.</li>
@@ -16,7 +19,7 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Existing Damages</h2>
-                <p>Please accompany the customer to inspect the vehicle and record any existing damages.</p>
+                <p class="text-secondary">Please accompany the customer to inspect the vehicle and record any existing damages.</p>
                 <div class="form-group">
                     <label for="damages">Please provide a list of any damages to the car, if applicable.</label>
                     <textarea class="form-control" id="damages" rows="3"></textarea>
@@ -175,8 +178,8 @@
                 </div>
                 
                 <div class="mt-4">
+                    <p class="text-secondary">If the customer wishes to sign the contract physically, please click here to to generate a printable version.</p>
                     <button id="printButton" class="btn btn-secondary"><i class="bi bi-printer"></i> Print</button>
-                    <p class="figure-caption">If the customer wishes to sign the contract physically, please click here to to generate a printable version.</p>
                     <br>
                 </div>
                 

@@ -1,13 +1,33 @@
 <script type="module" src="/javascripts/checkoutForm.component.js"></script>
 <checkout-form class="container" reservation-id="<%= reservationId %>">
+    <style>
+        .form-display {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        margin-bottom: 1rem;
+        min-height: 100px;
+        overflow-y: auto;
+    }
+    </style>
         <div class="container">
             <h1 class="mb-4 text-center">Check-Out Process</h1>
             <div class="card">
                 <div class="card-body">
-                    <p>Please inspect the vehicle with the customer. Record all new damages, take photos, and fill out the inspection form.</p>
-                    <p>Here are the previous damages:<br> </p>
-                    <!--@todomahmoud add previous damages here-->
-    
+                    <p class="text-secondary">Please inspect the vehicle with the customer. Record all new damages, take photos, and fill out the inspection form.</p>
+                   
+                    <div class="form-group">
+                        <label for="initialDamages">Here are the previous damages:</label>
+                        <div class="form-display" id="initialDamages"><%= reservation.initialDamages %></div>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="damages">Please provide a list of any new damages to the car, if applicable.</label>
                         <textarea class="form-control" id="damages" rows="3"></textarea>
