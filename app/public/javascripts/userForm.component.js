@@ -10,6 +10,8 @@ class UserForm extends HTMLElement {
                 email: this.userEmail,
                 age: formData.get('age'),
                 address: formData.get('address'),
+                phoneNumber: formData.get('phoneNumber'),
+                driverLicenseNumber: formData.get('driverLicenseNumber'),
                 type: this.userType,
                 hash: formData.get('hash'),
             };
@@ -120,6 +122,9 @@ class UserForm extends HTMLElement {
             this.form.querySelector('#email').value = user.email;
             this.form.querySelector('#age').value = user.age;
             this.form.querySelector('#address').value = user.address;
+            this.form.querySelector('#phoneNumber').value = user.phoneNumber;
+            this.form.querySelector('#driverLicenseNumber').value =
+                user.driverLicenseNumber;
             this.userType = user.type;
         }
     }

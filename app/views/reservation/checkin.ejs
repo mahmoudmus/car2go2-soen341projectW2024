@@ -32,19 +32,13 @@
                         <p>Address: <b><%= reservation.user.address %></b></p>
                     </div>
                     <div class="col-auto mb-3">
-                        <label for="contactNumber" class="form-label">Contact Number:</label>
-                    </div>
-                    <div class="col-auto mb-3">
-                        <input type="tel" class="form-control form-control-sm" id="contactNumber" name="contactNumber" placeholder="Phone Number">
+                        <label for="contactNumber" class="form-label">Contact Number:  <b><%= reservation.user.phoneNumber %></b></label>
                     </div>
                     <div>
                         <p>Email Address: <b><%= reservation.user.email %></b></p>
                     </div>
                     <div class="col-auto mb-3">
-                        <label for="driversLicenseNumber" class="form-label">Driver's License Number:</label>
-                    </div>
-                    <div class="col-auto mb-3">
-                        <input type="text" class="form-control form-control-sm" id="driversLicenseNumber" name="driversLicenseNumber" placeholder="License Number">
+                        <label for="driversLicenseNumber" class="form-label">Driver's License Number:  <b><%= reservation.user.driverLicenseNumber %></b></label>
                     </div>
                 </div>
                 

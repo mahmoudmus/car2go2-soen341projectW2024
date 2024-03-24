@@ -29,6 +29,22 @@ const UserSchema = new Schema({
         billingAddress: { type: String },
         postalCode: { type: String },
     },
+    phoneNumber: {
+        type: String,
+        required: 'A phone number is required.',
+        match: [
+            /^[0-9\s\-\(\)]+$/,
+            'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        ],
+    },
+    driverLicenseNumber: {
+        type: String,
+        required: "A driver's license number is required.",
+        match: [
+            /^[A-Za-z0-9\- ]+$/,
+            "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        ],
+    },
 });
 
 UserSchema.pre('save', function (next) {

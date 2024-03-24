@@ -51,17 +51,40 @@ exports.signUp = asyncHandler(async (req, res, next) => {
 });
 
 exports.createUser = asyncHandler(async (req, res, next) => {
-    const { name, email, age, address, type, hash } = req.body;
+    const {
+        name,
+        email,
+        age,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        type,
+        hash,
+    } = req.body;
+
     if (age < 18) {
         return res.status(400).json({
             message: 'Users must be at least 18 years of age.',
         });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.status(400).json({
+            message:
+                'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.status(400).json({
+            message:
+                "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
+
     const user = new User({
         name,
         email,
         age,
         address,
+        phoneNumber,
+        driverLicenseNumber,
         type,
         hash,
     });
@@ -145,21 +168,52 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
             .json({ message: 'You do not have admin privileges.' });
     }
 
-    const { name, age, email, address, type, hash } = req.body;
+    const {
+        name,
+        age,
+        email,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        type,
+        hash,
+    } = req.body;
+
     if (age < 18) {
-        return res
-            .status(400)
-            .json({ message: 'Users must be atleast 18 years of age.' });
+        return res.status(400).json({
+            message: 'Users must be at least 18 years of age.',
+        });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.status(400).json({
+            message:
+                'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.status(400).json({
+            message:
+                "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
 
     const allowedFields =
         req.user.type === 'admin'
-            ? ['name', 'age', 'email', 'address', 'type', 'hash']
-            : ['name', 'age', 'address'];
+            ? [
+                  'name',
+                  'age',
+                  'email',
+                  'address',
+                  'phoneNumber',
+                  'driverLicenseNumber',
+                  'type',
+                  'hash',
+              ]
+            : ['name', 'age', 'address', 'phoneNumber', 'driverLicenseNumber'];
 
     Object.keys(req.body).forEach((key) => {
         if (allowedFields.includes(key)) {
-            user[key] = req.body[key];
+            if (!(key === 'hash' && req.body.hash === '')) {
+                user[key] = req.body[key];
+            }
         }
     });
 
@@ -172,6 +226,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
                 message: `${email} is already in use.`,
             });
         } else {
+            console.log(e);
             res.status(500).json({ message: 'An unexpected error occurred.' });
         }
     }
