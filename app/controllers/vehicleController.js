@@ -93,8 +93,39 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         query.branch = closestBranch[0]._id;
     }
 
-    // Throw it here, using "query" instead of "filter" @todo
-
+    // Filter vehicles
+    try {
+        if (req.query.category) {
+            query.category = req.query.category.toLowerCase();
+        }
+        if (req.query.type) {
+            query.type = req.query.type.toLowerCase();
+        }
+        if (req.query.make) {
+            query['details.make'] = req.query.make.toLowerCase();
+        }
+        if (req.query.model) {
+            query['details.model'] = req.query.model.toLowerCase();
+        }
+        if (req.query.minYear) {
+            query['details.year'] = { $gte: req.query.minYear };
+        }
+        if (req.query.maxYear) {
+            query['details.year'] = { $lte: req.query.maxYear };
+        }
+        if (req.query.isAutomatic) {
+            query['details.isAutomatic'] = req.query.isAutomatic;
+        }
+        if(req.query.minPrice){
+            query.dailyPrice = { $gte: req.query.dailyPrice};
+        }
+        if(req.query.maxPrice){
+            query.dailyPrice = { $lte: req.query.dailyPrice};
+        }
+    } catch (e) {
+        console.error('Error in filtering Vehicles:', e);
+        res.status(500).json({ message: 'Server error' });
+    }
     const vehicleList = await Vehicle.find(
         query,
         'details type imageUrl dailyPrice'
@@ -175,36 +206,17 @@ exports.filterVehicles = asyncHandler(async (req, res, next) =>{
     res.send(filteredVehicles);
 })
 */
-exports.filterVehicles = asyncHandler(async (req, res, next) => {
-    try {
-        let filter = {};
+// exports.filterVehicles = asyncHandler(async (req, res, next) => {
+//     try {
+//         let filter = {};        
 
-        if (req.query.category) {
-            filter.category = req.query.category.toLowerCase();
-        }
-        if (req.query.type) {
-            filter.type = req.query.type.toLowerCase();
-        }
-        if (req.query.make) {
-            filter['details.make'] = req.query.make.toLowerCase();
-        }
-        if (req.query.model) {
-            filter['details.model'] = req.query.model.toLowerCase();
-        }
-        if (req.query.minYear) {
-            filter['details.year'] = { $gte: req.query.minYear };
-        }
-        if (req.query.isAutomatic) {
-            filter['details.isAutomatic'] = req.query.isAutomatic;
-        }
-
-        const filteredVehicles = await Vehicle.find(filter);
-        res.json({ vehicles: filteredVehicles });
-    } catch (e) {
-        console.error('Error in filtering Vehicles:', e);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
+//         const filteredVehicles = await Vehicle.find(filter);
+//         res.json({ vehicles: filteredVehicles });
+//     } catch (e) {
+//         console.error('Error in filtering Vehicles:', e);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
 
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
