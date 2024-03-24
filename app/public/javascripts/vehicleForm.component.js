@@ -22,6 +22,7 @@ class VehicleForm extends HTMLElement {
                     isAutomatic: formData.get('automatic') === 'on',
                     engineType: formData.get('engineType'),
                 },
+                licensePlateNumber: formData.get('licensePlateNumber'),
             };
             fetch(this.requestUrl(), {
                 method: this.requestMethod(),
@@ -167,6 +168,8 @@ class VehicleForm extends HTMLElement {
                     vehicle.details.engineType;
                 this.form.querySelector('#automatic').checked =
                     vehicle.details.isAutomatic;
+                this.form.querySelector('#licensePlateNumber').value =
+                    vehicle.licensePlateNumber;
             })
             .catch((error) => {
                 document

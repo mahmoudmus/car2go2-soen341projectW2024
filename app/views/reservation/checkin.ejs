@@ -59,14 +59,7 @@
                 <p>Make: <b><%= reservation.vehicle.details.make %></b></p>
                 <p>Model: <b><%= reservation.vehicle.details.model %></b></p>
                 <p>Year: <b><%= reservation.vehicle.details.year %></b></p>
-                <div class="row align-items-center">
-                    <div class="col-auto mb-3">
-                        <label for="licensePlateNumber" class="form-label">License Plate Number:</label>
-                    </div>
-                    <div class="col-auto mb-3">
-                        <input type="text" class="form-control form-control-sm" id="licensePlateNumber" name="licensePlateNumber" placeholder="XXX XXX">
-                    </div>
-                </div>            
+                <p>License Plate Number: <b><%= reservation.vehicle.licensePlateNumber %></b></p>          
                 <p>Vehicle Identification Number (VIN): <b><%= reservation.vehicle._id %></b></p>
                 <p>Colour: <b><%= reservation.vehicle.details.colour %></b></p>
 
