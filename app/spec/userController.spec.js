@@ -16,6 +16,8 @@ describe('User Controller', function () {
                 email: 'email',
                 age: 18,
                 address: 'address',
+                phoneNumber: '514 123 1234',
+                driverLicenseNumber: '1234567890',
                 hash: 'hash',
             },
         };
@@ -45,6 +47,8 @@ describe('User Controller', function () {
                 age: 18,
                 address: 'address',
                 type: 'type',
+                phoneNumber: '514 123 1234',
+                driverLicenseNumber: '1234567890',
                 hash: 'hash',
             })
         );
@@ -56,6 +60,8 @@ describe('User Controller', function () {
                 age: 18,
                 address: 'address',
                 type: 'type',
+                phoneNumber: '514 123 1234',
+                driverLicenseNumber: '1234567890',
                 hash: 'hash',
             },
         };
@@ -77,6 +83,8 @@ describe('User Controller', function () {
                 age: 18,
                 address: 'address',
                 type: 'type',
+                phoneNumber: '514 123 1234',
+                driverLicenseNumber: '1234567890',
                 hash: 'hash',
             },
             layout: false,

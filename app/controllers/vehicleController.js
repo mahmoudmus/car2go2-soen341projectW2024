@@ -25,7 +25,6 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         savedVehicle = await newVehicle.save();
         res.render('vehicle/row', { vehicle: savedVehicle, layout: false });
     } catch (e) {
-        console.log(e);
         res.status(400).send({ message: 'Could not create vehicle.' });
     }
 });

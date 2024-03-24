@@ -33,6 +33,8 @@ exports.signUp = asyncHandler(async (req, res, next) => {
         email,
         age,
         address,
+        phoneNumber,
+        driverLicenseNumber,
         hash,
     });
 
