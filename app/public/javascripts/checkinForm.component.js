@@ -39,12 +39,13 @@ class CheckinForm extends HTMLElement {
     }
 
     async postCheckin() {
+        const initialDamages = ''; // @todomahmoud extract value from damages input field
         const response = await fetch(`/reservations/${this.reservationId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ status: 'checked-in' }),
+            body: JSON.stringify({ status: 'checked-in', initialDamages }),
         });
         if (response.ok) {
             window.location.href = '/?checkin=true';

@@ -39,6 +39,7 @@ const reservationSchema = new Schema({
         },
     ],
     cost: { type: Number, required: true },
+    // @todomahmoud create type string field called initialDamages
 });
 
 reservationSchema.virtual('duration').get(function () {

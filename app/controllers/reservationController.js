@@ -229,7 +229,8 @@ exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
         return res.sendStatus(401);
     }
 
-    const { status } = req.body;
+    const { status, initialDamages } = req.body;
+    // @todomahmoud update initialDamages the same way status is
     const reservation = await Reservation.findById(req.params.id);
     if (!reservation) {
         return res.status(404).send({ message: 'Reservation not found.' });
