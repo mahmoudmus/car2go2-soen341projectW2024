@@ -39,6 +39,7 @@ const reservationSchema = new Schema({
         },
     ],
     cost: { type: Number, required: true },
+    initialDamages: { type: String }
     // @todomahmoud create type string field called initialDamages
 });
 
