@@ -6,7 +6,8 @@ const axios = require('axios');
 const Accessory = require('../models/accessory');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
-    const { type, category, details, branch, imageUrl } = req.body;
+    const { type, category, details, branch, imageUrl, licensePlateNumber } =
+        req.body;
     const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const newVehicle = new Vehicle({
@@ -16,6 +17,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         branch,
         imageUrl,
         dailyPrice,
+        licensePlateNumber,
     });
 
     let savedVehicle;
@@ -23,6 +25,7 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
         savedVehicle = await newVehicle.save();
         res.render('vehicle/row', { vehicle: savedVehicle, layout: false });
     } catch (e) {
+        console.log(e);
         res.status(400).send({ message: 'Could not create vehicle.' });
     }
 });
@@ -166,7 +169,8 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
 
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const { type, category, details, branch, imageUrl } = req.body;
+    const { type, category, details, branch, imageUrl, licensePlateNumber } =
+        req.body;
     const dailyPrice = parseFloat(req.body.dailyPrice);
 
     const vehicle = await Vehicle.findById(id);
@@ -180,6 +184,7 @@ exports.updateVehicle = asyncHandler(async (req, res, next) => {
     vehicle.branch = branch;
     vehicle.imageUrl = imageUrl;
     vehicle.dailyPrice = dailyPrice;
+    vehicle.licensePlateNumber = licensePlateNumber;
 
     const updatedVehicle = await vehicle.save();
     res.send({ updatedVehicle });

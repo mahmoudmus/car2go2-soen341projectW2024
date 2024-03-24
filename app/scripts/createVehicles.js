@@ -50,11 +50,31 @@ const createVehicleInstances = async () => {
     const randomHourlyPrice = () => {
         return Math.floor(Math.random() * (10 - 3) + 3);
     };
+    const randomLicensePlate = () => {
+        const letters = 'EKLMNPRTUVWXYZ';
+        const lastLetter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const randomLetters =
+            letters[Math.floor(Math.random() * letters.length)] +
+            letters[Math.floor(Math.random() * letters.length)] +
+            letters[Math.floor(Math.random() * letters.length)];
+        let randomNumbers = Math.floor(Math.random() * 100);
+        if (randomNumbers < 10) {
+            randomNumbers = '0' + randomNumbers;
+        }
+        const randomLastLetter =
+            lastLetter[Math.floor(Math.random() * lastLetter.length)];
+        const licensePlate = `${randomLetters} ${randomNumbers}${randomLastLetter}`;
+        return licensePlate;
+    };
     const branches = await Branch.find({}, '_id');
     const imageUrls = [
         'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcnN8ZW58MHx8MHx8fDA%3D',
         'https://di-uploads-pod44.dealerinspire.com/nyetoyota/uploads/2023/09/Toyota-Sequoia-Capstone-23-1.jpg',
         'https://hips.hearstapps.com/hmg-prod/images/2023-chevrolet-bolt-ev-003-1669921570.jpg?crop=0.500xw:0.500xh;0.352xw,0.380xh&resize=980:*',
+        'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+        'https://www.motortrend.com/uploads/2022/08/2022-Bugatti-Chiron-Super-Sport-2-1.jpg',
+        'https://robbreport.com/wp-content/uploads/2023/09/RR_50_Most_Expensive_Cars_You_Can_Buy_Right_Now_Cadillac_Celestiq.jpg?w=800',
+        'https://americancollectors.com/wp-content/uploads/1st-article-photo-1-690x370-1.jpg',
     ];
     try {
         for (let i = 1; i <= 25; i++) {
@@ -75,6 +95,7 @@ const createVehicleInstances = async () => {
                 dailyPrice: randomHourlyPrice(),
                 branch: chooseRandom(branches),
                 imageUrl: chooseRandom(imageUrls),
+                licensePlateNumber: randomLicensePlate(),
             });
 
             await vehicle.save();

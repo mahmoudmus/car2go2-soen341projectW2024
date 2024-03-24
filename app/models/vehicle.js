@@ -42,6 +42,13 @@ const VehicleSchema = new Schema({
             trim: true,
         },
     },
+    licensePlateNumber: {
+        type: String,
+        trim: true,
+        required: true,
+        unique: true,
+        match: /^[EKLMNPRTUVWXYZ]{3} \d{2}[ABCDEFGHIJKLMNOPQRSTUVWXYZ]$/,
+    },
 });
 
 VehicleSchema.methods.verifyPriceRange = function (price) {
