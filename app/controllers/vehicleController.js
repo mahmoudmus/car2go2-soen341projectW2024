@@ -102,10 +102,10 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query.type = req.query.type.toLowerCase();
         }
         if (req.query.make) {
-            query['details.make'] = req.query.make.toLowerCase();
+            query['details.make'] = req.query.make;
         }
         if (req.query.model) {
-            query['details.model'] = req.query.model.toLowerCase();
+            query['details.model'] = req.query.model;
         }
         if (req.query.minYear) {
             query['details.year'] = { $gte: req.query.minYear };
