@@ -4,12 +4,30 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
 exports.signUp = asyncHandler(async (req, res, next) => {
-    const { name, email, age, address, hash } = req.body;
+    const {
+        name,
+        email,
+        age,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        hash,
+    } = req.body;
+
     if (age < 18) {
         return res.render('user/signup', {
             error: 'You must be at least 18 years of age to sign up.',
         });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.render('user/signup', {
+            error: 'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.render('user/signup', {
+            error: "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
+
     const user = new User({
         name,
         email,
@@ -144,12 +162,15 @@ exports.readLoggedInEmail = asyncHandler(async (req, res, next) => {
 exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
-        const { name, age, email, address } = req.body;
+        const { name, age, email, address, phoneNumber, driverLicenseNumber } =
+            req.body;
         user.name = name;
         user.age = age;
         user.email = email;
         user.address = address;
-        const savedUser = await user.save();
+        user.phoneNumber = phoneNumber;
+        user.driverLicenseNumber = driverLicenseNumber;
+        await user.save();
 
         res.redirect('/profile');
     } else {
