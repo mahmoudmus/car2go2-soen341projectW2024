@@ -5,34 +5,81 @@
             <form action="/reservations/payment" method="POST">
                 <div class="container col-md-6">
                     <% if (typeof error !== 'undefined') { %>
-                        <div class="alert alert-danger" role="alert">
-                            <%= error %>
-                        </div>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
                     <% } %>
                 </div>
                 <div class="mb-3">
-                    <label for="creditCardNumber" class="form-label">Credit Card Number</label>
-                    <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" required>
+                    <label for="creditCardNumber" class="form-label"
+                        >Credit Card Number</label
+                    >
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="creditCardNumber"
+                        name="creditCardNumber"
+                        required
+                    />
                 </div>
                 <div class="mb-3">
-                    <label for="cardExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" id="cardExpiryDate" name="cardExpiryDate" placeholder="MM/YY" required>
+                    <label for="cardExpiryDate" class="form-label"
+                        >Expiry Date</label
+                    >
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cardExpiryDate"
+                        name="cardExpiryDate"
+                        placeholder="MM/YY"
+                        required
+                    />
                 </div>
                 <div class="mb-3">
                     <label for="cvv" class="form-label">CVV</label>
-                    <input type="text" class="form-control" id="cvv" name="cvv" required>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cvv"
+                        name="cvv"
+                        required
+                    />
                 </div>
                 <div class="mb-3">
-                    <label for="cardHolderName" class="form-label">Card Holder Name</label>
-                    <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" required>
+                    <label for="cardHolderName" class="form-label"
+                        >Card Holder Name</label
+                    >
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cardHolderName"
+                        name="cardHolderName"
+                        required
+                    />
                 </div>
                 <div class="mb-3">
-                    <label for="billingAddress" class="form-label">Address</label>
-                    <textarea class="form-control" id="billingAddress" name="billingAddress" rows="3" required></textarea>
+                    <label for="billingAddress" class="form-label"
+                        >Address</label
+                    >
+                    <textarea
+                        class="form-control"
+                        id="billingAddress"
+                        name="billingAddress"
+                        rows="3"
+                        required
+                    ></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="postalCode" class="form-label">Postal Code</label>
-                    <input type="text" class="form-control" id="postalCode" name="postalCode" required>
+                    <label for="postalCode" class="form-label"
+                        >Postal Code</label
+                    >
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="postalCode"
+                        name="postalCode"
+                        required
+                    />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -45,60 +92,98 @@
 
         const warn = (message) => {
             document.querySelector('#toast').warn(message);
-        }
+        };
 
         // Extracting reservation Id from URL:
         const url = new URL(window.location.href);
         const reservationId = url.searchParams.get('success');
 
         // Validate credit card number
-        const creditCardNumberField = document.querySelector('#creditCardNumber');
+        const creditCardNumberField =
+            document.querySelector('#creditCardNumber');
         const creditCardNumber = creditCardNumberField.value;
         if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(creditCardNumber)) {
+            creditCardNumberField.classList.remove('good');
             creditCardNumberField.classList.add('not-good');
             warn('Invalid credit card number format.');
             return;
         } else {
             creditCardNumberField.classList.remove('not-good');
+            creditCardNumberField.classList.add('good');
         }
-        
+
         // Validate expiry date
-        const cardExpiryDate =
-            document.querySelector('#cardExpiryDate').value;
+        const cardExpiryDateField = document.querySelector('#cardExpiryDate');
+        const cardExpiryDate = cardExpiryDateField.value;
+        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiryDate)) {
+            cardExpiryDateField.classList.remove('good');
+            cardExpiryDateField.classList.add('not-good');
+            warn('Invalid expiry date format.');
             return;
+        } else {
+            cardExpiryDateField.classList.remove('not-good');
+            cardExpiryDateField.classList.add('good');
+        }
 
         // Validate CVV
-        const cvv =
-            document.querySelector('#cvv').value;
+        const cvvField = document.querySelector('#cvv');
+        const cvv = cvvField.value;
+        if (!/^\d{3,4}$/.test(cvv)) {
+            cvvField.classList.remove('good');
+            cvvField.classList.add('not-good');
+            warn('Invalid CVV format.');
+            return;
+        } else {
+            cvvField.classList.remove('not-good');
+            cvvField.classList.add('good');
+        }
 
         // Validate card holder's name
-        const cardHolderName =
-            document.querySelector('#cardHolderName').value;
-
+        const cardHolderNameField = document.querySelector('#cardHolderName');
+        const cardHolderName = cardHolderNameField.value;
+        if (!/^[a-zA-Z\u00C0-\u00FF\s]+$/.test(cardHolderName)) {
+            cardHolderNameField.classList.remove('good');
+            cardHolderNameField.classList.add('not-good');
+            warn('Invalid Card Holder Name format.');
+            return;
+        } else {
+            cardHolderNameField.classList.remove('not-good');
+            cardHolderNameField.classList.add('good');
+        }
 
         // Validate address
-        const billingAddress =
-            document.querySelector('#billingAddress').value;
+        const billingAddress = document.querySelector('#billingAddress').value;
 
         // Validate postal code
-        const postalCode =
-            document.querySelector('#postalCode').value;
+        const postalCode = document.querySelector('#postalCode').value;
 
-        const body = { creditCardNumber, cardExpiryDate, cvv, cardHolderName, billingAddress, postalCode };
-        const response = await fetch(`/reservations/${reservationId}/billingInformation`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        });
+        const body = {
+            creditCardNumber,
+            cardExpiryDate,
+            cvv,
+            cardHolderName,
+            billingAddress,
+            postalCode,
+        };
+        const response = await fetch(
+            `/reservations/${reservationId}/billingInformation`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            }
+        );
 
         if (response.ok) {
             const currentUrl = new URL(window.location.href);
             const params = new URLSearchParams(currentUrl.search);
             window.location.href = `/?${params.toString()}`;
         } else {
-            document.querySelector('#toast').warn('Could not save billing information.');
+            document
+                .querySelector('#toast')
+                .warn('Could not save billing information.');
         }
     });
 </script>

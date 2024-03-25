@@ -48,5 +48,9 @@
 }
 
 .not-good {
-    border: 1px solid #f25c54 !important;
+    border: 3px solid #f25c54 !important;
+}
+
+.good{
+    border: 1.5px solid green !important;
 }
