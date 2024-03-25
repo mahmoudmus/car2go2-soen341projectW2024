@@ -119,10 +119,10 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query['details.isAutomatic'] = req.query.isAutomatic === 'on' ? true : false;
         }
         if(req.query.minPrice){
-            query.dailyPrice = { $gte: req.query.dailyPrice};
+            query.dailyPrice = { $gte: req.query.minPrice};
         }
         if(req.query.maxPrice){
-            query.dailyPrice = { $lte: req.query.dailyPrice};
+            query.dailyPrice = { $lte: req.query.maxPrice};
         }
     } catch (e) {
         console.error('Error in filtering Vehicles:', e);
