@@ -97,11 +97,12 @@ class ReservationFinder extends HTMLElement {
             return;
         }
 
-        let code = document.querySelector('#postal').value.replace(/\s+/g, '');
-        if (!this.isValidPostal(code) && !this.isValidZip(code)) {
-            toast.warn('Only valid zip and postal codes are accepted.');
-            return;
-        }
+        // let code = document.querySelector('#postal').value.replace(/\s+/g, '');
+        let code = encodeURIComponent(document.querySelector('#postal').value);
+        // if (!this.isValidPostal(code) && !this.isValidZip(code)) {
+        //     toast.warn('Only valid zip and postal codes are accepted.');
+        //     return;
+        // }
 
         const startURIComponent = encodeURIComponent(start.toISOString());
         const endURIComponent = encodeURIComponent(end.toISOString());
@@ -114,7 +115,9 @@ class ReservationFinder extends HTMLElement {
             return;
         }
         if (this.email) {
-            window.location.href = `newUrl&email=${this.email}`;
+            window.location.href = `${newUrl}&email=${this.email}`;
+        } else {
+            window.location.href = newUrl;
         }
     }
 

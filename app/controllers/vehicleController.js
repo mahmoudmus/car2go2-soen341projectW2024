@@ -59,21 +59,30 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     } else if (Boolean(postal)) {
         const key = process.env.GEOCODE_KEY;
 
+        const address = postal;
+
+        console.log(address);
         const targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-            postal
+            address
         )}&key=${key}`;
         let userLocation; // [longitude, latitude];
         try {
             const response = await axios.get(targetUrl);
-            const bounds = response.data.results[0].geometry.bounds;
-            userLocation = [
-                (bounds.northeast.lng + bounds.southwest.lng) / 2,
-                (bounds.northeast.lat + bounds.southwest.lat) / 2,
-            ];
+            const geometry = response.data.results[0].geometry;
+            if (geometry.bounds) {
+                const bounds = geometry.bounds;
+                userLocation = [
+                    (bounds.northeast.lng + bounds.southwest.lng) / 2,
+                    (bounds.northeast.lat + bounds.southwest.lat) / 2,
+                ];
+            } else {
+                userLocation = [geometry.location.lng, geometry.location.lat];
+            }
         } catch (error) {
+            console.log(error);
             return res.render('vehicle/list', {
                 vehicleList: [],
-                error: 'An error occured while verifying your location. Please try another postal or zip code.',
+                error: 'An error occured while verifying your location. Please try another postal code or airport.',
             });
         }
         const closestBranch = await Branch.find({
