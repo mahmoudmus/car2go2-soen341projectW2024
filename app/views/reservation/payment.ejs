@@ -106,7 +106,6 @@
             creditCardNumberField.classList.remove('good');
             creditCardNumberField.classList.add('not-good');
             warn('Invalid credit card number format.');
-            return;
         } else {
             creditCardNumberField.classList.remove('not-good');
             creditCardNumberField.classList.add('good');
@@ -119,7 +118,6 @@
             cardExpiryDateField.classList.remove('good');
             cardExpiryDateField.classList.add('not-good');
             warn('Invalid expiry date format.');
-            return;
         } else {
             cardExpiryDateField.classList.remove('not-good');
             cardExpiryDateField.classList.add('good');
@@ -132,7 +130,6 @@
             cvvField.classList.remove('good');
             cvvField.classList.add('not-good');
             warn('Invalid CVV format.');
-            return;
         } else {
             cvvField.classList.remove('not-good');
             cvvField.classList.add('good');
@@ -145,7 +142,6 @@
             cardHolderNameField.classList.remove('good');
             cardHolderNameField.classList.add('not-good');
             warn('Invalid Card Holder Name format.');
-            return;
         } else {
             cardHolderNameField.classList.remove('not-good');
             cardHolderNameField.classList.add('good');
@@ -157,6 +153,10 @@
         // Validate postal code
         const postalCode = document.querySelector('#postalCode').value;
 
+        if (document.querySelectorAll('.not-good').length !== 0){
+            return;
+        }
+        
         const body = {
             creditCardNumber,
             cardExpiryDate,
