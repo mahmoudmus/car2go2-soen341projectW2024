@@ -46,3 +46,7 @@
     color: var(--red-hot) !important; /* Change the text color on hover */
     border-left-color: white !important;
 }
+
+.not-good {
+    border: 1px solid #f25c54 !important;
+}

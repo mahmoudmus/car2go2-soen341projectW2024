@@ -43,17 +43,29 @@
     document.querySelector('form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const warn = (message) => {
+            document.querySelector('#toast').warn(message);
+        }
+
         // Extracting reservation Id from URL:
         const url = new URL(window.location.href);
         const reservationId = url.searchParams.get('success');
 
         // Validate credit card number
-        const creditCardNumber =
-            document.querySelector('#creditCardNumber').value;
-
+        const creditCardNumberField = document.querySelector('#creditCardNumber');
+        const creditCardNumber = creditCardNumberField.value;
+        if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(creditCardNumber)) {
+            creditCardNumberField.classList.add('not-good');
+            warn('Invalid credit card number format.');
+            return;
+        } else {
+            creditCardNumberField.classList.remove('not-good');
+        }
+        
         // Validate expiry date
         const cardExpiryDate =
             document.querySelector('#cardExpiryDate').value;
+            return;
 
         // Validate CVV
         const cvv =
