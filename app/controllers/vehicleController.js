@@ -104,6 +104,41 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         query.branch = closestBranch[0]._id;
     }
 
+    // Filter vehicles
+    try {
+        if (req.query.category) {
+            query.category = req.query.category.toLowerCase();
+        }
+        if (req.query.type) {
+            query.type = req.query.type.toLowerCase();
+        }
+        if (req.query.make) {
+            const regex = new RegExp(req.query.make, 'i');
+            query['details.make'] = { $regex: regex };
+        }
+        if (req.query.model) {
+            const regex = new RegExp(req.query.model, 'i');
+            query['details.model'] = { $regex: regex };
+        }
+        if (req.query.minYear) {
+            query['details.year'] = { $gte: req.query.minYear };
+        }
+        if (req.query.maxYear) {
+            query['details.year'] = { $lte: req.query.maxYear };
+        }
+        if (req.query.isAutomatic) {
+            query['details.isAutomatic'] = req.query.isAutomatic === 'on' ? true : false;
+        }
+        if(req.query.minPrice){
+            query.dailyPrice = { $gte: req.query.minPrice};
+        }
+        if(req.query.maxPrice){
+            query.dailyPrice = { $lte: req.query.maxPrice};
+        }
+    } catch (e) {
+        console.error('Error in filtering Vehicles:', e);
+        res.status(500).json({ message: 'Server error' });
+    }
     const vehicleList = await Vehicle.find(
         query,
         'details type imageUrl dailyPrice'

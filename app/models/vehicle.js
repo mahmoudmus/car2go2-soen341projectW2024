@@ -64,6 +64,7 @@ VehicleSchema.methods.verifyPriceRange = function (price) {
             return 35;
     }
 };
+
 VehicleSchema.methods.verifySizeRange = function (price) {
     //returns size range minimum. Maximum is min+500.
     switch (size) {
