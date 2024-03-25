@@ -87,7 +87,11 @@ exports.bookVehicle = asyncHandler(async (req, res, next) => {
     let user = req.user;
     let madeByCSR = false;
     if (email) {
+        console.log(email);
         user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).send({ message: 'Could not find user.' });
+        }
         madeByCSR = true;
     }
 

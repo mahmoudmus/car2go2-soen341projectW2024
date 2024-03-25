@@ -198,9 +198,8 @@ class BookingForm extends HTMLElement {
                 window.location.href = `/reservations/payment?success=${data.reservation._id}`;
             }
         } else {
-            document
-                .querySelector('#toast')
-                .caution('Error creating reservation.');
+            const message = (await response.json()).message;
+            document.querySelector('#toast').caution(message);
         }
     }
 
