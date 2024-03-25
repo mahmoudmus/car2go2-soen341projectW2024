@@ -179,7 +179,12 @@ exports.getBooking = asyncHandler(async (req, res, next) => {
         return res.status(404).json({ message: 'Vehicle not found' });
     }
     const accessories = await Accessory.find({}, 'name price');
-    res.render('reservation/booking', { vehicle, accessories });
+    const email = req.query.email ?? null;
+    res.render('reservation/booking', {
+        vehicle,
+        accessories,
+        email,
+    });
 });
 
 exports.readVehicle = asyncHandler(async (req, res, next) => {
@@ -193,32 +198,6 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
-/*
-exports.filterVehicles = asyncHandler(async (req, res, next) =>{
-    const filters = req.query;
-    const filteredVehicles = Vehicle.aggregate(vehicle =>{
-        let isValid = true;
-        for (key in filters) {
-            console.log(key,vehicle[key], filters[key]);
-            isValid = isValid && user[key] == filters[key];
-        }
-        return isValid;
-    });
-    res.send(filteredVehicles);
-})
-*/
-// exports.filterVehicles = asyncHandler(async (req, res, next) => {
-//     try {
-//         let filter = {};        
-
-//         const filteredVehicles = await Vehicle.find(filter);
-//         res.json({ vehicles: filteredVehicles });
-//     } catch (e) {
-//         console.error('Error in filtering Vehicles:', e);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
 
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
