@@ -199,32 +199,6 @@ exports.readVehicle = asyncHandler(async (req, res, next) => {
     }
 });
 
-/*
-exports.filterVehicles = asyncHandler(async (req, res, next) =>{
-    const filters = req.query;
-    const filteredVehicles = Vehicle.aggregate(vehicle =>{
-        let isValid = true;
-        for (key in filters) {
-            console.log(key,vehicle[key], filters[key]);
-            isValid = isValid && user[key] == filters[key];
-        }
-        return isValid;
-    });
-    res.send(filteredVehicles);
-})
-*/
-// exports.filterVehicles = asyncHandler(async (req, res, next) => {
-//     try {
-//         let filter = {};        
-
-//         const filteredVehicles = await Vehicle.find(filter);
-//         res.json({ vehicles: filteredVehicles });
-//     } catch (e) {
-//         console.error('Error in filtering Vehicles:', e);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
-
 exports.updateVehicle = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const { type, category, details, branch, imageUrl } = req.body;
