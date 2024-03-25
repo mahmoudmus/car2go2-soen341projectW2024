@@ -102,10 +102,12 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query.type = req.query.type.toLowerCase();
         }
         if (req.query.make) {
-            query['details.make'].toLowerCase() = req.query.make.toLowerCase();
+            const regex = new RegExp(req.query.make, 'i');
+            query['details.make'] = { $regex: regex };
         }
         if (req.query.model) {
-            query['details.model'].toLowerCase() = req.query.model.toLowerCase();
+            const regex = new RegExp(req.query.model, 'i');
+            query['details.model'] = { $regex: regex };
         }
         if (req.query.minYear) {
             query['details.year'] = { $gte: req.query.minYear };
