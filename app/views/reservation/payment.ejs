@@ -66,7 +66,6 @@
                         id="billingAddress"
                         name="billingAddress"
                         rows="3"
-                        required
                     ></textarea>
                 </div>
                 <div class="mb-3">
@@ -78,7 +77,6 @@
                         class="form-control"
                         id="postalCode"
                         name="postalCode"
-                        required
                     />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -148,15 +146,33 @@
         }
 
         // Validate address
-        const billingAddress = document.querySelector('#billingAddress').value;
+        const billingAddressField = document.querySelector('#billingAddress');
+        const billingAddress = billingAddressField.value;
+        if (!/^.+$/.test(billingAddress)) {
+            billingAddressField.classList.remove('good');
+            billingAddressField.classList.add('not-good');
+            warn('Invalid Billing Address format.');
+        } else {
+            billingAddressField.classList.remove('not-good');
+            billingAddressField.classList.add('good');
+        }
 
         // Validate postal code
-        const postalCode = document.querySelector('#postalCode').value;
+        const postalCodeField = document.querySelector('#postalCode');
+        const postalCode = postalCodeField.value;
+        if (!/^.+$/.test(postalCode)) {
+            postalCodeField.classList.remove('good');
+            postalCodeField.classList.add('not-good');
+            warn('Invalid Postal Code format.');
+        } else {
+            postalCodeField.classList.remove('not-good');
+            postalCodeField.classList.add('good');
+        }
 
-        if (document.querySelectorAll('.not-good').length !== 0){
+        if (document.querySelectorAll('.not-good').length !== 0) {
             return;
         }
-        
+
         const body = {
             creditCardNumber,
             cardExpiryDate,
