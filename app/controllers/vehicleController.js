@@ -44,8 +44,8 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     let branchLabel = 'All Branches';
     if (Boolean(start) && Boolean(end)) {
         const overlappingReservations = await Reservation.find({
-            startDate: { $lt: new Date(end) },
-            endDate: { $gt: new Date(start) },
+            startDate: { $lt: new Date(decodeURIComponent(end)) },
+            endDate: { $gt: new Date(decodeURIComponent(start)) },
         });
         const reservedVehicleIds = overlappingReservations.map(
             (reservation) => reservation.vehicle
@@ -114,34 +114,41 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     // Filter vehicles
     try {
         if (req.query.category) {
-            query.category = req.query.category.toLowerCase();
+            query.category = decodeURIComponent(
+                req.query.category
+            ).toLowerCase();
         }
         if (req.query.type) {
-            query.type = req.query.type.toLowerCase();
+            query.type = decodeURIComponent(req.query.type).toLowerCase();
         }
         if (req.query.make) {
-            const regex = new RegExp(req.query.make, 'i');
+            const regex = new RegExp(decodeURIComponent(req.query.make), 'i');
             query['details.make'] = { $regex: regex };
         }
         if (req.query.model) {
-            const regex = new RegExp(req.query.model, 'i');
+            const regex = new RegExp(decodeURIComponent(req.query.model), 'i');
             query['details.model'] = { $regex: regex };
         }
         if (req.query.minYear) {
-            query['details.year'] = { $gte: req.query.minYear };
+            query['details.year'] = {
+                $gte: decodeURIComponent(req.query.minYear),
+            };
         }
         if (req.query.maxYear) {
-            query['details.year'] = { $lte: req.query.maxYear };
+            query['details.year'] = {
+                $lte: decodeURIComponent(req.query.maxYear),
+            };
         }
         if (req.query.isAutomatic) {
-            query['details.isAutomatic'] =
-                req.query.isAutomatic === 'on' ? true : false;
+            if (decodeURIComponent(req.query.isAutomatic) === 'true') {
+                query['details.isAutomatic'] = true;
+            }
         }
         if (req.query.minPrice) {
-            query.dailyPrice = { $gte: req.query.minPrice };
+            query.dailyPrice = { $gte: decodeURIComponent(req.query.minPrice) };
         }
         if (req.query.maxPrice) {
-            query.dailyPrice = { $lte: req.query.maxPrice };
+            query.dailyPrice = { $lte: decodeURIComponent(req.query.maxPrice) };
         }
     } catch (e) {
         console.error('Error in filtering Vehicles:', e);
