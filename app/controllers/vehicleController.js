@@ -36,10 +36,12 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         return res.render('vehicle/list', {
             vehicleList: [],
             error: 'Please select both a start date and end date.',
+            branchLabel: '',
         });
     }
 
     let query = {};
+    let branchLabel = 'All Branches';
     if (Boolean(start) && Boolean(end)) {
         const overlappingReservations = await Reservation.find({
             startDate: { $lt: new Date(end) },
@@ -55,7 +57,9 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         console.log(
             'GEOCODE_KEY environment variable is not set. Using random branch'
         );
-        query.branch = (await Branch.findOne())._id;
+        const anyBranch = await Branch.findOne();
+        query.branch = anyBranch._id;
+        branchLabel = anyBranch.name;
     } else if (Boolean(postal)) {
         const key = process.env.GEOCODE_KEY;
 
@@ -83,6 +87,7 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             return res.render('vehicle/list', {
                 vehicleList: [],
                 error: 'An error occured while verifying your location. Please try another postal code or airport.',
+                branchLabel,
             });
         }
         const closestBranch = await Branch.find({
@@ -99,9 +104,11 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             return res.render('vehicle/list', {
                 vehicleList: [],
                 error: 'No branches found near your location.',
+                branchLabel: '',
             });
         }
         query.branch = closestBranch[0]._id;
+        branchLabel = closestBranch[0].name;
     }
 
     // Filter vehicles
@@ -127,13 +134,14 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             query['details.year'] = { $lte: req.query.maxYear };
         }
         if (req.query.isAutomatic) {
-            query['details.isAutomatic'] = req.query.isAutomatic === 'on' ? true : false;
+            query['details.isAutomatic'] =
+                req.query.isAutomatic === 'on' ? true : false;
         }
-        if(req.query.minPrice){
-            query.dailyPrice = { $gte: req.query.minPrice};
+        if (req.query.minPrice) {
+            query.dailyPrice = { $gte: req.query.minPrice };
         }
-        if(req.query.maxPrice){
-            query.dailyPrice = { $lte: req.query.maxPrice};
+        if (req.query.maxPrice) {
+            query.dailyPrice = { $lte: req.query.maxPrice };
         }
     } catch (e) {
         console.error('Error in filtering Vehicles:', e);
@@ -143,7 +151,7 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         query,
         'details type imageUrl dailyPrice'
     );
-    res.render('vehicle/list', { vehicleList });
+    res.render('vehicle/list', { vehicleList, branchLabel });
 });
 
 exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
