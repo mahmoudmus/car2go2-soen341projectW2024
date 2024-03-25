@@ -6,11 +6,13 @@
         <button class="btn border p-3" type="button" id="search-vehicles">
             Search
         </button>
+        
     </reservation-finder>
 <% if (user && user.type === 'admin') { %>
 <%- include('./newButton') %>
 <% } %>
 </div>
+
 <%- include('./filterForm') %>
 
 <style>
