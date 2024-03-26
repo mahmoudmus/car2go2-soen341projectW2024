@@ -63,7 +63,7 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     } else if (Boolean(postal)) {
         const key = process.env.GEOCODE_KEY;
 
-        const address = postal;
+        const address = decodeURIComponent(postal);
 
         console.log(address);
         const targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(

@@ -123,6 +123,7 @@ class ReservationFinder extends HTMLElement {
 
         const walkin = document.querySelector('walkin-form');
         if (walkin) {
+            url.pathname = '/vehicles';
             url.search = params.toString();
             walkin.setVehiclePageUrl(url.toString());
             return;
@@ -131,6 +132,7 @@ class ReservationFinder extends HTMLElement {
         if (this.email) {
             params.set('email', this.email);
         }
+        url.pathname = '/vehicles';
         url.search = params.toString();
         window.location.href = url.toString();
     }
