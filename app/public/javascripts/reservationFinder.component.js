@@ -33,13 +33,26 @@ class ReservationFinder extends HTMLElement {
 
             if (this.mode === 'catalogue') {
                 const params = new URLSearchParams(window.location.search);
-                this.querySelector('#postal').value = params.get('postal');
 
-                const start = new Date(params.get('start'));
-                const end = new Date(params.get('end'));
-                this.calendar.setDate([start, end]);
+                const postalURIComponent = params.get('postal');
+                if (postalURIComponent) {
+                    this.querySelector('#postal').value =
+                        decodeURIComponent(postalURIComponent);
+                }
 
-                this.email = new Date(params.get('email'));
+                const startURIComponent = params.get('start');
+                const endURIComponent = params.get('end');
+                if (startURIComponent && endURIComponent) {
+                    const start = new Date(
+                        decodeURIComponent(startURIComponent)
+                    );
+                    const end = new Date(decodeURIComponent(endURIComponent));
+                    this.calendar.setDate([start, end]);
+                }
+
+                if (params.get('email')) {
+                    this.email = decodeURIComponent(params.get('email'));
+                }
             }
         });
     }
@@ -97,28 +110,31 @@ class ReservationFinder extends HTMLElement {
             return;
         }
 
-        // let code = document.querySelector('#postal').value.replace(/\s+/g, '');
-        let code = encodeURIComponent(document.querySelector('#postal').value);
-        // if (!this.isValidPostal(code) && !this.isValidZip(code)) {
-        //     toast.warn('Only valid zip and postal codes are accepted.');
-        //     return;
-        // }
-
         const startURIComponent = encodeURIComponent(start.toISOString());
         const endURIComponent = encodeURIComponent(end.toISOString());
-        const baseUrl = window.location.protocol + '//' + window.location.host;
-        const newUrl = `${baseUrl}/vehicles?start=${startURIComponent}&end=${endURIComponent}&postal=${code}`;
+        let code = encodeURIComponent(document.querySelector('#postal').value);
+
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        params.set('start', startURIComponent);
+        params.set('end', endURIComponent);
+        params.set('postal', code);
 
         const walkin = document.querySelector('walkin-form');
         if (walkin) {
-            walkin.setVehiclePageUrl(newUrl);
+            url.pathname = '/vehicles';
+            url.search = params.toString();
+            walkin.setVehiclePageUrl(url.toString());
             return;
         }
+
         if (this.email) {
-            window.location.href = `${newUrl}&email=${this.email}`;
-        } else {
-            window.location.href = newUrl;
+            params.set('email', this.email);
         }
+        url.pathname = '/vehicles';
+        url.search = params.toString();
+        window.location.href = url.toString();
     }
 
     isValidPostal(postal) {

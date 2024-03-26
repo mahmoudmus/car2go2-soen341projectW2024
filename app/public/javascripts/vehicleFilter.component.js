@@ -1,48 +1,94 @@
 class VehicleFilter extends HTMLElement {
     connectedCallback() {
+        this.setFieldsUsingUrlParams();
+        this.FilterButton = this.querySelector('#submitFilter');
+        this.FilterButton.addEventListener('click', () => this.applyFilters());
+    }
+
+    applyFilters() {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        params.set('category', encodeURIComponent(this.categoryField.value));
+        params.set('type', encodeURIComponent(this.typeField.value));
+        params.set('make', encodeURIComponent(this.makeField.value));
+        params.set('model', encodeURIComponent(this.modelField.value));
+        params.set(
+            'isAutomatic',
+            encodeURIComponent(this.automaticCheckbox.checked)
+        );
+        params.set('minYear', encodeURIComponent(this.minYearField.value));
+        params.set('maxYear', encodeURIComponent(this.maxYearField.value));
+        params.set('minPrice', encodeURIComponent(this.minPriceField.value));
+        params.set('maxPrice', encodeURIComponent(this.maxPriceField.value));
+
+        url.search = params.toString();
+        window.location.href = url.toString();
+    }
+
+    setFieldsUsingUrlParams() {
         this.params = new URLSearchParams(window.location.search);
 
-        // @todo this for every other filter field:
         this.categoryField = this.querySelector('#category');
         if (this.params.get('category')) {
-            this.categoryField.value = this.params.get('category');
+            this.categoryField.value = decodeURIComponent(
+                this.params.get('category')
+            );
         }
 
         this.typeField = this.querySelector('#type');
         if (this.params.get('type')) {
-            this.typeField.value = this.params.get('type');
+            this.typeField.value = decodeURIComponent(this.params.get('type'));
         }
 
         this.makeField = this.querySelector('#make');
         if (this.params.get('make')) {
-            this.typeField.value = this.params.get('make');
+            this.makeField.value = decodeURIComponent(this.params.get('make'));
         }
-        this.makeField = this.querySelector('#model');
+
+        this.modelField = this.querySelector('#model');
         if (this.params.get('model')) {
-            this.typeField.value = this.params.get('model');
+            this.modelField.value = decodeURIComponent(
+                this.params.get('model')
+            );
         }
-        this.makeField = this.querySelector('#isAutomatic');
+
+        this.automaticCheckbox = this.querySelector('#isAutomatic');
         if (this.params.get('isAutomatic')) {
-            this.typeField.value = this.params.get('isAutomatic');
+            if (decodeURIComponent(this.params.get('isAutomatic')) === 'true') {
+                this.automaticCheckbox.checked = true;
+            } else {
+                this.automaticCheckbox.checked = false;
+            }
         }
-        this.makeField = this.querySelector('#minYear');
+
+        this.minYearField = this.querySelector('#minYear');
         if (this.params.get('minYear')) {
-            this.typeField.value = this.params.get('minYear');
+            this.minYearField.value = decodeURIComponent(
+                this.params.get('minYear')
+            );
         }
-        this.makeField = this.querySelector('#maxYear');
+
+        this.maxYearField = this.querySelector('#maxYear');
         if (this.params.get('maxYear')) {
-            this.typeField.value = this.params.get('maxYear');
+            this.maxYearField.value = decodeURIComponent(
+                this.params.get('maxYear')
+            );
         }
 
-        this.makeField = this.querySelector('#minPrice');
+        this.minPriceField = this.querySelector('#minPrice');
         if (this.params.get('minPrice')) {
-            this.typeField.value = this.params.get('minPrice');
-        }
-        this.makeField = this.querySelector('#maxPrice');
-        if (this.params.get('maxPrice')) {
-            this.typeField.value = this.params.get('maxPrice');
+            this.minPriceField.value = decodeURIComponent(
+                this.params.get('minPrice')
+            );
         }
 
+        this.maxPriceField = this.querySelector('#maxPrice');
+        if (this.params.get('maxPrice')) {
+            this.maxPriceField.value = decodeURIComponent(
+                this.params.get('maxPrice')
+            );
+        }
     }
 }
 

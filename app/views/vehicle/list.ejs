@@ -13,25 +13,20 @@
 <% } %>
 </div>
 
-<%- include('./filterForm') %>
+<%- include('./filterForm', { branchLabel }) %>
 
-<style>
-    #vehicle-list {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        gap: 2rem;
-    }
-</style>
-<div class="container" id="vehicle-list">
+<div class="container">
+    <div class="row row-cols-auto gap-4 justify-content-center" id="vehicle-list">
     <% if (typeof error !== 'undefined') { %>
         <div class="alert alert-danger alert-dismissible fade show"><%= error %></div>
     <% } else { %>
         <% vehicleList.forEach(function(vehicle) { %>
+            <div class="col">
             <%- include('./row', { vehicle }) %>
+            </div>
         <% }) %>
     <% } %>
+    </div>
 </div>
 <%- include('./form') %>
 <%- include('./details') %>

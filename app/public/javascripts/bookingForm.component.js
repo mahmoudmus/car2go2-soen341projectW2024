@@ -24,8 +24,8 @@ class BookingForm extends HTMLElement {
             updateCalendarMode();
             window.addEventListener('resize', updateCalendarMode);
             const params = new URLSearchParams(window.location.search);
-            const start = new Date(params.get('start'));
-            const end = new Date(params.get('end'));
+            const start = new Date(decodeURIComponent(params.get('start')));
+            const end = new Date(decodeURIComponent(params.get('end')));
             this.calendar.setDate([start, end]);
             this.setUnavailabilities();
             this.calendar.config.onChange.push((selectedDates) => {

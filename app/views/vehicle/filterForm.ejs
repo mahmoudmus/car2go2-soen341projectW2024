@@ -2,77 +2,79 @@
 <vehicle-filter>
     <div class="container py-2 my-3 rounded bg-light d-flex justify-content-between gap-2">
         <div class="container">
-            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#abc1"> <i class= "bi bi-sliders"></i> See Filters</button>
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#abc1"> <i class= "bi bi-sliders"></i> See Filters</button>
+                <div class="text-success">
+                    <i class="bi bi-geo-alt-fill"></i>&nbsp;<span><%= branchLabel %></span>
+                </div>
+            </div>
             <div class="collapse" id="abc1">
-                  <form id="filterForm" class="rounded bg-light mt-3">
-                    <div class="row">
-                        <div class="mb-3 col-sm-6">
-                        <label for="category" class="form-label">Category:</label>
-                        <select id="category" name="category" class="form-select">
-                            <option value="" selected>Any</option>
-                            <option value="compact">Compact</option>
-                            <option value="standard">Standard</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="full-size">Full-size</option>
-                        </select>
+                <div class="row mt-3">
+                    <div class="mb-3 col-sm-6">
+                    <label for="category" class="form-label">Category:</label>
+                    <select id="category" name="category" class="form-select">
+                        <option value="" selected>Any</option>
+                        <option value="compact">Compact</option>
+                        <option value="standard">Standard</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="full-size">Full-size</option>
+                    </select>
+                    </div>
+        
+                    <div class="mb-3 col-sm-6">
+                    <label for="type" class="form-label">Type:</label>
+                    <select id="type" name="type" class="form-select">
+                        <option value="" selected>Any</option>
+                        <option value="car">Car</option>
+                        <option value="suv">SUV</option>
+                        <option value="van">Van</option>
+                        <option value="truck">Truck</option>
+                    </select>
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        <label for="make" class="form-label">Make:</label>
+                        <input type="text" id="make" name="make" class="form-control">
                         </div>
             
                         <div class="mb-3 col-sm-6">
-                        <label for="type" class="form-label">Type:</label>
-                        <select id="type" name="type" class="form-select">
-                            <option value="" selected>Any</option>
-                            <option value="car">Car</option>
-                            <option value="suv">SUV</option>
-                            <option value="van">Van</option>
-                            <option value="truck">Truck</option>
-                        </select>
-                        </div>
+                        <label for="model" class="form-label">Model:</label>
+                        <input type="text" id="model" name="model" class="form-control">
                     </div>
-          
-                    <div class="row">
-                        <div class="mb-3 col-sm-6">
-                            <label for="make" class="form-label">Make:</label>
-                            <input type="text" id="make" name="make" class="form-control">
-                          </div>
+                </div>
                 
-                          <div class="mb-3 col-sm-6">
-                            <label for="model" class="form-label">Model:</label>
-                            <input type="text" id="model" name="model" class="form-control">
-                        </div>
+        
+                <div class="mb-3">
+                    <div class="row">
+                    <div class="col">
+                        <label for="minYear" class="form-label">Min Year:</label>
+                        <input type="number" id="minYear" name="minYear" class="form-control">
                     </div>
-                   
-          
-                    <div class="mb-3">
-                      <div class="row">
-                        <div class="col">
-                            <label for="minYear" class="form-label">Min Year:</label>
-                            <input type="number" id="minYear" name="minYear" class="form-control">
-                        </div>
-                        <div class="col">
-                            <label for="maxYear" class="form-label">Max Year:</label>
-                            <input type="number" id="maxYear" name="maxYear" class="form-control">
-                        </div>
-                        <div class="col">
-                            <label for="minPrice" class="form-label">Min Price:</label>
-                            <input type="number" id="minPrice" name="minPrice" class="form-control">
-                        </div>
-                        <div class="col">
-                            <label for="maxPrice" class="form-label">Max Price:</label>
-                            <input type="number" id="maxPrice" name="maxPrice" class="form-control">
-                        </div>
-                      </div>
+                    <div class="col">
+                        <label for="maxYear" class="form-label">Max Year:</label>
+                        <input type="number" id="maxYear" name="maxYear" class="form-control">
                     </div>
+                    <div class="col">
+                        <label for="minPrice" class="form-label">Min Price:</label>
+                        <input type="number" id="minPrice" name="minPrice" class="form-control">
+                    </div>
+                    <div class="col">
+                        <label for="maxPrice" class="form-label">Max Price:</label>
+                        <input type="number" id="maxPrice" name="maxPrice" class="form-control">
+                    </div>
+                    </div>
+                </div>
 
-                    <div class="d-flex justify-content-between mb-3">
-                        <div class="form-check">
-                            <input type="checkbox" id="isAutomatic" name="isAutomatic" class="form-check-input">
-                            <label for="isAutomatic" class="form-check-label">Automatic</label>
-                        </div>
-              
-                        <button type="submit" class="btn btn-primary">Filter</button>
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" id="isAutomatic" name="isAutomatic" class="form-check-input">
+                        <label for="isAutomatic" class="form-check-label">Automatic</label>
                     </div>
-                   
-                  </form>
+            
+                    <button id="submitFilter" class="btn btn-primary">Filter</button>
+                </div>
             </div>
           </div>
     </div>
