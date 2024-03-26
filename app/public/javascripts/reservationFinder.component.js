@@ -1,7 +1,12 @@
 class ReservationFinder extends HTMLElement {
     connectedCallback() {
-        this.searchVehiclesButton = this.querySelector('#button-addon');
+        // this.searchVehiclesButton = this.querySelector('#button-addon');
+        this.postalInput = this.querySelector('.postal-group');
+        this.searchButton = this.querySelector('#search-vehicles');
         this.initializeDateRangePicker();
+        this.searchButton.addEventListener('click', () =>
+            this.redirectToFilteredVehicles()
+        );
     }
 
     async initializeDateRangePicker() {
@@ -22,9 +27,33 @@ class ReservationFinder extends HTMLElement {
             window.addEventListener('resize', updateCalendarMode);
             this.calendar.config.onChange.push((selectedDates) => {
                 if (selectedDates[0] && selectedDates[1]) {
-                    this.fetchAvailableVehicles();
+                    this.showPostalInput();
                 }
             });
+
+            if (this.mode === 'catalogue') {
+                const params = new URLSearchParams(window.location.search);
+
+                const postalURIComponent = params.get('postal');
+                if (postalURIComponent) {
+                    this.querySelector('#postal').value =
+                        decodeURIComponent(postalURIComponent);
+                }
+
+                const startURIComponent = params.get('start');
+                const endURIComponent = params.get('end');
+                if (startURIComponent && endURIComponent) {
+                    const start = new Date(
+                        decodeURIComponent(startURIComponent)
+                    );
+                    const end = new Date(decodeURIComponent(endURIComponent));
+                    this.calendar.setDate([start, end]);
+                }
+
+                if (params.get('email')) {
+                    this.email = decodeURIComponent(params.get('email'));
+                }
+            }
         });
     }
 
@@ -66,11 +95,57 @@ class ReservationFinder extends HTMLElement {
         }
     }
 
-    setVehicleCarousel(vehicles) {
-        let vehicleCarousel = document.querySelector('vehicle-carousel');
-        if (vehicleCarousel) {
-            vehicleCarousel.vehicles = vehicles;
+    showPostalInput() {
+        console.log(this.postalInput);
+        this.postalInput.style.display = '';
+    }
+
+    redirectToFilteredVehicles() {
+        const toast = document.querySelector('#toast');
+
+        const start = this.calendar.selectedDates[0];
+        const end = this.calendar.selectedDates[1];
+        if (!start || !end) {
+            toast.warn('Please select a start and end date.');
+            return;
         }
+
+        const startURIComponent = encodeURIComponent(start.toISOString());
+        const endURIComponent = encodeURIComponent(end.toISOString());
+        let code = encodeURIComponent(document.querySelector('#postal').value);
+
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        params.set('start', startURIComponent);
+        params.set('end', endURIComponent);
+        params.set('postal', code);
+
+        const walkin = document.querySelector('walkin-form');
+        if (walkin) {
+            url.pathname = '/vehicles';
+            url.search = params.toString();
+            walkin.setVehiclePageUrl(url.toString());
+            return;
+        }
+
+        if (this.email) {
+            params.set('email', this.email);
+        }
+        url.pathname = '/vehicles';
+        url.search = params.toString();
+        window.location.href = url.toString();
+    }
+
+    isValidPostal(postal) {
+        const regex =
+            /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
+        return regex.test(postal);
+    }
+
+    isValidZip(zip) {
+        const regex = /^\d{5}(-\d{4})?$/;
+        return regex.test(zip);
     }
 
     toString(date) {
@@ -79,6 +154,10 @@ class ReservationFinder extends HTMLElement {
             month: 'long',
             day: 'numeric',
         });
+    }
+
+    get mode() {
+        return this.getAttribute('mode');
     }
 }
 

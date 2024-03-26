@@ -4,6 +4,8 @@ run-name: ${{ github.actor }} is running Jasmine unit tests
 on:
   pull_request:
     branches: ["*"]
+  push:
+    branches: ["*"]
 
 jobs:
   test:

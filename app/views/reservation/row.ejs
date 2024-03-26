@@ -11,7 +11,8 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-        <h5 class="card-title"><span class="reservation-name"><%= reservation.user.name %></span>'s reservation</h5>
+        <% const csrIndicator = reservation.madeByCSR ? ' <a data-bs-toggle="tooltip" data-bs-title="Reservation Made By CSR." class="ms-1 gradient-text"><i class="bi bi-star-fill"></i></a>' : '' %>
+        <h5 class="card-title"><span class="reservation-name"><%= reservation.user.name %></span>'s reservation<%- csrIndicator %></h5>
         
         <small class="text-body-secondary text-truncate d-block">
         <a role="button" class="copy-on-click text-secondary text-decoration-none pointer">
@@ -39,8 +40,15 @@
             </span>
         </div>
         <div class="text-secondary">
-            $<span class="reservation-cost"><%= reservation.cost %></span>
+            $<span class="reservation-cost"><%= reservation.cost.toFixed(2) %></span>
         </div>
+        <% if(reservation.status == 'CheckedIn'){ %> 
+            <div class="text-secondary">
+                <span class="reservation-checkout-description">Leave the car in the parking lot with the keys inside and check out with a customer service representative</span>
+            </div>
+          <% } else{ %>  
+            <div></div>
+         <% } %>
         </div>
         <div class="d-flex justify-content-end gap-2 m-2">
             <button class="btn btn-dark edit-reservation"
@@ -49,6 +57,14 @@
             <button class="btn btn-danger delete-reservation"
                 ><i class="bi bi-trash3-fill"></i>
             </button>
+            <% if (['admin', 'csr'].includes(user.type)) { %>
+                <button class="btn btn-dark checkin-reservation <% if (reservation.status !== 'checked-in') { %>visible<% } %>" <% if (reservation.status === 'checked-in') { %> style="display: none;" <% } %>>
+                    <i class="bi bi-clipboard-check-fill"></i>&nbsp;Check in
+                </button>
+                <button class="btn btn-dark return-reservation <% if (reservation.status === 'checked-in') { %>visible<% } %>" <% if (reservation.status !== 'checked-in') { %> style="display: none;" <% } %>>
+                    <i class="bi bi-arrow-right"></i>&nbsp;Return Car
+                </button>
+            <% } %>
         </div>
       </div>
     </div>

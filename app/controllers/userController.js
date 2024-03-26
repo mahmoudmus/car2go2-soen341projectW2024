@@ -4,17 +4,37 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
 exports.signUp = asyncHandler(async (req, res, next) => {
-    const { name, email, age, address, hash } = req.body;
+    const {
+        name,
+        email,
+        age,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        hash,
+    } = req.body;
+
     if (age < 18) {
         return res.render('user/signup', {
             error: 'You must be at least 18 years of age to sign up.',
         });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.render('user/signup', {
+            error: 'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.render('user/signup', {
+            error: "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
+
     const user = new User({
         name,
         email,
         age,
         address,
+        phoneNumber,
+        driverLicenseNumber,
         hash,
     });
 
@@ -51,17 +71,40 @@ exports.signUp = asyncHandler(async (req, res, next) => {
 });
 
 exports.createUser = asyncHandler(async (req, res, next) => {
-    const { name, email, age, address, type, hash } = req.body;
+    const {
+        name,
+        email,
+        age,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        type,
+        hash,
+    } = req.body;
+
     if (age < 18) {
         return res.status(400).json({
             message: 'Users must be at least 18 years of age.',
         });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.status(400).json({
+            message:
+                'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.status(400).json({
+            message:
+                "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
+
     const user = new User({
         name,
         email,
         age,
         address,
+        phoneNumber,
+        driverLicenseNumber,
         type,
         hash,
     });
@@ -85,7 +128,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.readAllUsers = asyncHandler(async (req, res, next) => {
-    if (!req.user || req.user.type !== 'admin') {
+    if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
         res.render('user/login', {
             error: 'This page is restricted.',
         });
@@ -121,12 +164,15 @@ exports.readLoggedInEmail = asyncHandler(async (req, res, next) => {
 exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
-        const { name, age, email, address } = req.body;
+        const { name, age, email, address, phoneNumber, driverLicenseNumber } =
+            req.body;
         user.name = name;
         user.age = age;
         user.email = email;
         user.address = address;
-        const savedUser = await user.save();
+        user.phoneNumber = phoneNumber;
+        user.driverLicenseNumber = driverLicenseNumber;
+        await user.save();
 
         res.redirect('/profile');
     } else {
@@ -139,26 +185,60 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if (!(req.user && req.user.type === 'admin')) {
+    if (!(req.user && (req.user.type === 'admin' || req.user.type === 'csr'))) {
         return res
             .status(401)
             .json({ message: 'You do not have admin privileges.' });
     }
 
-    const { name, age, email, address, type, hash } = req.body;
+    const {
+        name,
+        age,
+        email,
+        address,
+        phoneNumber,
+        driverLicenseNumber,
+        type,
+        hash,
+    } = req.body;
+
     if (age < 18) {
-        return res
-            .status(400)
-            .json({ message: 'Users must be atleast 18 years of age.' });
+        return res.status(400).json({
+            message: 'Users must be at least 18 years of age.',
+        });
+    } else if (!/^[0-9\s\-\(\)]+$/.test(phoneNumber)) {
+        return res.status(400).json({
+            message:
+                'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        });
+    } else if (!/^[A-Za-z0-9\- ]+$/.test(driverLicenseNumber)) {
+        return res.status(400).json({
+            message:
+                "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        });
     }
-    user.name = name;
-    user.age = age;
-    user.email = email;
-    user.address = address;
-    user.type = type;
-    if (hash) {
-        user.hash = hash;
-    }
+
+    const allowedFields =
+        req.user.type === 'admin'
+            ? [
+                  'name',
+                  'age',
+                  'email',
+                  'address',
+                  'phoneNumber',
+                  'driverLicenseNumber',
+                  'type',
+                  'hash',
+              ]
+            : ['name', 'age', 'address', 'phoneNumber', 'driverLicenseNumber'];
+
+    Object.keys(req.body).forEach((key) => {
+        if (allowedFields.includes(key)) {
+            if (!(key === 'hash' && req.body.hash === '')) {
+                user[key] = req.body[key];
+            }
+        }
+    });
 
     try {
         const updatedUser = await user.save();
@@ -169,6 +249,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
                 message: `${email} is already in use.`,
             });
         } else {
+            console.log(e);
             res.status(500).json({ message: 'An unexpected error occurred.' });
         }
     }

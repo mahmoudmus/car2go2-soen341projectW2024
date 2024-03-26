@@ -7,10 +7,12 @@ class UserForm extends HTMLElement {
             const formData = new FormData(this.form);
             const requestBody = {
                 name: formData.get('name'),
-                email: formData.get('email'),
+                email: this.userEmail,
                 age: formData.get('age'),
                 address: formData.get('address'),
-                type: formData.get('type'),
+                phoneNumber: formData.get('phoneNumber'),
+                driverLicenseNumber: formData.get('driverLicenseNumber'),
+                type: this.userType,
                 hash: formData.get('hash'),
             };
             const response = await fetch(this.requestUrl(), {
@@ -25,6 +27,8 @@ class UserForm extends HTMLElement {
                 document.querySelector('#toast').caution(message);
             } else if (this.mode === 'creating') {
                 this.successfulCreation(await response.text());
+            } else if (this.mode === 'walkin') {
+                this.successfulWalkin();
             } else {
                 this.successfulUpdate(await response.json());
             }
@@ -35,6 +39,8 @@ class UserForm extends HTMLElement {
     requestMethod() {
         switch (this.mode) {
             case 'creating':
+                return 'POST';
+            case 'walkin':
                 return 'POST';
             case 'updating':
                 return 'PUT';
@@ -47,6 +53,8 @@ class UserForm extends HTMLElement {
         switch (this.mode) {
             case 'creating':
                 return '/users/new';
+            case 'walkin':
+                return '/users/new';
             case 'updating':
                 return `/users/${this.userId}`;
             default:
@@ -57,6 +65,8 @@ class UserForm extends HTMLElement {
     requestError() {
         switch (this.mode) {
             case 'creating':
+                return 'Failed to create user.';
+            case 'walkin':
                 return 'Failed to create user.';
             case 'updating':
                 return `Failed to update user.`;
@@ -89,6 +99,11 @@ class UserForm extends HTMLElement {
         document.querySelector('#toast').notify('Successfully updated user.');
     }
 
+    successfulWalkin() {
+        document.querySelector('walkin-form').setEmail(this.userEmail);
+        this.modal.hide();
+    }
+
     async setFields(userId) {
         this.userId = userId;
         const response = await fetch(`/users/${userId}`, {
@@ -107,7 +122,10 @@ class UserForm extends HTMLElement {
             this.form.querySelector('#email').value = user.email;
             this.form.querySelector('#age').value = user.age;
             this.form.querySelector('#address').value = user.address;
-            this.form.querySelector('#type').value = user.type;
+            this.form.querySelector('#phoneNumber').value = user.phoneNumber;
+            this.form.querySelector('#driverLicenseNumber').value =
+                user.driverLicenseNumber;
+            this.userType = user.type;
         }
     }
 
@@ -131,9 +149,36 @@ class UserForm extends HTMLElement {
                 this.title = 'Update User';
                 this.submitButtonText = 'Update';
                 break;
+            case 'walkin':
+                this._mode = mode;
+                this.form.reset();
+                this.form.querySelector('#hash').required = true;
+                this.title = 'New Walk-in User';
+                this.submitButtonText = 'Continue';
+                this.lockUserType('customer');
+                break;
             default:
                 throw new Error('Invalid vehicle form mode.');
         }
+    }
+
+    lockUserType(type) {
+        if (type) {
+            this.userType = type;
+        }
+        this.form.querySelector('#type').setAttribute('disabled', true);
+    }
+
+    get userEmail() {
+        return this.form.querySelector('#email').value;
+    }
+
+    set userType(type) {
+        this.form.querySelector('#type').value = type;
+    }
+
+    get userType() {
+        return this.form.querySelector('#type').value;
     }
 
     set title(title) {

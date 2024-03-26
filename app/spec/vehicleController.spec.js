@@ -7,6 +7,7 @@ describe('Vehicle Controller', () => {
 
     beforeEach(() => {
         req = {
+            query: {},
             body: {
                 type: 'car',
                 details: {
@@ -86,6 +87,7 @@ describe('Vehicle Controller', () => {
 
         sinon.assert.calledWith(res.render, 'vehicle/list', {
             vehicleList: vehicles,
+            branchLabel: 'All Branches',
         });
         sinon.assert.notCalled(next);
     });

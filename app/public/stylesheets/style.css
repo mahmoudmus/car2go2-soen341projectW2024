@@ -40,3 +40,17 @@
         white 90%
     );
 }
+
+.btn-glow-hover:hover {
+    background-color: white !important; /* Change the background color on hover */
+    color: var(--red-hot) !important; /* Change the text color on hover */
+    border-left-color: white !important;
+}
+
+.not-good {
+    border: 3px solid #f25c54 !important;
+}
+
+.good{
+    border: 1.5px solid green !important;
+}

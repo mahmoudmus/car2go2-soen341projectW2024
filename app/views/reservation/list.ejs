@@ -1,6 +1,4 @@
-<div class="container py-2 my-3 rounded bg-light d-flex justify-content-end">
-    <%- include('./newButton') %>
-</div>
+<%- include('./filterBar') %>
 <style>
     #reservation-list {
         display: flex;
@@ -12,4 +10,11 @@
     <% reservationList.forEach(function(reservation) { %> <%- include('./row', {
     reservation }) %> <% }) %>
 </div>
+<!-- Reservation list container -->
+
+
 <%- include('./form') %>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

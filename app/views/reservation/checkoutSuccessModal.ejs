@@ -1,0 +1,29 @@
+<script type="module" src="/javascripts/checkoutSuccessModal.component.js"></script>
+<checkout-success-modal
+    class="modal fade"
+    tabindex="-1"
+    aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5"><i class="bi bi-fire red-hot"></i></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <h1 class="gradient-text">Checkout Completed.</h1>
+                    <div>The customer is free to leave.</div>
+                    <br>
+                    <div>
+                      Remind the customer to check their email for the electronic receipt,
+                      and thank them for choosing <span class="gradient-text">Gas</span>.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</checkout-success-modal>

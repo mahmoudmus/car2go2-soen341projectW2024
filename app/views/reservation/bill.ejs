@@ -1,0 +1,34 @@
+<div class="row p-4 border rounded">
+    <div class="pb-2">
+        <h4>Final Price</h4>
+        <div class="text-secondary">Tax included.</div>
+    </div>
+    <div id="calculations" class="text-secondary">
+        <div>
+            <% 
+                const days = reservation.duration;
+                const price = reservation.vehicle.dailyPrice;
+                const basePrice = days * price 
+            %>
+            <span id="n-days"><%= days %></span> day(s) x $<%= price %>/day = $<span id="basePrice"><%= basePrice %></span>
+        </div>
+        <div id="addOns">
+            <% for (const accessory of reservation.accessories) { %>
+            <div>+ <%= accessory.name %> ($<%= accessory.price %>)</div>
+            <% } %>
+        </div>
+        <% const damagesPrice = damagesCost ? parseFloat(damagesCost) : 0 %>
+        <div>+ Damages ($<%= damagesPrice %>)</div>
+        <div class="mb-2">+ QST & GST (15%)</div>
+    </div>
+    <hr>
+    <% 
+        const accessories = Object.values(reservation.accessories);
+        const accessoriesPrice = accessories.reduce((accumulator, item) => accumulator + item.price, 0);
+        const total = (basePrice + accessoriesPrice + damagesPrice) * 1.14975;
+        const totalString = total.toFixed(2);
+    %>
+    <div class="d-flex flex-row justify-content-between">
+        <h2>$<span id="total"><%= totalString %></span></h2>
+    </div>
+</div>

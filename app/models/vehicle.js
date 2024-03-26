@@ -22,12 +22,10 @@ const VehicleSchema = new Schema({
     },
     dailyPrice: { type: Number, required: true, min: 0 },
     branch: {
-        type: String,
-        enum: ['montreal', 'toronto', 'winnipeg', 'calgary', 'vancouver'],
+        type: Schema.Types.ObjectId,
+        ref: 'Branch',
         required: true,
-        lowercase: true,
-        trim: true,
-    }, // @todo Replace with reference to branch model.
+    },
     details: {
         make: String, // Car manufacturer
         model: String, // Car model
@@ -44,6 +42,13 @@ const VehicleSchema = new Schema({
             trim: true,
         },
     },
+    licensePlateNumber: {
+        type: String,
+        trim: true,
+        required: true,
+        unique: true,
+        match: /^[ABCDEFGHIJKLMNOPQRSTUVWXYZ]{3} \d{2}[ABCDEFGHIJKLMNOPQRSTUVWXYZ]$/,
+    },
 });
 
 VehicleSchema.methods.verifyPriceRange = function (price) {
@@ -59,6 +64,7 @@ VehicleSchema.methods.verifyPriceRange = function (price) {
             return 35;
     }
 };
+
 VehicleSchema.methods.verifySizeRange = function (price) {
     //returns size range minimum. Maximum is min+500.
     switch (size) {
