@@ -50,5 +50,14 @@ async function findAvailableVehicles(datingProfile) {
         }
     );
 
-    return availableVehicles;
+    // If we want to sort by branch, we can uncomment this underneath and replace availableVehicles with filteredVehicles
+    // const filteredVehicles = availableVehicles.vehicles.filter(vehicle => vehicle.branch.name === branchName);
+
+    // Shuffle the available vehicles 
+    const shuffledVehicles = availableVehicles.sort(() => Math.random() - 0.5);
+
+    // Return the first 10 vehicles as the random selection
+    const randomVehicles = shuffledVehicles.slice(0, 10);
+
+    return randomVehicles;
 }
