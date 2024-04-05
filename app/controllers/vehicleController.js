@@ -160,11 +160,9 @@ exports.filterVehicles = async function (requestQuery) {
 
 exports.readAllVehicles = asyncHandler(async (req, res, next) => {
     try {
-        console.log('we out here');
         let { vehicleList, branchLabel } = await exports.filterVehicles(
             req.query
         );
-        console.log({ vehicleList, branchLabel });
         res.render('vehicle/list', { vehicleList, branchLabel });
     } catch (e) {
         return res.render('vehicle/list', {
@@ -172,6 +170,17 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             error: e.message,
             branchLabel: '',
         });
+    }
+});
+
+exports.readAllVehicleObjects = asyncHandler(async (req, res, next) => {
+    try {
+        let { vehicleList, branchLabel } = await exports.filterVehicles(
+            req.query
+        );
+        res.send({ vehicleList, branchLabel });
+    } catch (e) {
+        res.send({ message: 'Vehicle not found' });
     }
 });
 
