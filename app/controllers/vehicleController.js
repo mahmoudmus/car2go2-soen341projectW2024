@@ -29,18 +29,14 @@ exports.createVehicle = asyncHandler(async (req, res, next) => {
     }
 });
 
-exports.readAllVehicles = asyncHandler(async (req, res, next) => {
-    const { start, end, postal } = req.query;
+exports.filterVehicles = async function (requestQuery) {
+    const { start, end, postal } = requestQuery;
 
     if (Boolean(start) ^ Boolean(end)) {
-        return res.render('vehicle/list', {
-            vehicleList: [],
-            error: 'Please select both a start date and end date.',
-            branchLabel: '',
-        });
+        throw new Error('Please select both a start date and end date.');
     }
 
-    let query = {};
+    let databaseQuery = {};
     let branchLabel = 'All Branches';
     if (Boolean(start) && Boolean(end)) {
         const overlappingReservations = await Reservation.find({
@@ -50,22 +46,18 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
         const reservedVehicleIds = overlappingReservations.map(
             (reservation) => reservation.vehicle
         );
-        query._id = { $nin: reservedVehicleIds };
+        databaseQuery._id = { $nin: reservedVehicleIds };
     }
 
     if (Boolean(postal) && !process.env.GEOCODE_KEY) {
-        console.log(
-            'GEOCODE_KEY environment variable is not set. Using random branch'
-        );
+        console.log('No GEOCODE_KEY - using random branch');
         const anyBranch = await Branch.findOne();
-        query.branch = anyBranch._id;
+        databaseQuery.branch = anyBranch._id;
         branchLabel = anyBranch.name;
     } else if (Boolean(postal)) {
         const key = process.env.GEOCODE_KEY;
-
         const address = decodeURIComponent(postal);
 
-        console.log(address);
         const targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
             address
         )}&key=${key}`;
@@ -83,12 +75,9 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
                 userLocation = [geometry.location.lng, geometry.location.lat];
             }
         } catch (error) {
-            console.log(error);
-            return res.render('vehicle/list', {
-                vehicleList: [],
-                error: 'An error occured while verifying your location. Please try another postal code or airport.',
-                branchLabel,
-            });
+            throw new Error(
+                'An error occured while verifying your location. Please try another postal code or airport.'
+            );
         }
         const closestBranch = await Branch.find({
             location: {
@@ -101,64 +90,89 @@ exports.readAllVehicles = asyncHandler(async (req, res, next) => {
             },
         }).limit(1);
         if (closestBranch.length === 0) {
-            return res.render('vehicle/list', {
-                vehicleList: [],
-                error: 'No branches found near your location.',
-                branchLabel: '',
-            });
+            throw new Error('No branches found near your location.');
         }
-        query.branch = closestBranch[0]._id;
+        databaseQuery.branch = closestBranch[0]._id;
         branchLabel = closestBranch[0].name;
     }
 
-    // Filter vehicles
     try {
-        if (req.query.category) {
-            query.category = decodeURIComponent(
-                req.query.category
+        if (requestQuery.category) {
+            databaseQuery.category = decodeURIComponent(
+                requestQuery.category
             ).toLowerCase();
         }
-        if (req.query.type) {
-            query.type = decodeURIComponent(req.query.type).toLowerCase();
+        if (requestQuery.type) {
+            databaseQuery.type = decodeURIComponent(
+                requestQuery.type
+            ).toLowerCase();
         }
-        if (req.query.make) {
-            const regex = new RegExp(decodeURIComponent(req.query.make), 'i');
-            query['details.make'] = { $regex: regex };
+        if (requestQuery.make) {
+            const regex = new RegExp(
+                decodeURIComponent(requestQuery.make),
+                'i'
+            );
+            databaseQuery['details.make'] = { $regex: regex };
         }
-        if (req.query.model) {
-            const regex = new RegExp(decodeURIComponent(req.query.model), 'i');
-            query['details.model'] = { $regex: regex };
+        if (requestQuery.model) {
+            const regex = new RegExp(
+                decodeURIComponent(requestQuery.model),
+                'i'
+            );
+            databaseQuery['details.model'] = { $regex: regex };
         }
-        if (req.query.minYear) {
-            query['details.year'] = {
-                $gte: decodeURIComponent(req.query.minYear),
+        if (requestQuery.minYear) {
+            databaseQuery['details.year'] = {
+                $gte: decodeURIComponent(requestQuery.minYear),
             };
         }
-        if (req.query.maxYear) {
-            query['details.year'] = {
-                $lte: decodeURIComponent(req.query.maxYear),
+        if (requestQuery.maxYear) {
+            databaseQuery['details.year'] = {
+                $lte: decodeURIComponent(requestQuery.maxYear),
             };
         }
-        if (req.query.isAutomatic) {
-            if (decodeURIComponent(req.query.isAutomatic) === 'true') {
-                query['details.isAutomatic'] = true;
+        if (requestQuery.isAutomatic) {
+            if (decodeURIComponent(requestQuery.isAutomatic) === 'true') {
+                databaseQuery['details.isAutomatic'] = true;
             }
         }
-        if (req.query.minPrice) {
-            query.dailyPrice = { $gte: decodeURIComponent(req.query.minPrice) };
+        if (requestQuery.minPrice) {
+            databaseQuery.dailyPrice = {
+                $gte: decodeURIComponent(requestQuery.minPrice),
+            };
         }
-        if (req.query.maxPrice) {
-            query.dailyPrice = { $lte: decodeURIComponent(req.query.maxPrice) };
+        if (requestQuery.maxPrice) {
+            databaseQuery.dailyPrice = {
+                $lte: decodeURIComponent(requestQuery.maxPrice),
+            };
         }
     } catch (e) {
-        console.error('Error in filtering Vehicles:', e);
-        res.status(500).json({ message: 'Server error' });
+        throw new Error(`Error in filtering Vehicles: ${e}`);
     }
+
     const vehicleList = await Vehicle.find(
-        query,
-        'details type imageUrl dailyPrice'
+        databaseQuery,
+        'details type imageUrl dailyPrice category'
     );
-    res.render('vehicle/list', { vehicleList, branchLabel });
+
+    return { vehicleList, branchLabel };
+};
+
+exports.readAllVehicles = asyncHandler(async (req, res, next) => {
+    try {
+        console.log('we out here');
+        let { vehicleList, branchLabel } = await exports.filterVehicles(
+            req.query
+        );
+        console.log({ vehicleList, branchLabel });
+        res.render('vehicle/list', { vehicleList, branchLabel });
+    } catch (e) {
+        return res.render('vehicle/list', {
+            vehicleList: [],
+            error: e.message,
+            branchLabel: '',
+        });
+    }
 });
 
 exports.readAvailableVehicles = asyncHandler(async (req, res, next) => {
