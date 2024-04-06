@@ -399,3 +399,8 @@ exports.walkinDashboard = asyncHandler(async (req, res, next) => {
         res.render('reservation/walkin');
     }
 });
+
+exports.datingDashboard = asyncHandler(async (req, res, next) => {
+    res.render('dating/start');
+}
+);
