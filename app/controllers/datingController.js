@@ -2,6 +2,7 @@ const expressAsyncHandler = require('express-async-handler');
 const Vehicle = require('../models/vehicle');
 const VehicleController = require('../controllers/vehicleController');
 const DatingProfile = require('../models/datingProfile');
+const asyncHandler = require('express-async-handler');
 
 exports.matchDate = asyncHandler(async (req, res, next) => {
     const matchRate = 0;
@@ -16,12 +17,25 @@ exports.matchDate = asyncHandler(async (req, res, next) => {
             matchedvehicle = vehicle;
         }
     }
- 
+    //TODO add routing when defined
+    res.render('', { matchedvehicle, highestScore });  
+    
 });
 
+/**
+ * @param {Vehicle} vehicle
+ * @param {datingProfile} datingProfile
+ */
 async function calculateMatchScore(vehicle, datingProfile){
     let score = 0;
     //logic here
+    const categoryScore = eval("datingProfile.categoryProfile." + vehicle.category);v
+    const TypeScore = eval("datingProfile.typeProfile." + vehicle.type);
+    const engineScore = eval("datingProfile.engineProfile." + vehicle.details.engineType);
+    const colourScore = eval("datingProfile.colourProfile." + vehicle.details.colour);
+    const makeScore = eval("datingProfile.makeProfile." + vehicle.details.make);
+    const isAutomaticScore =datingProfile.isAutomaticProfile;
+    const priceScore = datingProfile.priceProfile.average;
     return score;
 }
 
