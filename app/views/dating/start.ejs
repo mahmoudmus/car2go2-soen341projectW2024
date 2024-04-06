@@ -1,0 +1,76 @@
+<script type="module" src="/javascripts/reservationFinder.component.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <style>
+        /* Style for the dating game button */
+        .dating-button {
+            font-size: 24px;
+            background-color: #ff69b4; /* Pink color, you can change it to any color you like */
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: #fff; /* White text color */
+            transition: background-color 0.3s;
+        }
+
+        .dating-button:hover {
+            background-color: #d23f77; /* Darker pink on hover */
+        }
+
+        /* Style for the container */
+        .box {
+            border: 2px solid #ccc; /* Gray border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px; /* Padding inside the box */
+            background-color: #f9f9f9; /* Light gray background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            height: auto; /* Allow the box to expand to fit content */
+            width: 125%; /* Make the box 1.25 times bigger in width */
+            height: 125%; /* Make the box 1.25 times bigger in height */
+            display: flex; /* Use flexbox layout */
+            flex-direction: row; /* Arrange items horizontally */
+            justify-content: space-between; /* Space items apart */
+            align-items: center; /* Center items vertically */
+            margin: 0 auto; /* Center horizontally */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="box">
+                    <div class="instructions">
+                        <h2>Instructions:</h2>
+                        <ul>
+                            <li>Instruction 1</li>
+                            <li>Instruction 2</li>
+                            <li>Instruction 3</li>
+                            <!-- Add more instructions as needed -->
+                        </ul>
+                    </div>
+
+                    <reservation-finder class="d-flex flex-column gap-2" mode="catalogue" callback="fetch-10-vehicles">
+                        <div class="modal-body">
+                            <div class="form-text"></div>
+                            <input type="text" id="dateRangeFinder" class="form-control p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username">
+                            <div class="form-text"></div>
+                            <input id="postal" name="postal" class="form-control p-3 postal-group" placeholder="Postal Code or Airport" aria-label="postal-code">
+                        </div>
+                        <div class="modal-footer">
+                            <!-- Dating game style button with CSS class -->
+                            <button class="btn btn-dark dating-button" type="button" id="search-vehicles">
+                                GO
+                            </button>
+                        </div>
+                    </reservation-finder>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
