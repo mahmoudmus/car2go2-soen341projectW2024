@@ -4,6 +4,34 @@ const VehicleController = require('../controllers/vehicleController');
 const DatingProfile = require('../models/datingProfile');
 const asyncHandler = require('express-async-handler');
 
+exports.createDatingProfile = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        return res.sendStatus(401);
+    }
+    const { typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile, startDate, endDate } = req.body;
+
+    const newDatingProfile = new DatingProfile({
+        categoryProfile,
+        typeProfile,
+        engineProfile,
+        priceProfile,
+        colourProfile,
+        makeProfile,
+        isAutomaticProfile: isAutomaticProfile,
+        startDate,
+        endDate,
+    });
+
+    let savedDatingProfile;
+    try {
+        savedDatingProfile = await newDatingProfile.save();
+    } catch (e) {
+        res.status(400).send({ message: 'Could not create dating profile.' });
+    }
+});
+
+
+
 exports.matchDate = asyncHandler(async (req, res, next) => {
     const matchRate = 0;
     const datingProfile = req.datingProfile;
