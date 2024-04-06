@@ -26,17 +26,45 @@ exports.matchDate = asyncHandler(async (req, res, next) => {
  * @param {Vehicle} vehicle
  * @param {datingProfile} datingProfile
  */
-async function calculateMatchScore(vehicle, datingProfile){
+function calculateMatchScore(vehicle, datingProfile){
     let score = 0;
     //logic here
-    const categoryScore = eval("datingProfile.categoryProfile." + vehicle.category);v
-    const TypeScore = eval("datingProfile.typeProfile." + vehicle.type);
+    const categoryScore = eval("datingProfile.categoryProfile." + vehicle.category); //Need to fix "full-size"
+    const typeScore = eval("datingProfile.typeProfile." + vehicle.type);
     const engineScore = eval("datingProfile.engineProfile." + vehicle.details.engineType);
-    const colourScore = eval("datingProfile.colourProfile." + vehicle.details.colour);
+    const colourScore = eval("datingProfile.colourProfile." + vehicle.details.colour);//To see if implement colour distance algorithm
+    if(colourScore=="null"){ 
+        colourScore=0;
+    }
     const makeScore = eval("datingProfile.makeProfile." + vehicle.details.make);
-    const isAutomaticScore =datingProfile.isAutomaticProfile;
-    const priceScore = datingProfile.priceProfile.average;
+    if(makeScore=="null"){
+        makeScore=0;
+    }
+    const isAutomaticScore = datingProfile.isAutomaticProfile;
+    const priceScore = calculatePriceScore(vehicle, datingProfile);
     return score;
+}
+
+/**
+ * @param {Vehicle} vehicle
+ * @param {datingProfile} datingProfile
+ */
+function calculatePriceScore(vehicle, datingProfile){
+    //Uses min,max and avg from datingProfile to build a triangular distribution.
+    const min = datingProfile.priceProfile.min;
+    const max = datingProfile.priceProfile.max;
+    const peak = datingProfile.priceProfile.avg;
+    const vehiclePrice = vehicle.dailyPrice;
+    const scoreFactor = 50(max-min); //Multiplication factor to get scores ranging from 0-100, where 100 if price=average=peak
+    var PDF =0; // If outside bounds, PDF = 0
+    //Triangle distribution PDF computation
+    if(min<=vehiclePrice<=peak){
+        PDF=2(vehiclePrice-min)/((max-min)(peak-min));
+    }
+    if(peak<vehiclePrice<=max){
+        PDF=2(max-vehiclePrice)/((max-min)(max-peak));
+    }
+    return PDF*scoreFactor;
 }
 
 
