@@ -1,6 +1,7 @@
 class SwipeGame extends HTMLElement {
     connectedCallback() {}
-    async fetchVehicles(url) {
+    async startGame(url) {
+        console.log('startGame() has been called.');
         // @todo
     }
 }
