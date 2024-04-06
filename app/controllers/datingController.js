@@ -11,15 +11,15 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     const { typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile, startDate, endDate } = req.body;
 
     const newDatingProfile = new DatingProfile({
-        categoryProfile,
-        typeProfile,
-        engineProfile,
-        priceProfile,
-        colourProfile,
-        makeProfile,
-        isAutomaticProfile: isAutomaticProfile,
-        startDate,
-        endDate,
+        categoryProfile: categoryProfile,
+        typeProfile: typeProfile,
+        engineProfile:engineProfile,
+        priceProfile: priceProfile,
+        colourProfile: colourProfile,
+        makeProfile: makeProfile,
+        isAutomaticProfile: isAutomaticProfile, 
+        startDate: startDate,
+        endDate: endDate,
     });
 
     let savedDatingProfile;
@@ -61,11 +61,11 @@ function calculateMatchScore(vehicle, datingProfile){
     const typeScore = eval("datingProfile.typeProfile." + vehicle.type);
     const engineScore = eval("datingProfile.engineProfile." + vehicle.details.engineType);
     const colourScore = eval("datingProfile.colourProfile." + vehicle.details.colour);//To see if implement colour distance algorithm
-    if(colourScore=="null"){ 
+    if(colourScore=="null"){  //null or undefined
         colourScore=0;
     }
     const makeScore = eval("datingProfile.makeProfile." + vehicle.details.make);
-    if(makeScore=="null"){
+    if(makeScore=="null"){ //null or undefined
         makeScore=0;
     }
     const isAutomaticScore = datingProfile.isAutomaticProfile;
@@ -119,6 +119,7 @@ async function findAvailableVehicles(datingProfile) {
             _id: { $nin: reservedVehicleIds },
         }
     );
+    return availableVehicles;
 
     // If we want to sort by branch, we can uncomment this underneath and replace availableVehicles with filteredVehicles
     // const filteredVehicles = availableVehicles.vehicles.filter(vehicle => vehicle.branch.name === branchName);
