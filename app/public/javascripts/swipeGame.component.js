@@ -4,6 +4,7 @@ class SwipeGame extends HTMLElement {
         this.likedVehicles = [];
         this.topVehicle = null;
         this.cardSpace = this.querySelector('#cardSpace');
+        this.buttonsContainer = this.querySelector('#buttonsContainer');
         this.loadingOverlay = this.querySelector('#loadingOverlay');
 
         this.likeButton = this.querySelector('#likeButton');
@@ -46,7 +47,7 @@ class SwipeGame extends HTMLElement {
         }
     }
 
-    async displayTopCard() {
+    displayTopCard() {
         this.topVehicle = this.vehicles.pop();
         if (this.topVehicle) {
             const card = document.createElement('dating-card');
@@ -54,13 +55,12 @@ class SwipeGame extends HTMLElement {
             this.cardSpace.classList.remove('show');
             setTimeout(() => {
                 this.cardSpace.classList.add('show');
+                this.buttonsContainer.classList.add('show');
                 this.cardSpace.replaceChildren(card);
             }, 200);
         } else {
             this.loadingOverlay.classList.add('show');
-            const response = await this.getMatch();
-            // display winner
-            console.log(response);
+            this.getMatch();
         }
     }
 
@@ -77,26 +77,55 @@ class SwipeGame extends HTMLElement {
             endDate: this.end,
         };
 
-        const response = await fetch('/vehicles/liked', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        });
+        // const response = await fetch('/vehicles/liked', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(body),
+        // });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            // this.loadingOverlay.classList.remove('show');
-            // this.cardSpace.replaceChildren(
-            //     document.createElement('dating-match').setMatch(data)
-            // );
-        } else {
-            document
-                .querySelector('#toast')
-                .caution('Failed to fetch a match.');
-        }
+        // if (response.ok) {
+        //     const data = await response.json();
+        //     console.log(data);
+        //     // this.loadingOverlay.classList.remove('show');
+        //     // this.cardSpace.replaceChildren(
+        //     //     document.createElement('dating-match').setMatch(data)
+        //     // );
+        // } else {
+        //     document
+        //         .querySelector('#toast')
+        //         .caution('Failed to fetch a match.');
+        // }
+
+        // even tho if fails:
+        const card = document.createElement('dating-card');
+        card.setMatch({
+            details: {
+                make: 'Volkswagen',
+                model: 'Honda Civic',
+                year: 2013,
+                colour: 'grey',
+                seats: 7,
+                doors: 3,
+                mileage: 374284,
+                isAutomatic: true,
+                engineType: 'gas',
+            },
+            _id: '65ff9b41d313082f48371c08',
+            category: 'full-size',
+            type: 'suv',
+            imageUrl:
+                'https://www.motortrend.com/uploads/2022/08/2022-Bugatti-Chiron-Super-Sport-2-1.jpg',
+            dailyPrice: 5,
+        });
+        this.cardSpace.classList.remove('show');
+        this.loadingOverlay.classList.remove('show');
+        this.buttonsContainer.classList.remove('show');
+        setTimeout(() => {
+            this.cardSpace.classList.add('show');
+            this.cardSpace.replaceChildren(card);
+        }, 200);
     }
 }
 customElements.define('swipe-game', SwipeGame);
