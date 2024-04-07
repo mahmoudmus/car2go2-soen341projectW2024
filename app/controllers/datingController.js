@@ -3,24 +3,12 @@ const Vehicle = require('../models/vehicle');
 const VehicleController = require('../controllers/vehicleController');
 const DatingProfile = require('../models/datingProfile');
 const asyncHandler = require('express-async-handler');
+const vehicle = require('../models/vehicle');
 
 exports.createDatingProfile = asyncHandler(async (req, res, next) => {
-    if (!req.user) {
-        return res.sendStatus(401);
-    }
-    const { typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile, startDate, endDate } = req.body;
-
-    const newDatingProfile = new DatingProfile({
-        categoryProfile: categoryProfile,
-        typeProfile: typeProfile,
-        engineProfile:engineProfile,
-        priceProfile: priceProfile,
-        colourProfile: colourProfile,
-        makeProfile: makeProfile,
-        isAutomaticProfile: isAutomaticProfile, 
-        startDate: startDate,
-        endDate: endDate,
-    });
+    //const { typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile, startDate, endDate } = req.body;
+    const {vehicleArray, startDate, endDate, branchName} = req.body;
+    const newDatingProfile = new DatingProfile({});
 
     let savedDatingProfile;
     try {
@@ -28,9 +16,12 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     } catch (e) {
         res.status(400).send({ message: 'Could not create dating profile.' });
     }
+    buildDatingProfile(savedDatingProfile, vehicleArray);
+    const [matchedVehicle, highestScore] = matchDate(savedDatingProfile, startDate, endDate, branchName);
+    res.send({matchedVehicle, highestScore});
 });
 
-async function buildDatingProfile(datingProfile, vehicleArray, startDate, endDate, branchName) { 
+async function buildDatingProfile(datingProfile, vehicleArray) { 
     for (var i = 0; i < vehicleArray.length; i++) {
         eval("datingProfile.categoryProfile." + vehicleArray[i].category) += 1/vehicleArray.length;
         eval("datingProfile.typeProfile." + vehicleArray[i].type) += 1/vehicleArray.length;
@@ -58,11 +49,11 @@ async function buildDatingProfile(datingProfile, vehicleArray, startDate, endDat
 }
 
 
-exports.matchDate = asyncHandler(async (req, res, next) => {
+function matchDate(datingProfile, startDate, endDate, branchName){
     const matchRate = 0;
-    const datingProfile = req.datingProfile;
-    const availableVehicles = findAvailableVehicles(datingProfile);
-    //VehicleController.readAllVehicleObjects
+    //const datingProfile = req.datingProfile;
+    const availableVehicles = findAvailableVehicles(startDate, endDate, branchName);
+    //const availableVehicles2 = VehicleController.readAllVehicleObjects
     var highestScore = 0;
     var matchedvehicle;
     for(const vehicle in availableVehicles){  //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red)
@@ -73,9 +64,9 @@ exports.matchDate = asyncHandler(async (req, res, next) => {
         }
     }
     //TODO add routing when defined
-    res.render('', { matchedvehicle, highestScore });  
-    
-});
+    return [matchedvehicle, highestScore];
+    // res.send({ matchedvehicle, highestScore });  
+}
 
 /**
  * @param {Vehicle} vehicle
@@ -127,10 +118,8 @@ function calculatePriceScore(vehicle, datingProfile){
 }
 
 
-async function findAvailableVehicles(datingProfile) {
+async function findAvailableVehicles(startDate, endDate, branchName) {
     //Not sure if there is a better way of doing this by calling vehicleController.readAvailableVehicles so doing this for now
-    const startDate = datingProfile.startDate;
-    const endDate = datingProfile.endDate;
 
     //->taken from vehicleController.readAvailableVehicles
     // Find reservations that overlap with the requested date range
