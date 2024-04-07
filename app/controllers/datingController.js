@@ -28,6 +28,7 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     } catch (e) {
         res.status(400).send({ message: 'Could not create dating profile.' });
     }
+    
 });
 
 async function buildDatingProfile(datingProfile, vehicleArray, startDate, endDate, branchName) { 
@@ -73,7 +74,7 @@ exports.matchDate = asyncHandler(async (req, res, next) => {
         }
     }
     //TODO add routing when defined
-    res.render('', { matchedvehicle, highestScore });  
+    res.send({ matchedvehicle, highestScore });  
     
 });
 
