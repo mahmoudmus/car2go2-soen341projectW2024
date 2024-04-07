@@ -1,17 +1,37 @@
 <div class="container d-flex justify-content-center">
     <script type="module" src="/javascripts/swipeGame.component.js"></script>
     <style>
-        /* center the buttons n shit */
+        /* Center the buttons */
+        #buttonsContainer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+            padding: 1rem;
+        }
+        #likeButton .bi-heart-fill {
+            color: pink; /* Or the hex code for the shade of pink you want */
+            font-size: 2rem; /* Adjust the size as needed */
+        }
+        #dislikeButton .bi-x {
+            font-size: 2rem; /* Adjust the size as needed */
+        }
     </style>
     <script type="module" src="/javascripts/datingCard.component.js"></script>
     <swipe-game style="position: relative">
         <div id="cardSpace"></div>
-        <button id="likeButton" class="btn btn-dark start-reservation gradient-bg">
-            <i class="bi bi-hand-thumbs-down-fill"></i>
-        </button>
-        <button id="dislikeButton" class="btn btn-dark start-reservation gradient-bg">
-            <i class="bi bi-hand-thumbs-up-fill"></i>
-        </button>
+        <div id="buttonsContainer">
+            <button id="likeButton" class="btn start-reservation ">
+                <i class="bi bi-heart-fill" style="color: pink;"></i>
+            </button>
+            
+            <button id="dislikeButton" class="btn start-reservation">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
         <div
             id="loadingOverlay"
             class="fade d-flex justify-content-center align-items-center"
