@@ -27,7 +27,7 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
         res.status(400).send({ message: 'Could not create dating profile.' });
     }
     buildDatingProfile(savedDatingProfile, vehicleArray);
-    const [matchedVehicle, highestScore] = matchDate(savedDatingProfile);
+    const [matchedVehicle, highestScore] = matchDate(savedDatingProfile, startDate, endDate, branchName);
     res.send({matchedVehicle, highestScore});
 });
 
@@ -59,10 +59,10 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
 }
 
 
-function matchDate(datingProfile, branchName){
+function matchDate(datingProfile, startDate, endDate, branchName){
     const matchRate = 0;
     //const datingProfile = req.datingProfile;
-    const availableVehicles = findAvailableVehicles(datingProfile);
+    const availableVehicles = findAvailableVehicles(startDate, endDate, branchName);
     //const availableVehicles2 = VehicleController.readAllVehicleObjects
     var highestScore = 0;
     var matchedvehicle;
@@ -128,10 +128,8 @@ function calculatePriceScore(vehicle, datingProfile){
 }
 
 
-async function findAvailableVehicles(datingProfile) {
+async function findAvailableVehicles(startDate, endDate, branchName) {
     //Not sure if there is a better way of doing this by calling vehicleController.readAvailableVehicles so doing this for now
-    const startDate = datingProfile.startDate;
-    const endDate = datingProfile.endDate;
 
     //->taken from vehicleController.readAvailableVehicles
     // Find reservations that overlap with the requested date range
