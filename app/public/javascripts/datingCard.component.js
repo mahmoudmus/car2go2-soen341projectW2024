@@ -1,7 +1,5 @@
 class DatingCard extends HTMLElement {
     connectedCallback() {}
-    // @todo fill in other fields with vehicle param attributes
-    // example instantiation: datingCard = document.createElement('dating-card').setVehicle(vehicle);
     setVehicle(vehicle) {
         this.innerHTML = `
         <dating-card vehicle-id="${vehicle._id}">
@@ -10,7 +8,7 @@ class DatingCard extends HTMLElement {
                 <img
                     src="${vehicle.imageUrl}"
                     alt="Car Image"
-                    style="width: 30rem;"
+                    class="card-img-top"
                 />
                 <div class="card-body">
                     <h4 class="card-title">${vehicle.details.model}</h4>
