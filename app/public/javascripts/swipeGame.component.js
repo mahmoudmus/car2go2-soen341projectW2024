@@ -36,7 +36,9 @@ class SwipeGame extends HTMLElement {
         });
 
         if (response.ok) {
-            this.vehicles = (await response.json()).vehicleList;
+            const data = await response.json();
+            // Slice to get only 10 vehicles (for now)
+            this.vehicles = data.vehicleList.slice(0, 10);
         } else {
             document
                 .querySelector('#toast')
