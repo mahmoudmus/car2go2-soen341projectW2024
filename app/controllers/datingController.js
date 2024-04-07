@@ -163,3 +163,7 @@ async function findAvailableVehicles(datingProfile) {
 
     return randomVehicles;
 }
+exports.datingDashboard = asyncHandler(async (req, res, next) => {
+        res.render('dating/start');
+    }
+);

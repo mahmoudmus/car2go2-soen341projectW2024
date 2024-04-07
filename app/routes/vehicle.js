@@ -10,6 +10,7 @@ router.post('/liked', datingController.matchDate);
 
 // Read
 router.get('/', vehicleController.readAllVehicles);
+router.get('/json', vehicleController.readAllVehicleObjects);
 router.get('/available', vehicleController.readAvailableVehicles);
 router.get('/booking/:id', vehicleController.getBooking);
 router.get('/:id', vehicleController.readVehicle);
