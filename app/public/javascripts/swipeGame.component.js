@@ -125,6 +125,8 @@ class SwipeGame extends HTMLElement {
         setTimeout(() => {
             this.cardSpace.classList.add('show');
             this.cardSpace.replaceChildren(card);
+            const jsConfetti = new JSConfetti();
+            jsConfetti.addConfetti();
         }, 200);
     }
 }
