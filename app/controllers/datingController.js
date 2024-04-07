@@ -8,17 +8,7 @@ const vehicle = require('../models/vehicle');
 exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     //const { typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile, startDate, endDate } = req.body;
     const {vehicleArray, startDate, endDate, branchName} = req.body;
-    const newDatingProfile = new DatingProfile({
-        categoryProfile: categoryProfile,
-        typeProfile: typeProfile,
-        engineProfile:engineProfile,
-        priceProfile: priceProfile,
-        colourProfile: colourProfile,
-        makeProfile: makeProfile,
-        isAutomaticProfile: isAutomaticProfile, 
-        startDate: startDate,
-        endDate: endDate,
-    });
+    const newDatingProfile = new DatingProfile({});
 
     let savedDatingProfile;
     try {
