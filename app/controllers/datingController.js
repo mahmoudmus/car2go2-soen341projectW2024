@@ -14,12 +14,14 @@ const Branch = require('../models/branch');
 
     Does not work if no postalcode/branch is provided
 
+    If 2 or more vehicles get the same score, only the first will be used
+
 */
 
 exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     //let typeProfile, categoryProfile, engineProfile, priceProfile, colourProfile, makeProfile, isAutomaticProfile;
     const {vehicleArray, startDate, endDate, branchName} = req.body;
-    const newDatingProfile = new DatingProfile({
+    const newDatingProfile = new DatingProfile({ //Should be added as defaults in the model if possible
         categoryProfile: {
             compact: 0,
             standard: 0,
@@ -41,8 +43,8 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
         },
     
         priceProfile:{
-            min: 9999999,
-            max: 0,
+            min: null,
+            max: null,
             avg: 0
         },
     
@@ -90,10 +92,10 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
         makeMap.has(makeKey) ? makeMap.set(makeKey, makeValue +incrementNumber) : makeMap.set(makeKey, incrementNumber);
 
 
-        if(vehicleArray[i].dailyPrice> datingProfile.priceProfile.max){
+        if(vehicleArray[i].dailyPrice> datingProfile.priceProfile.max || datingProfile.priceProfile.max == null){
             datingProfile.priceProfile.max=vehicleArray[i].dailyPrice;
         }
-        if(vehicleArray[i].dailyPrice< datingProfile.priceProfile.min){
+        if(vehicleArray[i].dailyPrice< datingProfile.priceProfile.min || datingProfile.priceProfile.min == null){
            datingProfile.priceProfile.min=vehicleArray[i].dailyPrice;
         }
         datingProfile.priceProfile.avg += vehicleArray[i].dailyPrice/vehicleArray.length;
