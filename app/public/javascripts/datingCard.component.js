@@ -3,7 +3,7 @@ class DatingCard extends HTMLElement {
     setVehicle(vehicle) {
         this.innerHTML = `
         <dating-card vehicle-id="${vehicle._id}">
-            <div class="card mb-3" style="width: 42rem;">
+            <div class="card mb-3" style="width: 42rem; height: 39rem;">
                     
                 <img
                     src="${vehicle.imageUrl}"
