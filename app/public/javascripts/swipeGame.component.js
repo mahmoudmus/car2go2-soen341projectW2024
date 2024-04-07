@@ -92,50 +92,46 @@ class SwipeGame extends HTMLElement {
         });
 
         if (response.ok) {
-            const data = await response.json();
+            let match = (await response.json()).matchedVehicle;
             console.log(data);
-            // this.loadingOverlay.classList.remove('show');
-            // this.cardSpace.replaceChildren(
-            //     document.createElement('dating-match').setMatch(data)
-            // );
+            if (!match) {
+                match = {
+                    details: {
+                        make: 'Volkswagen',
+                        model: '(Failed to fetch a match)',
+                        year: 2013,
+                        colour: 'grey',
+                        seats: 7,
+                        doors: 3,
+                        mileage: 374284,
+                        isAutomatic: true,
+                        engineType: 'gas',
+                    },
+                    _id: '65ff9b41d313082f48371c08',
+                    category: 'full-size',
+                    type: 'suv',
+                    imageUrl:
+                        'https://www.motortrend.com/uploads/2022/08/2022-Bugatti-Chiron-Super-Sport-2-1.jpg',
+                    dailyPrice: 5,
+                };
+            }
+            const card = document.createElement('dating-card');
+            card.setMatch(match);
+            this.cardSpace.classList.remove('show');
+            this.loadingOverlay.classList.remove('show');
+            this.buttonsContainer.classList.add('d-none');
+            setTimeout(() => {
+                this.cardSpace.classList.add('show');
+                this.initalizeBookMatchedCar(match._id);
+                this.cardSpace.replaceChildren(card);
+                const jsConfetti = new JSConfetti();
+                jsConfetti.addConfetti();
+            }, 200);
         } else {
             document
                 .querySelector('#toast')
                 .caution('Failed to fetch a match.');
         }
-
-        // even tho if fails:
-        // const match = {
-        //     details: {
-        //         make: 'Volkswagen',
-        //         model: 'Honda Civic',
-        //         year: 2013,
-        //         colour: 'grey',
-        //         seats: 7,
-        //         doors: 3,
-        //         mileage: 374284,
-        //         isAutomatic: true,
-        //         engineType: 'gas',
-        //     },
-        //     _id: '65ff9b41d313082f48371c08',
-        //     category: 'full-size',
-        //     type: 'suv',
-        //     imageUrl:
-        //         'https://www.motortrend.com/uploads/2022/08/2022-Bugatti-Chiron-Super-Sport-2-1.jpg',
-        //     dailyPrice: 5,
-        // };
-        // const card = document.createElement('dating-card');
-        // card.setMatch(match);
-        // this.cardSpace.classList.remove('show');
-        // this.loadingOverlay.classList.remove('show');
-        // this.buttonsContainer.classList.add('d-none');
-        // setTimeout(() => {
-        //     this.cardSpace.classList.add('show');
-        //     this.initalizeBookMatchedCar(match._id);
-        //     this.cardSpace.replaceChildren(card);
-        //     const jsConfetti = new JSConfetti();
-        //     jsConfetti.addConfetti();
-        // }, 200);
     }
 
     async initalizeBookMatchedCar(vehicleId) {
