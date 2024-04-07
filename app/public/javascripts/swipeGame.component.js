@@ -16,8 +16,6 @@ class SwipeGame extends HTMLElement {
         this.discardButton.addEventListener('click', () => {
             this.displayTopCard();
         });
-
-        this.startGame('/vehicles/json');
     }
 
     async startGame(url) {
@@ -40,6 +38,7 @@ class SwipeGame extends HTMLElement {
             const data = await response.json();
             // Slice to get only 10 vehicles (for now)
             this.vehicles = data.vehicleList.slice(0, 10);
+            this.branchLabel = data.branchLabel;
         } else {
             document
                 .querySelector('#toast')
@@ -47,7 +46,7 @@ class SwipeGame extends HTMLElement {
         }
     }
 
-    displayTopCard() {
+    async displayTopCard() {
         this.topVehicle = this.vehicles.pop();
         if (this.topVehicle) {
             const card = document.createElement('dating-card');
@@ -59,8 +58,44 @@ class SwipeGame extends HTMLElement {
             }, 200);
         } else {
             this.loadingOverlay.classList.add('show');
-            // @todo send these to azal's backend
-            console.log(this.likedVehicles);
+            const response = await this.getMatch();
+            // display winner
+            console.log(response);
+        }
+    }
+
+    setDates(start, end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    async getMatch() {
+        const body = {
+            vehicleArray: this.likedVehicles,
+            branchName: this.branchLabel,
+            startDate: this.start,
+            endDate: this.end,
+        };
+
+        const response = await fetch('/vehicles/liked', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            // this.loadingOverlay.classList.remove('show');
+            // this.cardSpace.replaceChildren(
+            //     document.createElement('dating-match').setMatch(data)
+            // );
+        } else {
+            document
+                .querySelector('#toast')
+                .caution('Failed to fetch a match.');
         }
     }
 }

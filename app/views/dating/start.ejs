@@ -1,68 +1,114 @@
 <script type="module" src="/javascripts/reservationFinder.component.js"></script>
-    <style>
-        /* Style for the dating game button */
-        .dating-button {
-            font-size: 24px;
-            background-color: #ff69b4; /* Pink color, you can change it to any color you like */
-            border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
-            color: #fff; /* White text color */
-            transition: background-color 0.3s;
-        }
+<style>
+    .dating-button {
+        font-size: 24px;
+        background-color: #ff69b4;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 30px;
+        color: #fff;
+        transition: background-color 0.3s;
+    }
+    .dating-button:hover {
+        background-color: #d23f77;
+    }
+    .box {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: auto;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+    }
+</style>
 
-        .dating-button:hover {
-            background-color: #d23f77; /* Darker pink on hover */
-        }
-
-        /* Style for the container */
-        .box {
-            border: 2px solid #ccc; /* Gray border */
-            border-radius: 10px; /* Rounded corners */
-            padding: 20px; /* Padding inside the box */
-            background-color: #f9f9f9; /* Light gray background */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-            height: auto; /* Allow the box to expand to fit content */
-            width: 125%; /* Make the box 1.25 times bigger in width */
-            height: 125%; /* Make the box 1.25 times bigger in height */
-            display: flex; /* Use flexbox layout */
-            flex-direction: row; /* Arrange items horizontally */
-            justify-content: space-between; /* Space items apart */
-            align-items: center; /* Center items vertically */
-            margin: 0 auto; /* Center horizontally */
-        }
-    </style>*/
-
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="box">
-                    <div class="instructions">
-                            <h2>How to play the swiping game:</h2>
-                            <ul>
-                                <li>1.Set Your Preferences for potential matches.</li>
-                                <li>2.Start Swiping: </li>
-                                <li>Swipe left if you like the car </li>
-                                <li>Swipe right if you don't the car </li>
-                                <li>3.Find you Perfect Match.</li>
-                        </ul>
-                        </div>
-
-                    <reservation-finder class="d-flex flex-column gap-2" mode="catalogue" callback="fetch-10-vehicles">
-                        <div class="modal-body">
-                            <div class="form-text"></div>
-                            <input type="text" id="dateRangeFinder" class="form-control p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username">
-                            <div class="form-text"></div>
-                            <input id="postal" name="postal" class="form-control p-3 postal-group" placeholder="Postal Code or Airport" aria-label="postal-code">
-                        </div>
-                        <div class="modal-footer">
-                            <!-- Dating game style button with CSS class -->
-                            <button class="btn btn-dark dating-button" type="button" id="search-vehicles">
-                                GO
-                            </button>
-                        </div>
-                    </reservation-finder>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div id="instructions" class="box">
+                <div class="instructions">
+                    <h2>How to play the swiping game:</h2>
+                    <ul>
+                        <li>1.Set Your Preferences for potential matches.</li>
+                        <li>2.Start Swiping: </li>
+                        <li>Swipe left if you like the car </li>
+                        <li>Swipe right if you don't the car </li>
+                        <li>3.Find you Perfect Match.</li>
+                    </ul>
                 </div>
+
+                <reservation-finder class="d-flex flex-column gap-2" mode="catalogue" callback="fetch-10-vehicles">
+                    <div class="modal-body">
+                        <div class="form-text"></div>
+                        <input type="text" id="dateRangeFinder" class="form-control p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username">
+                        <div class="form-text"></div>
+                        <input id="postal" name="postal" class="form-control p-3 postal-group" placeholder="Postal Code or Airport" aria-label="postal-code">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-dark dating-button" type="button" id="search-vehicles">
+                            GO
+                        </button>
+                    </div>
+                </reservation-finder>
+            </div>
+            <script type="module" src="/javascripts/swipeGame.component.js"></script>
+            <style>
+                #buttonsContainer {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin-top: 1rem;
+                    padding: 1rem;
+                }
+                #likeButton .bi-heart-fill {
+                    color: pink;
+                    font-size: 2rem;
+                }
+                #dislikeButton .bi-x {
+                    font-size: 2rem;
+                }
+            </style>
+            <script type="module" src="/javascripts/datingCard.component.js"></script>
+            <div class="container d-flex justify-content-center">
+                <swipe-game style="position: relative !important; display: none !important;">
+                    <div id="cardSpace" class="fade"></div>
+                    <div id="buttonsContainer">
+                        <button id="dislikeButton" class="btn start-reservation">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <button id="likeButton" class="btn start-reservation ">
+                            <i class="bi bi-heart-fill" style="color: pink;"></i>
+                        </button>
+                    </div>
+                    <div
+                        id="loadingOverlay"
+                        class="fade d-flex justify-content-center align-items-center"
+                        style="
+                            position: absolute !important;
+                            top: 0; left: 0;
+                            width: 100% !important;
+                            height: 100% !important;
+                            padding: 1rem;
+                            background: white;
+                            pointer-events: none;
+                            z-index: 1000;"
+                    >
+                        <div class="spinner-grow" role="status" style="color: var(--sun-glow)">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </swipe-game>
             </div>
         </div>
     </div>
+</div>

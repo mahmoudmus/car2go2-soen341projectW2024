@@ -3,7 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const reservationController = require('../controllers/reservationController');
-
+const datingController = require('../controllers/datingController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -22,9 +22,7 @@ router.get('/login', function (req, res, next) {
     res.render('user/login');
 });
 
-router.get('/dating', function (req, res, next) {
-    res.render('dating/test');
-});
+router.get('/dating', datingController.datingDashboard);
 
 router.post('/login', authController.login);
 
@@ -35,9 +33,5 @@ router.get('/profile', userController.readProfile);
 router.get('/myreservations', reservationController.readUserReservations);
 
 router.get('/walkin', reservationController.walkinDashboard);
-
-router.get('/dating', reservationController.datingDashboard);
-
-
 
 module.exports = router;

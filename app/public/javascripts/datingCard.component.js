@@ -1,43 +1,44 @@
 class DatingCard extends HTMLElement {
-    connectedCallback() {}
+    connectedCallback() {
+        // this.classList.add('d-flex', 'flex-column', 'justify-content-center');
+    }
     setVehicle(vehicle) {
+        this.vehicleId = vehicle._id;
         this.innerHTML = `
-        <dating-card vehicle-id="${vehicle._id}">
-            <div class="card mb-3" style="width: 42rem; height: 39rem;">
-                    
-                <img
-                    src="${vehicle.imageUrl}"
-                    alt="Car Image"
-                    class="card-img-top"
-                />
-                <div class="card-body">
-                    <h4 class="card-title">${vehicle.details.model}</h4>
-                    <p class="card-text">I'm a ${vehicle.details.colour}, ${vehicle.type} ${vehicle.category} built by
-                    ${vehicle.details.make} in ${vehicle.details.year}.
-                    </p>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <ul>
-                                <li><b>Price: </b>${vehicle.dailyPrice}$/day</li>
-                                <li><b>Mileage: </b> ${vehicle.details.mileage} km</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <ul>
-                            <li><b>Number of Seats: </b>${vehicle.details.seats}</li>
-                            <li><b>Number of Doors: </b>${vehicle.details.doors}</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <ul>
-                                <li><b>Is Automatic? </b>${vehicle.details.isAutomatic}</li>
-                                <li><b>Engine Type: </b>${vehicle.details.engineType}</li>
-                            </ul>
-                        </div>
+        <div class="card mb-3">
+            <img
+                src="${vehicle.imageUrl}"
+                alt="Car Image"
+                class="card-img-top"
+                style="height: 300px; object-fit: cover;"
+            />
+            <div class="card-body">
+                <h4 class="card-title">${vehicle.details.model}</h4>
+                <p class="card-text">I'm a ${vehicle.details.colour}, ${vehicle.type} ${vehicle.category} built by
+                ${vehicle.details.make} in ${vehicle.details.year}.
+                </p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <ul>
+                            <li><b>Price: </b>${vehicle.dailyPrice}$/day</li>
+                            <li><b>Mileage: </b> ${vehicle.details.mileage} km</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul>
+                        <li><b>Number of Seats: </b>${vehicle.details.seats}</li>
+                        <li><b>Number of Doors: </b>${vehicle.details.doors}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul>
+                            <li><b>Is Automatic? </b>${vehicle.details.isAutomatic}</li>
+                            <li><b>Engine Type: </b>${vehicle.details.engineType}</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </dating-card>
+        </div>
         `;
         return this;
     }

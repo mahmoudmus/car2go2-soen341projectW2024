@@ -6,7 +6,7 @@ const datingController = require('../controllers/datingController');
 
 // Create
 router.post('/', vehicleController.createVehicle);
-router.post('/liked', datingController.matchDate);
+router.post('/liked', datingController.createDatingProfile);
 
 // Read
 router.get('/', vehicleController.readAllVehicles);
