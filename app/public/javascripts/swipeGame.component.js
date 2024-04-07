@@ -52,7 +52,11 @@ class SwipeGame extends HTMLElement {
         if (this.topVehicle) {
             const card = document.createElement('dating-card');
             card.setVehicle(this.topVehicle);
-            this.cardSpace.replaceChildren(card);
+            this.cardSpace.classList.remove('show');
+            setTimeout(() => {
+                this.cardSpace.classList.add('show');
+                this.cardSpace.replaceChildren(card);
+            }, 200);
         } else {
             this.loadingOverlay.classList.add('show');
             // @todo send these to azal's backend
