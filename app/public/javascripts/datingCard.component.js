@@ -5,7 +5,7 @@ class DatingCard extends HTMLElement {
     setVehicle(vehicle) {
         this.vehicleId = vehicle._id;
         this.innerHTML = `
-        <div class="card mb-3">
+        <div class="card mb-3" style="width: 42rem;">
             <img
                 src="${vehicle.imageUrl}"
                 alt="Car Image"
@@ -69,6 +69,10 @@ class DatingCard extends HTMLElement {
             .card-text {
                 color: #6a4e02;
             }
+
+            .card-size {
+                width: 42rem;
+            }
             
             ul {
                 list-style-type: none;
@@ -86,6 +90,7 @@ class DatingCard extends HTMLElement {
                         <i class="bi bi-star-fill"></i>Your best matched car:<i class="bi bi-star-fill"></i>
                     </b>
                 </h2>
+                <br>
                 <img
                     src="${vehicle.imageUrl}"
                     alt="Car Image"
