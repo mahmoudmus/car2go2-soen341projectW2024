@@ -129,6 +129,15 @@ class ReservationFinder extends HTMLElement {
             return;
         }
 
+        const swipeGame = document.querySelector('swipe-game');
+        if (swipeGame) {
+            url.pathname = '/vehicles/json';
+            url.search = params.toString();
+            // @todo make your instruction box dissapear
+            swipeGame.startGame(url.toString());
+            return;
+        }
+
         if (this.email) {
             params.set('email', this.email);
         }
