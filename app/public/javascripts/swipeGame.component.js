@@ -1,28 +1,34 @@
 class SwipeGame extends HTMLElement {
     connectedCallback() {
+        this.vehicles = [];
+        this.likedVehicles = [];
+        this.topVehicle = null;
         this.cardSpace = this.querySelector('#cardSpace');
-        // @ todo this.likedCards =
+
+        this.likeButton = this.querySelector('#likeButton');
+        this.likeButton.addEventListener('click', () => {
+            this.likedVehicles.push(this.topVehicle);
+            this.displayTopCard();
+        });
+
+        this.discardButton = this.querySelector('#dislikeButton');
+        this.discardButton.addEventListener('click', () => {
+            this.displayTopCard();
+        });
+
         this.startGame('/vehicles/json');
     }
 
     async startGame(url) {
-        this.fetchCards().then(() => {
+        this.style.display = ''; // Removing display: none
+        this.fetchCards(url).then(() => {
             this.displayTopCard();
         });
-        const observer = new MutationObserver((mutationsList, observer) => {
-            for (let mutation of mutationsList) {
-                if (mutation.removedNodes.length > 0) {
-                    this.displayTopCard();
-                }
-            }
-        });
-        observer.observe(this, { childList: true });
-        // this.setupKeyControls();
-        console.log('startGame() has been called.');
     }
 
-    async fetchCards() {
-        const response = await fetch(`/vehicles/json`, {
+    // @todo remove default value
+    async fetchCards(url = '/vehicles/json') {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,23 +36,24 @@ class SwipeGame extends HTMLElement {
         });
 
         if (response.ok) {
-            this.cards = (await response.json()).vehicleList;
-            console.log(this.cards);
+            this.vehicles = (await response.json()).vehicleList;
         } else {
-            alert('Failed to fetch vehicles.');
+            document
+                .querySelector('#toast')
+                .caution('Failed to fetch vehicles.');
         }
     }
 
     displayTopCard() {
-        const vehicle = this.cards.shift();
-        if (vehicle) {
+        this.topVehicle = this.vehicles.pop();
+        if (this.topVehicle) {
             const card = document.createElement('dating-card');
-            card.setVehicle(vehicle);
-            card.setAttribute('vehicle-id', vehicle._id);
-            this.cardSpace.appendChild(card);
+            card.setVehicle(this.topVehicle);
+            this.cardSpace.replaceChildren(card);
         } else {
-            // Display score or end game message here
-            console.log('No more cards');
+            this.cardSpace.replaceChildren();
+            // @todo send these to azal's backend
+            console.log(this.likedVehicles);
         }
     }
 }
