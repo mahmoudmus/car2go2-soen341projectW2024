@@ -6,10 +6,13 @@ class SwipeGame extends HTMLElement {
         this.cardSpace = this.querySelector('#cardSpace');
         this.buttonsContainer = this.querySelector('#buttonsContainer');
         this.loadingOverlay = this.querySelector('#loadingOverlay');
+        this.bookMatchedCar = this.querySelector('#bookMatchedCar');
 
         this.likeButton = this.querySelector('#likeButton');
         this.likeButton.addEventListener('click', () => {
-            this.likedVehicles.push(this.topVehicle);
+            if (this.topVehicle) {
+                this.likedVehicles.push(this.topVehicle);
+            }
             this.displayTopCard();
         });
 
@@ -99,8 +102,7 @@ class SwipeGame extends HTMLElement {
         // }
 
         // even tho if fails:
-        const card = document.createElement('dating-card');
-        card.setMatch({
+        const match = {
             details: {
                 make: 'Volkswagen',
                 model: 'Honda Civic',
@@ -118,16 +120,26 @@ class SwipeGame extends HTMLElement {
             imageUrl:
                 'https://www.motortrend.com/uploads/2022/08/2022-Bugatti-Chiron-Super-Sport-2-1.jpg',
             dailyPrice: 5,
-        });
+        };
+        const card = document.createElement('dating-card');
+        card.setMatch(match);
         this.cardSpace.classList.remove('show');
         this.loadingOverlay.classList.remove('show');
-        this.buttonsContainer.classList.remove('show');
+        this.buttonsContainer.classList.add('d-none');
         setTimeout(() => {
             this.cardSpace.classList.add('show');
+            this.initalizeBookMatchedCar(match._id);
             this.cardSpace.replaceChildren(card);
             const jsConfetti = new JSConfetti();
             jsConfetti.addConfetti();
         }, 200);
+    }
+
+    async initalizeBookMatchedCar(vehicleId) {
+        const startURI = encodeURIComponent(this.start);
+        const endURI = encodeURIComponent(this.end);
+        this.bookMatchedCar.href = `vehicles/booking/${vehicleId}?start=${startURI}&end=${endURI}`;
+        this.bookMatchedCar.classList.add('show');
     }
 }
 customElements.define('swipe-game', SwipeGame);
