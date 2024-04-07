@@ -9,7 +9,9 @@ class SwipeGame extends HTMLElement {
 
         this.likeButton = this.querySelector('#likeButton');
         this.likeButton.addEventListener('click', () => {
-            this.likedVehicles.push(this.topVehicle);
+            if (this.topVehicle) {
+                this.likedVehicles.push(this.topVehicle);
+            }
             this.displayTopCard();
         });
 
