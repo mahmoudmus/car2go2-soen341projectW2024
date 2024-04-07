@@ -2,9 +2,11 @@ const router = require('express').Router();
 
 // Require controller modules.
 const vehicleController = require('../controllers/vehicleController');
+const datingController = require('../controllers/datingController');
 
 // Create
 router.post('/', vehicleController.createVehicle);
+router.post('/liked', datingController.matchDate);
 
 // Read
 router.get('/', vehicleController.readAllVehicles);
