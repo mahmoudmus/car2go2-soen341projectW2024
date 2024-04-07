@@ -93,7 +93,7 @@ class SwipeGame extends HTMLElement {
 
         if (response.ok) {
             let match = (await response.json()).matchedVehicle;
-            console.log(data);
+            console.log(match);
             if (!match) {
                 match = {
                     details: {
