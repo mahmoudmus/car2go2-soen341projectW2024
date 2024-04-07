@@ -21,6 +21,10 @@ router.get('/login', function (req, res, next) {
     res.render('user/login');
 });
 
+router.get('/dating', function (req, res, next) {
+    res.render('dating/test');
+});
+
 router.post('/login', authController.login);
 
 router.get('/logout', authController.logout);

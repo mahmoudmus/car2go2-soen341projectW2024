@@ -1,6 +1,7 @@
 class SwipeGame extends HTMLElement {
     connectedCallback() {
         this.cardSpace = this.querySelector('#cardSpace');
+        // @ todo this.likedCards = 
         this.startGame('/vehicles/json');
     }
 
@@ -40,36 +41,36 @@ class SwipeGame extends HTMLElement {
     displayTopCard() {
         const vehicle = this.cards.shift();
         if (vehicle) {
-            const card = document.createElement('dating-card');
+            const card = document.createElement('dating-card').setVehicle(vehicle);
             card.setAttribute('vehicle-id', vehicle._id);
-            card.innerHTML = `
-                <div class="card mb-3" style="width: 42rem;">
-                    <img src="${vehicle.imageUrl}" alt="Car Image" style="width: 30rem;" />
-                    <div class="card-body">
-                        <h4 class="card-title">${vehicle.details.model}</h4>
-                        <p class="card-text">I'm a ${vehicle.details.colour}, ${vehicle.type} ${vehicle.category} built by ${vehicle.details.make} in ${vehicle.details.year}.</p>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <ul>
-                                    <li><b>Price: </b>${vehicle.dailyPrice}$/day</li>
-                                    <li><b>Mileage: </b> ${vehicle.details.mileage} km</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <ul>
-                                  <li><b>Number of Seats: </b>${vehicle.details.seats}</li>
-                                  <li><b>Number of Doors: </b>${vehicle.details.doors}</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <ul>
-                                    <li><b>Is Automatic? </b>${vehicle.details.isAutomatic}</li>
-                                    <li><b>Engine Type: </b> ${vehicle.details.engineType}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+            // card.innerHTML = `
+            //     <div class="card mb-3" style="width: 42rem;">
+            //         <img src="${vehicle.imageUrl}" alt="Car Image" style="width: 30rem;" />
+            //         <div class="card-body">
+            //             <h4 class="card-title">${vehicle.details.model}</h4>
+            //             <p class="card-text">I'm a ${vehicle.details.colour}, ${vehicle.type} ${vehicle.category} built by ${vehicle.details.make} in ${vehicle.details.year}.</p>
+            //             <div class="row">
+            //                 <div class="col-md-4">
+            //                     <ul>
+            //                         <li><b>Price: </b>${vehicle.dailyPrice}$/day</li>
+            //                         <li><b>Mileage: </b> ${vehicle.details.mileage} km</li>
+            //                     </ul>
+            //                 </div>
+            //                 <div class="col-md-4">
+            //                     <ul>
+            //                       <li><b>Number of Seats: </b>${vehicle.details.seats}</li>
+            //                       <li><b>Number of Doors: </b>${vehicle.details.doors}</li>
+            //                     </ul>
+            //                 </div>
+            //                 <div class="col-md-4">
+            //                     <ul>
+            //                         <li><b>Is Automatic? </b>${vehicle.details.isAutomatic}</li>
+            //                         <li><b>Engine Type: </b> ${vehicle.details.engineType}</li>
+            //                     </ul>
+            //                 </div>
+            //             </div>
+            //         </div>
+            //     </div>`;
             this.cardSpace.appendChild(card);
         } else {
             // Display score or end game message here
@@ -77,11 +78,5 @@ class SwipeGame extends HTMLElement {
         }
     }
 
-    setupKeyControls() {
-        document.addEventListener('keydown', (e) => {
-            // Implement key controls if needed
-            // For example, you could use arrow keys to "like" or "dislike"
-        });
-    }
 }
 customElements.define('swipe-game', SwipeGame);
