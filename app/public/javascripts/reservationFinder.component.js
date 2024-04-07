@@ -133,10 +133,15 @@ class ReservationFinder extends HTMLElement {
         if (swipeGame) {
             url.pathname = '/vehicles/json';
             url.search = params.toString();
-            // @todo make your instruction box dissapear
+            // Add style to hide the container
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.display = 'none';
+            }
             swipeGame.startGame(url.toString());
             return;
         }
+        
 
         if (this.email) {
             params.set('email', this.email);

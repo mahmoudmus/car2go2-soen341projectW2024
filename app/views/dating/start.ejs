@@ -1,10 +1,4 @@
 <script type="module" src="/javascripts/reservationFinder.component.js"></script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Page Title</title>
     <style>
         /* Style for the dating game button */
         .dating-button {
@@ -37,22 +31,22 @@
             align-items: center; /* Center items vertically */
             margin: 0 auto; /* Center horizontally */
         }
-    </style>
-</head>
-<body>
+    </style>*/
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="box">
                     <div class="instructions">
-                        <h2>Instructions:</h2>
-                        <ul>
-                            <li>Instruction 1</li>
-                            <li>Instruction 2</li>
-                            <li>Instruction 3</li>
-                            <!-- Add more instructions as needed -->
+                            <h2>How to play the swiping game:</h2>
+                            <ul>
+                                <li>1.Set Your Preferences for potential matches.</li>
+                                <li>2.Start Swiping: </li>
+                                <li>Swipe left if you like the car </li>
+                                <li>Swipe right if you don't the car </li>
+                                <li>3.Find you Perfect Match.</li>
                         </ul>
-                    </div>
+                        </div>
 
                     <reservation-finder class="d-flex flex-column gap-2" mode="catalogue" callback="fetch-10-vehicles">
                         <div class="modal-body">
@@ -72,5 +66,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>
