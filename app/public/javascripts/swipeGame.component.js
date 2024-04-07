@@ -1,5 +1,6 @@
 class SwipeGame extends HTMLElement {
     connectedCallback() {
+        this.cardSpace = this.querySelector('#cardSpace');
         this.startGame('/vehicles/json');
     }
 
@@ -17,10 +18,10 @@ class SwipeGame extends HTMLElement {
         observer.observe(this, { childList: true });
         this.setupKeyControls();
         console.log('startGame() has been called.');
-          // @todo
+        // @todo
     }
-    
-        async fetchCards() {
+
+    async fetchCards() {
         const response = await fetch(`/vehicles/json`, {
             method: 'GET',
             headers: {
@@ -69,7 +70,7 @@ class SwipeGame extends HTMLElement {
                         </div>
                     </div>
                 </div>`;
-            this.appendChild(card);
+            this.cardSpace.appendChild(card);
         } else {
             // Display score or end game message here
             console.log('No more cards');
@@ -82,7 +83,5 @@ class SwipeGame extends HTMLElement {
             // For example, you could use arrow keys to "like" or "dislike"
         });
     }
-
 }
 customElements.define('swipe-game', SwipeGame);
-
