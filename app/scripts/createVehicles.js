@@ -22,7 +22,7 @@ const deleteAllVehicles = async () => {
 };
 
 const createVehicleInstances = async () => {
-    const categories = ['compact', 'standard', 'intermediate', 'full-size'];
+    const categories = ['compact', 'standard', 'intermediate', 'fullSize'];
     const types = ['car', 'suv', 'van', 'truck'];
     const makers = ['Ford', 'Toyota', 'Volkswagen'];
     const models = ['Tesla Model S', 'Ford Mustang', 'Honda Civic'];

@@ -30,12 +30,39 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     }
 });
 
+async function buildDatingProfile(datingProfile, vehicleArray, startDate, endDate, branchName) { 
+    for (var i = 0; i < vehicleArray.length; i++) {
+        eval("datingProfile.categoryProfile." + vehicleArray[i].category) += 1/vehicleArray.length;
+        eval("datingProfile.typeProfile." + vehicleArray[i].type) += 1/vehicleArray.length;
+        eval("datingProfile.engineProfile." +vehicleArray[i].details.engineType) += 1/vehicleArray.length;
+        eval("datingProfilecolourProfile." +vehicleArray[i].details.colour) += 1/vehicleArray.length;
+        eval("datingProfile.makeProfile." +vehicleArray[i].details.make) += 1/vehicleArray.length;
+        if(vehicleArray[i].details.isAutomatic){
+            datingProfile.isAutomaticProfile += 1/vehicleArray.length;
+        }
+
+        if(vehicleArray[i].dailyPrice> priceProfile.max){
+            datingProfile.priceProfile.max=vehicleArray[i].dailyPrice;
+        }
+        if(vehicleArray[i].dailyPrice< priceProfile.min){
+           datingProfile.priceProfile.min=vehicleArray[i].dailyPrice;
+        }
+        datingProfile.priceProfile.avg += vehicleArray[i].dailyPrice/vehicleArray.length;
+    
+    }
+    try {
+        await datingProfile.save();
+    } catch (e) {
+        res.status(400).send({ message: 'Could not update dating profile.' });
+    }
+}
 
 
 exports.matchDate = asyncHandler(async (req, res, next) => {
     const matchRate = 0;
     const datingProfile = req.datingProfile;
     const availableVehicles = findAvailableVehicles(datingProfile);
+    //VehicleController.readAllVehicleObjects
     var highestScore = 0;
     var matchedvehicle;
     for(const vehicle in availableVehicles){  //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red)
@@ -70,7 +97,11 @@ function calculateMatchScore(vehicle, datingProfile){
     }
     const isAutomaticScore = datingProfile.isAutomaticProfile;
     const priceScore = calculatePriceScore(vehicle, datingProfile);
-    return score;
+    let totalScore = (categoryScore + typeScore+ engineScore+ makeScore + isAutomaticScore +priceScore)/6;
+    if ((totalScore+colourScore)/2>totalScore){ //colour score is only added as bonus points if it makes a better match
+        totalScore= (totalScore+colourScore)/2; 
+    }
+    return totalScore;
 }
 
 /**
