@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const reservationController = require('../controllers/reservationController');
 
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     let notification = req.cookies.justLoggedIn
@@ -30,5 +31,9 @@ router.get('/profile', userController.readProfile);
 router.get('/myreservations', reservationController.readUserReservations);
 
 router.get('/walkin', reservationController.walkinDashboard);
+
+router.get('/dating', reservationController.datingDashboard);
+
+
 
 module.exports = router;
