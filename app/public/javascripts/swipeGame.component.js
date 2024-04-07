@@ -62,6 +62,8 @@ class SwipeGame extends HTMLElement {
                 this.cardSpace.replaceChildren(card);
             }, 200);
         } else {
+            this.likeButton.setAttribute('disabled', 'true');
+            this.discardButton.setAttribute('disabled', 'true');
             this.loadingOverlay.classList.add('show');
             this.getMatch();
         }
