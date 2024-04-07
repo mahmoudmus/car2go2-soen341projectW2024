@@ -8,7 +8,7 @@ const DatingSchema = new Schema({
         compact: Number,
         standard: Number,
         intermediate: Number,
-        fullSize: Number
+        fullsize: Number,
     },
 
     typeProfile: {
