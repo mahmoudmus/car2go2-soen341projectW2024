@@ -4,6 +4,7 @@ class SwipeGame extends HTMLElement {
         this.likedVehicles = [];
         this.topVehicle = null;
         this.cardSpace = this.querySelector('#cardSpace');
+        this.loadingOverlay = this.querySelector('#loadingOverlay');
 
         this.likeButton = this.querySelector('#likeButton');
         this.likeButton.addEventListener('click', () => {
@@ -53,7 +54,7 @@ class SwipeGame extends HTMLElement {
             card.setVehicle(this.topVehicle);
             this.cardSpace.replaceChildren(card);
         } else {
-            this.cardSpace.replaceChildren();
+            this.loadingOverlay.classList.add('show');
             // @todo send these to azal's backend
             console.log(this.likedVehicles);
         }

@@ -4,7 +4,7 @@
         /* center the buttons n shit */
     </style>
     <script type="module" src="/javascripts/datingCard.component.js"></script>
-    <swipe-game>
+    <swipe-game style="position: relative">
         <div id="cardSpace"></div>
         <button id="likeButton" class="btn btn-dark start-reservation gradient-bg">
             <i class="bi bi-hand-thumbs-down-fill"></i>
@@ -12,5 +12,21 @@
         <button id="dislikeButton" class="btn btn-dark start-reservation gradient-bg">
             <i class="bi bi-hand-thumbs-up-fill"></i>
         </button>
+        <div
+            id="loadingOverlay"
+            class="fade d-flex justify-content-center align-items-center"
+            style="
+                position: absolute !important;
+                top: 0; left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 1rem;
+                background: white;
+                pointer-events: none;"
+        >
+            <div class="spinner-grow" role="status" style="color: var(--sun-glow)">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </swipe-game>
 </div>
