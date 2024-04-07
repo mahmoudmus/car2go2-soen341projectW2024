@@ -8,7 +8,7 @@ const Branch = require('../models/branch');
 
 /*current algorithm flaws:
     If profile attributes are equally distributed (ex. all categories are at 25%). This will result in a low score. However, this actually indicates "no pref",
-    and hence shouldn't be taken into account for the score calculation.
+    and hence shouldn't be taken into account for the score calculation. Also have to take into account weak pref(only wants 3 categories, they are all at 33%)
 
     Triangle Distribution is not very accurate (using better distribution requires changing the model and changing)
 
@@ -190,15 +190,19 @@ function calculatePriceScore(vehicle, datingProfile){
     const scoreFactor = 50*(max-min); //Multiplication factor to get scores ranging from 0-100, where 100 if price=average=peak
     var PDF =0; // If outside bounds, PDF = 0
     //Triangle distribution PDF computation
-    if(min<vehiclePrice && vehiclePrice<=peak){
+    if(min<=vehiclePrice && vehiclePrice<=peak){
         PDF=2*(vehiclePrice-min)/((max-min)*(peak-min));
         console.log("Case 1");
-    }else if(peak< vehiclePrice && vehiclePrice <max){
+    }else if(peak< vehiclePrice && vehiclePrice <=max){
         PDF=2*(max-vehiclePrice)/((max-min)*(max-peak));
         console.log("Case 2");
+    }else{
+        return 0
     }
     console.log("PDF = " +PDF);
-    return PDF*scoreFactor;
+    const adjustedScale= 1/2*(PDF*scoreFactor)+50;
+    console.log("AdjustedScale = " +adjustedScale);
+    return adjustedScale;
 }
 
 
