@@ -145,12 +145,9 @@ function calculateMatchScore(vehicle, datingProfile){
     let score = 0;
     //logic here
     console.log("Calculating Match Score");
-    const categoryScore = eval("datingProfile.categoryProfile." + vehicle.category); //Need to fix "full-size"
-    console.log("Category Score: "+categoryScore);
-    const typeScore = eval("datingProfile.typeProfile." + vehicle.type);
-    console.log("Type Score: "+typeScore);
-    const engineScore = eval("datingProfile.engineProfile." + vehicle.details.engineType);
-    console.log("Engine Score: "+engineScore);
+    const categoryScore = datingProfile.categoryProfile[vehicle.category];
+    const typeScore = datingProfile.typeProfile[vehicle.type];
+    const engineScore = datingProfile.engineProfile[vehicle.details.engineType];
     const colourScore = datingProfile.colourProfile.get(vehicle.details.colour); //To see if implement colour distance algorithm
     if(colourScore=="null"){  //null or undefined
         colourScore=0;
