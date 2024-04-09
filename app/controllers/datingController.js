@@ -61,16 +61,16 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
         res.status(400).send({ message: 'Could not create dating profile.' });
     }
     try{
-        await buildDatingProfile(savedDatingProfile, vehicleArray);
+        await exports.buildDatingProfile(savedDatingProfile, vehicleArray);
     } catch (e){
         res.status(400).send({ message: 'Could not update dating profile.' }); 
     }
     
-    const [matchedVehicle, highestScore] = await matchDate(savedDatingProfile, startDate, endDate, branchName);
+    const [matchedVehicle, highestScore] = await exports.matchDate(savedDatingProfile, startDate, endDate, branchName);
     res.send({matchedVehicle, highestScore});
 });
 
-async function buildDatingProfile(datingProfile, vehicleArray) {
+exports.buildDatingProfile = async function(datingProfile, vehicleArray) {
     for (let vehicle of vehicleArray) {
         const incrementNumber = 1/vehicleArray.length*100;
 
@@ -108,7 +108,7 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
 }
 
 
-async function matchDate(datingProfile, startDate, endDate, branchName){
+exports.matchDate = async function(datingProfile, startDate, endDate, branchName){
     const availableVehicles = await findAvailableVehicles(startDate, endDate, branchName);
     let highestScore = 0;
     let matchedvehicle;
