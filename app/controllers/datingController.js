@@ -62,7 +62,6 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
     }
     try{
         buildDatingProfile(savedDatingProfile, vehicleArray);
-        //console.log("Dating Profile: "+ savedDatingProfile);
     } catch (e){
         res.status(400).send({ message: 'Could not update dating profile.' }); 
     }
@@ -72,34 +71,34 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
 });
 
 async function buildDatingProfile(datingProfile, vehicleArray) {
-    for (var i = 0; i < vehicleArray.length; i++) {
+    for (let vehicle of vehicleArray) {
         const incrementNumber = 1/vehicleArray.length*100;
 
-        datingProfile.categoryProfile[vehicleArray[i].category] += incrementNumber;
-        datingProfile.typeProfile[vehicleArray[i].type] += incrementNumber;
-        datingProfile.engineProfile[vehicleArray[i].details.engineType] += incrementNumber;
+        datingProfile.categoryProfile[vehicle.category] += incrementNumber;
+        datingProfile.typeProfile[vehicle.type] += incrementNumber;
+        datingProfile.engineProfile[vehicle.details.engineType] += incrementNumber;
         
         //All my homies loves embedded maps as documents :)
-        const colourKey = vehicleArray[i].details.colour;
+        const colourKey = vehicle.details.colour;
         const colourValue = datingProfile.colourProfile.get(colourKey);
         const colorMap = datingProfile.colourProfile;
         colorMap.has(colourKey) ? colorMap.set(colourKey, colourValue +incrementNumber) : colorMap.set(colourKey, incrementNumber);
 
-        const makeKey = vehicleArray[i].details.make;
+        const makeKey = vehicle.details.make;
         const makeValue = datingProfile.makeProfile.get(makeKey);
         const makeMap = datingProfile.makeProfile
         makeMap.has(makeKey) ? makeMap.set(makeKey, makeValue +incrementNumber) : makeMap.set(makeKey, incrementNumber);
 
 
-        if(vehicleArray[i].dailyPrice> datingProfile.priceProfile.max || datingProfile.priceProfile.max == null){
-            datingProfile.priceProfile.max=vehicleArray[i].dailyPrice;
+        if(vehicle.dailyPrice> datingProfile.priceProfile.max || datingProfile.priceProfile.max == null){
+            datingProfile.priceProfile.max=vehicle.dailyPrice;
         }
-        if(vehicleArray[i].dailyPrice< datingProfile.priceProfile.min || datingProfile.priceProfile.min == null){
-           datingProfile.priceProfile.min=vehicleArray[i].dailyPrice;
+        if(vehicle.dailyPrice< datingProfile.priceProfile.min || datingProfile.priceProfile.min == null){
+           datingProfile.priceProfile.min=vehicle.dailyPrice;
         }
-        datingProfile.priceProfile.avg += vehicleArray[i].dailyPrice/vehicleArray.length;
+        datingProfile.priceProfile.avg += vehicle.dailyPrice/vehicleArray.length;
 
-        if(vehicleArray[i].details.isAutomatic){
+        if(vehicle.details.isAutomatic){
             datingProfile.isAutomaticProfile += incrementNumber; 
         }
     
@@ -111,13 +110,10 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
 
 async function matchDate(datingProfile, startDate, endDate, branchName){
     const matchRate = 0;
-    //console.log("Before findAvailableVehicles");
     const availableVehicles = await findAvailableVehicles(startDate, endDate, branchName);
-    //console.log("After Available vehicles");
     var highestScore = 0;
     var matchedvehicle;
-    availableVehicles.forEach((vehicle) =>{ //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red). But then have to take into account case where query is empty.
-        //console.log("Make: " +vehicle.details.make);  
+    availableVehicles.forEach((vehicle) =>{ //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red). But then have to take into account case where query is empty.  
             let score = calculateMatchScore(vehicle, datingProfile);
             if(score>highestScore){
                 highestScore = score;
@@ -134,8 +130,6 @@ async function matchDate(datingProfile, startDate, endDate, branchName){
  */
 function calculateMatchScore(vehicle, datingProfile){
     let score = 0;
-    //logic here
-    //console.log("Calculating Match Score");
     const categoryScore = datingProfile.categoryProfile[vehicle.category];
     const typeScore = datingProfile.typeProfile[vehicle.type];
     const engineScore = datingProfile.engineProfile[vehicle.details.engineType];
@@ -143,19 +137,15 @@ function calculateMatchScore(vehicle, datingProfile){
     if(colourScore=="null"){  //null or undefined
         colourScore=0;
     }
-    //console.log("Colour Score: "+colourScore);
     const makeScore = datingProfile.makeProfile.get(vehicle.details.make);
     if(makeScore=="null"){ //null or undefined
         makeScore=0;
     }
-    //console.log("Make Score: "+makeScore);
     const isAutomaticScore = datingProfile.isAutomaticProfile;
-    //console.log("Automatic Score: "+isAutomaticScore);
     const priceScore = calculatePriceScore(vehicle, datingProfile);
-    //console.log("Price Score: "+priceScore);
 
     let totalScore = (categoryScore + typeScore+ engineScore+ makeScore + isAutomaticScore +priceScore)/6;
-    //console.log("Total Score: "+totalScore);
+
     if ((totalScore+colourScore)/2>totalScore){ //colour score is only added as bonus points if it makes a better match
         totalScore= (totalScore+colourScore)/2; 
     }
@@ -168,30 +158,21 @@ function calculateMatchScore(vehicle, datingProfile){
  */
 function calculatePriceScore(vehicle, datingProfile){
     //Uses min, max and avg from datingProfile to build a triangular distribution.
-    //console.log("Calculating Price Score")
     const min = datingProfile.priceProfile.min;
     const max = datingProfile.priceProfile.max;
     const peak = datingProfile.priceProfile.avg;
     const vehiclePrice = vehicle.dailyPrice;
-    //console.log("min: " +min)
-    //console.log("max: " +max)
-    //console.log("peak: " +peak)
-    //console.log("vehicle Price: " +vehiclePrice);
     const scoreFactor = 50*(max-min); //Multiplication factor to get scores ranging from 0-100, where 100 if price=average=peak
     var PDF =0; // If outside bounds, PDF = 0
     //Triangle distribution PDF computation
     if(min<=vehiclePrice && vehiclePrice<=peak){
         PDF=2*(vehiclePrice-min)/((max-min)*(peak-min));
-        //console.log("Case 1");
     }else if(peak< vehiclePrice && vehiclePrice <=max){
         PDF=2*(max-vehiclePrice)/((max-min)*(max-peak));
-        //console.log("Case 2");
     }else{
         return 0
     }
-    //console.log("PDF = " +PDF);
     const adjustedScale= 1/2*(PDF*scoreFactor)+50;
-    //console.log("AdjustedScale = " +adjustedScale);
     return adjustedScale;
 }
 
@@ -223,19 +204,7 @@ async function findAvailableVehicles(startDate, endDate, branchName) {
                 branch: branch._id
             }
         );
-        //console.log("branch name: "+ branch.name);
     }
-    
-    
-    // if(availableVehicles == "null"){
-    //     console.log("Available vehicles is null or undefined");
-    // }else if(Object.keys(availableVehicles).length === 0){
-    //     console.log("Available vehicles is empty")
-    // }
-    // else{
-    //     console.log("Available vehicles is defined");
-    //     console.log("There are " +availableVehicles.length +" available vehicles");   
-    // }
 
     return availableVehicles;
 }
