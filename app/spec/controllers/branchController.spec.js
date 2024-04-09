@@ -2,6 +2,7 @@ const Branch = require('../../models/branch');
 const {
     getAllBranches,
     getBranch,
+    getNearestBranch,
 } = require('../../controllers/branchController');
 
 describe('getAllBranches', () => {
@@ -22,6 +23,10 @@ describe('getAllBranches', () => {
         );
 
         spyOn(Branch, 'findById').and.returnValue(
+            Promise.resolve({ _id: '2', name: 'Branch 2' })
+        );
+
+        spyOn(Branch, 'findOne').and.returnValue(
             Promise.resolve({ _id: '2', name: 'Branch 2' })
         );
     });
@@ -52,6 +57,15 @@ describe('getAllBranches', () => {
         mockReq.params = { id: '2' };
         await getBranch(mockReq, mockRes, mockNext);
         expect(Branch.findById).toHaveBeenCalledWith('2');
+        expect(mockRes.send).toHaveBeenCalledWith({
+            branch: { _id: '2', name: 'Branch 2' },
+        });
+        expect(mockNext).not.toHaveBeenCalled();
+    });
+
+    it('should return the nearest branch given a string location', async () => {
+        mockReq.params = { postal: 'montreal airport' };
+        await getNearestBranch(mockReq, mockRes, mockNext);
         expect(mockRes.send).toHaveBeenCalledWith({
             branch: { _id: '2', name: 'Branch 2' },
         });

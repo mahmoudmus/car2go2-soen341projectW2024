@@ -4,8 +4,8 @@ const {
     login,
     logout,
     visitSignup,
-} = require('../controllers/authController');
-const User = require('../models/user');
+} = require('../../controllers/authController');
+const User = require('../../models/user');
 
 describe('Auth Controller', function () {
     it('should authenticate user based on JWT token', async function () {
