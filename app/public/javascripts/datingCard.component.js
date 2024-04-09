@@ -53,11 +53,12 @@ class DatingCard extends HTMLElement {
             `
             : '';
 
+        const bio = this.vehicleBio(vehicle);
         this.innerHTML = `
         ${style}
         <div
             class="card mb-3 ${match ? 'best-match-card' : ''}"
-            style="${match ? '' : 'width: 42rem;'}"
+            style="${match ? '' : 'max-width: 42rem;'}"
         >
             <div class="best-match-header">
                 ${header}
@@ -84,9 +85,7 @@ class DatingCard extends HTMLElement {
                           '</h4>'
                 }
                 <p class="card-text">
-                    I'm a ${vehicle.details.colour}, ${vehicle.type}
-                    ${vehicle.category} built by ${vehicle.details.make}
-                    in ${vehicle.details.year}.
+                   ${bio} 
                 </p>
                 <div class="row">
                     <div class="col-md-4">
@@ -122,6 +121,18 @@ class DatingCard extends HTMLElement {
         </div>
         `;
         return this;
+    }
+
+    vehicleBio(vehicle) {
+        let category = vehicle.category;
+        if (category === 'fullsize') {
+            category = 'full-sized';
+        }
+        const appendSuffix = ['standard', 'intermediate'].includes(category);
+        category += appendSuffix ? '-sized' : '';
+        return `
+            I'm a ${vehicle.details.colour}, ${category} ${vehicle.type} built by ${vehicle.details.make} in ${vehicle.details.year}.
+        `;
     }
 }
 
