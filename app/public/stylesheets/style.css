@@ -51,6 +51,14 @@
     border: 3px solid #f25c54 !important;
 }
 
-.good{
+.good {
     border: 1.5px solid green !important;
+}
+
+/* Dating Page */
+.dating-button {
+    --bs-btn-bg: #ec518c !important;
+    --bs-btn-border-color: #ec518c !important;
+    --bs-btn-hover-bg: #d23f77 !important;
+    --bs-btn-hover-border-color: #d23f77 !important;
 }
