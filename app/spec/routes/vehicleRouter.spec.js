@@ -21,7 +21,7 @@ const vehicleController = {
         .and.callFake(async (req, res) => res.sendStatus(200)),
 };
 
-const vehicleRouter = proxyquire('../routes/vehicle', {
+const vehicleRouter = proxyquire('../../routes/vehicle', {
     '../controllers/vehicleController': vehicleController,
 });
 app.use('/vehicles', vehicleRouter);

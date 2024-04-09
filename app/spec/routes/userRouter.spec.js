@@ -30,7 +30,7 @@ const userController = {
         .and.callFake(async (req, res) => res.sendStatus(200)),
 };
 
-const userRouter = proxyquire('../routes/user', {
+const userRouter = proxyquire('../../routes/user', {
     '../controllers/userController': userController,
 });
 app.use('/users', userRouter);
