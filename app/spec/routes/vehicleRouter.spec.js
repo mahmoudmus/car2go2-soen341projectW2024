@@ -3,23 +3,21 @@ const express = require('express');
 const proxyquire = require('proxyquire');
 const app = express();
 
-const vehicleController = {
-    createVehicle: jasmine
-        .createSpy('createVehicle')
-        .and.callFake(async (req, res) => res.sendStatus(200)),
-    readAllVehicles: jasmine
-        .createSpy('readAllVehicles')
-        .and.callFake(async (req, res) => res.sendStatus(200)),
-    readVehicle: jasmine
-        .createSpy('readVehicle')
-        .and.callFake(async (req, res) => res.sendStatus(200)),
-    updateVehicle: jasmine
-        .createSpy('updateVehicle')
-        .and.callFake(async (req, res) => res.sendStatus(200)),
-    deleteVehicle: jasmine
-        .createSpy('deleteVehicle')
-        .and.callFake(async (req, res) => res.sendStatus(200)),
-};
+const vehicleControllerMethods = [
+    'createVehicle',
+    'readAllVehicles',
+    'readVehicle',
+    'updateVehicle',
+    'deleteVehicle',
+];
+
+let vehicleController = {};
+
+for (const method of vehicleControllerMethods) {
+    vehicleController[method] = jasmine
+        .createSpy('method')
+        .and.callFake(async (req, res) => res.sendStatus(200));
+}
 
 const vehicleRouter = proxyquire('../../routes/vehicle', {
     '../controllers/vehicleController': vehicleController,

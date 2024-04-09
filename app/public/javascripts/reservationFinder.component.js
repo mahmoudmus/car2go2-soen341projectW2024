@@ -134,14 +134,11 @@ class ReservationFinder extends HTMLElement {
             url.pathname = '/vehicles/json';
             url.search = params.toString();
             // Add style to hide the container
-            const container = document.querySelector('.container');
-            if (container) {
-                container.style.display = 'none';
-            }
+            document.querySelector('#instructions').style.display = 'none';
+            swipeGame.setDates(start, end);
             swipeGame.startGame(url.toString());
             return;
         }
-        
 
         if (this.email) {
             params.set('email', this.email);

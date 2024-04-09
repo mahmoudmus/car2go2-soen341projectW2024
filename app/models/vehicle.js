@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const VehicleSchema = new Schema({
     category: {
         type: String,
-        enum: ['compact', 'standard', 'intermediate', 'full-size'],
+        enum: ['compact', 'standard', 'intermediate', 'fullsize'],
         required: true,
         lowercase: true,
         trim: true,
