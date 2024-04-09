@@ -61,8 +61,7 @@ exports.createDatingProfile = asyncHandler(async (req, res, next) => {
         res.status(400).send({ message: 'Could not create dating profile.' });
     }
     try{
-        buildDatingProfile(savedDatingProfile, vehicleArray);
-        //console.log("Dating Profile: "+ savedDatingProfile);
+        await buildDatingProfile(savedDatingProfile, vehicleArray);
     } catch (e){
         res.status(400).send({ message: 'Could not update dating profile.' }); 
     }
@@ -133,18 +132,17 @@ async function matchDate(datingProfile, startDate, endDate, branchName){
  * @param {datingProfile} datingProfile
  */
 function calculateMatchScore(vehicle, datingProfile){
-    let score = 0;
     //logic here
     //console.log("Calculating Match Score");
     const categoryScore = datingProfile.categoryProfile[vehicle.category];
     const typeScore = datingProfile.typeProfile[vehicle.type];
     const engineScore = datingProfile.engineProfile[vehicle.details.engineType];
-    const colourScore = datingProfile.colourProfile.get(vehicle.details.colour); //To see if implement colour distance algorithm
+    let colourScore = datingProfile.colourProfile.get(vehicle.details.colour); //To see if implement colour distance algorithm
     if(colourScore=="null"){  //null or undefined
         colourScore=0;
     }
     //console.log("Colour Score: "+colourScore);
-    const makeScore = datingProfile.makeProfile.get(vehicle.details.make);
+    let makeScore = datingProfile.makeProfile.get(vehicle.details.make);
     if(makeScore=="null"){ //null or undefined
         makeScore=0;
     }
