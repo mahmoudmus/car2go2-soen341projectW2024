@@ -229,7 +229,7 @@ describe('User Controller', function () {
 
     it('should return a 401 status with an error message when no user is logged in', async function () {
         const req = {};
-        nestedjson = jasmine.createSpy();
+        let nestedjson = jasmine.createSpy();
         const res = {
             json: jasmine.createSpy(),
             status: jasmine.createSpy().and.returnValue({

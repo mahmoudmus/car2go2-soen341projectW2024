@@ -1,6 +1,4 @@
 class DatingCard extends HTMLElement {
-    connectedCallback() {
-    }
     setVehicle(vehicle) {
         this.vehicleId = vehicle._id;
         this.innerHTML = `

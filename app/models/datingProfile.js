@@ -50,7 +50,7 @@ const DatingSchema = new Schema({
 DatingSchema.methods.findStrictPrefs = async function () { //unused as of now
     const strictPrefs = [];
     this.find({ $where: function(){
-        for(var key in this){
+        for(let key in this){
             if(this[key] === "100"){
                 strictPrefs.push(key);
             }
