@@ -46,7 +46,7 @@ class DatingCard extends HTMLElement {
             ? `
             <h2>
                 <b>
-                    <i class="bi bi-star-fill"></i>Your best matched car:<i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill pe-2"></i>Closest Match<i class="bi bi-star-fill ps-2"></i>
                 </b>
             </h2>
             <br>
