@@ -112,9 +112,9 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
 
 async function matchDate(datingProfile, startDate, endDate, branchName){
     const matchRate = 0;
-    //console.log("Before findAvailableVehicles");
+    console.log("Before findAvailableVehicles");
     const availableVehicles = await findAvailableVehicles(startDate, endDate, branchName);
-    //console.log("After Available vehicles");
+    console.log("After Available vehicles");
     var highestScore = 0;
     var matchedvehicle;
     availableVehicles.forEach((vehicle) =>{
@@ -126,14 +126,6 @@ async function matchDate(datingProfile, startDate, endDate, branchName){
             }
     }
     );
-    // for(const vehicle in availableVehicles){
-    //     console.log(vehicle.details.make);  //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red)
-    //     let score = calculateMatchScore(vehicle, datingProfile);
-    //     if(score>highestScore){
-    //         highestScore = score;
-    //         matchedvehicle = vehicle;
-    //     }
-    // }
     return [matchedvehicle, highestScore];
 }
 
@@ -179,7 +171,7 @@ function calculateMatchScore(vehicle, datingProfile){
  * @param {datingProfile} datingProfile
  */
 function calculatePriceScore(vehicle, datingProfile){
-    //Uses min,max and avg from datingProfile to build a triangular distribution.
+    //Uses min, max and avg from datingProfile to build a triangular distribution.
     console.log("Calculating Price Score")
     const min = datingProfile.priceProfile.min;
     const max = datingProfile.priceProfile.max;
@@ -209,9 +201,6 @@ function calculatePriceScore(vehicle, datingProfile){
 
 
 async function findAvailableVehicles(startDate, endDate, branchName) {
-    //Not sure if there is a better way of doing this by calling vehicleController.readAvailableVehicles so doing this for now
-
-    //->taken from vehicleController.readAvailableVehicles
     // Find reservations that overlap with the requested date range
      const overlappingReservations = await Reservation.find({
         startDate: { $lt: endDate },
@@ -222,16 +211,26 @@ async function findAvailableVehicles(startDate, endDate, branchName) {
     const reservedVehicleIds = overlappingReservations.map(
         (reservation) => reservation.vehicle
     );
-    // const branch= await Branch.findOne({name: 'Montreal Branch'});
+
     const branch= await Branch.findOne({name: branchName});
-    console.log("branch name: "+ branch.name);
-    // Find available vehicles that do not have reservations in the given date range
-    const availableVehicles = await Vehicle.find(
-        {
-            _id: { $nin: reservedVehicleIds },
-            branch: branch._id
-        }
-    );
+    let availableVehicles;
+    if(branch == null){
+        availableVehicles = await Vehicle.find(
+            {
+                _id: {$nin: reservedVehicleIds },
+            }
+        )
+    }else{
+        availableVehicles = await Vehicle.find(
+            {
+                _id: { $nin: reservedVehicleIds },
+                branch: branch._id
+            }
+        );
+        console.log("branch name: "+ branch.name);
+    }
+    
+    
     if(availableVehicles == "null"){
         console.log("Available vehicles is null or undefined");
     }else if(Object.keys(availableVehicles).length === 0){
@@ -243,18 +242,8 @@ async function findAvailableVehicles(startDate, endDate, branchName) {
     }
 
     return availableVehicles;
-
-    // If we want to sort by branch, we can uncomment this underneath and replace availableVehicles with filteredVehicles
-    // const filteredVehicles = availableVehicles.vehicles.filter(vehicle => vehicle.branch.name === branchName);
-
-    // Shuffle the available vehicles 
-    const shuffledVehicles = availableVehicles.sort(() => Math.random() - 0.5);
-
-    // Return the first 10 vehicles as the random selection
-    const randomVehicles = shuffledVehicles.slice(0, 10);
-
-    return randomVehicles;
 }
+
 exports.datingDashboard = asyncHandler(async (req, res, next) => {
     res.render('dating/start');
 });
