@@ -29,7 +29,6 @@ class SwipeGame extends HTMLElement {
         });
     }
 
-    // @todo remove default value
     async fetchCards(url = '/vehicles/json') {
         const response = await fetch(url, {
             method: 'GET',
