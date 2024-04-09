@@ -115,7 +115,7 @@ class SwipeGame extends HTMLElement {
                 };
             }
             const card = document.createElement('dating-card');
-            card.setMatch(match);
+            card.setVehicle(match, (match = true));
             this.cardSpace.classList.remove('show');
             this.loadingOverlay.classList.remove('show');
             this.buttonsContainer.classList.add('d-none');
