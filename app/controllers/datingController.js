@@ -109,10 +109,9 @@ async function buildDatingProfile(datingProfile, vehicleArray) {
 
 
 async function matchDate(datingProfile, startDate, endDate, branchName){
-    const matchRate = 0;
     const availableVehicles = await findAvailableVehicles(startDate, endDate, branchName);
-    var highestScore = 0;
-    var matchedvehicle;
+    let highestScore = 0;
+    let matchedvehicle;
     availableVehicles.forEach((vehicle) =>{ //calculates the score for each vehicle. Can reduce scope of availableVehicles by first filtering for strict preferences (ie colour MUST be red). But then have to take into account case where query is empty.  
             let score = calculateMatchScore(vehicle, datingProfile);
             if(score>highestScore){
