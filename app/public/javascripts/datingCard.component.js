@@ -1,6 +1,5 @@
 class DatingCard extends HTMLElement {
     connectedCallback() {
-        // this.classList.add('d-flex', 'flex-column', 'justify-content-center');
     }
     setVehicle(vehicle) {
         this.vehicleId = vehicle._id;

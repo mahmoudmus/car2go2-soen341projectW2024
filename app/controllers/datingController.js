@@ -163,7 +163,7 @@ function calculatePriceScore(vehicle, datingProfile){
     const peak = datingProfile.priceProfile.avg;
     const vehiclePrice = vehicle.dailyPrice;
     const scoreFactor = 50*(max-min); //Multiplication factor to get scores ranging from 0-100, where 100 if price=average=peak
-    var PDF =0; // If outside bounds, PDF = 0
+    let PDF =0; // If outside bounds, PDF = 0
     //Triangle distribution PDF computation
     if(min<=vehiclePrice && vehiclePrice<=peak){
         PDF=2*(vehiclePrice-min)/((max-min)*(peak-min));
