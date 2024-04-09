@@ -1,7 +1,7 @@
-const User = require('../models/user');
-const Reservation = require('../models/reservation');
+const User = require('../../models/user');
+const Reservation = require('../../models/reservation');
 const jwt = require('jsonwebtoken');
-const userController = require('../controllers/userController');
+const userController = require('../../controllers/userController');
 
 describe('User Controller', function () {
     it('should create a new and return a jwt in a cookie', async function () {

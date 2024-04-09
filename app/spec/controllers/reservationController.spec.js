@@ -1,7 +1,7 @@
-const Reservation = require('../models/reservation');
-const User = require('../models/user');
-const Vehicle = require('../models/vehicle');
-const reservationController = require('../controllers/reservationController');
+const Reservation = require('../../models/reservation');
+const User = require('../../models/user');
+const Vehicle = require('../../models/vehicle');
+const reservationController = require('../../controllers/reservationController');
 
 describe('Reservation Controller', function () {
     it('should create a reservation and render the reservation row', async function () {

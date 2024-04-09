@@ -21,7 +21,7 @@ const reservationController = {
         .and.callFake(async (req, res) => res.sendStatus(200)),
 };
 
-const reservationRouter = proxyquire('../routes/reservation', {
+const reservationRouter = proxyquire('../../routes/reservation', {
     '../controllers/reservationController': reservationController,
 });
 app.use('/reservations', reservationRouter);
