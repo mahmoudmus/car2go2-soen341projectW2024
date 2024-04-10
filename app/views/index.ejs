@@ -23,6 +23,20 @@
             </reservation-finder>
         </div>
     </div>
+    <div id="dating-cta" class="row rounded-5 overflow-hidden dating-bg p-4 mb-4">
+        <div class="col-lg-7">
+            <h1>Not sure what you're looking&nbsp;for?</h1>
+            <p class="lead">Try our vehicle matchmaker to find the right car, the right&nbsp;way.</p>
+            <div>
+                <a href="/dating" role="button" class="btn btn-dark dating-text">
+                    <i class="bi bi-arrow-through-heart-fill pe-1"></i>
+                    Learn more
+                </a>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-5 heart-container">
+        </div>
+    </div>
     <% if (process.env.GEOCODE_KEY) { %>
     <div id="mapRow" class="row mb-4">
         <div class="d-flex justify-content-between">
@@ -67,3 +81,22 @@
 <script type="module" src="/javascripts/branch/mapDiv.component.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GEOCODE_KEY %>&callback=initMap"></script>
 <% } %>
+<script>
+    // Dating CTA floating hearts script:
+    // @todo place this in a component
+    const heartContainer = document.querySelector('.heart-container');
+
+    function addHeart() {
+        const heart = document.createElement('span');
+        heart.classList.add('heart');
+        heart.innerHTML = '<i class="bi bi-balloon-heart-fill"></i>';
+        heart.style.left = Math.random() * 100 + '%';
+        heartContainer.appendChild(heart);
+
+        setTimeout(() => {
+            heartContainer.removeChild(heart);
+        }, 5000);
+    }
+
+    setInterval(addHeart, 2000);
+</script>
