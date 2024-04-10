@@ -36,6 +36,7 @@ class BranchPicker extends HTMLElement {
                 return branch;
             }
         }
+        return null;
     }
 
     get value() {
