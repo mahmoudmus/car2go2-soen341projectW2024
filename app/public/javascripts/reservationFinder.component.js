@@ -1,6 +1,5 @@
 class ReservationFinder extends HTMLElement {
     connectedCallback() {
-        // this.searchVehiclesButton = this.querySelector('#button-addon');
         this.postalInput = this.querySelector('.postal-group');
         this.searchButton = this.querySelector('#search-vehicles');
         this.initializeDateRangePicker();

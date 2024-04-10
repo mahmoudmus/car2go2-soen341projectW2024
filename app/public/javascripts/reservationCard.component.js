@@ -17,7 +17,6 @@ class ReservationCard extends HTMLElement {
         const returnButton = this.querySelector('.return-reservation');
         if (returnButton) {
             returnButton.addEventListener('click', () => {
-                // @todo implement route
                 document.location.href = `reservations/return/${this.reservationId}`;
             });
         }
@@ -25,10 +24,10 @@ class ReservationCard extends HTMLElement {
 
     async deleteReservation() {
         const popup = document.querySelector('confirmation-popup');
-        var swalTitle = 'Delete Reservation?';
-        var swalText = undefined;
-        var swalTitleSuccess = 'Reservation Deleted!';
-        var swalTextSuccess = 'Reservation ID: ' + this.reservationId;
+        let swalTitle = 'Delete Reservation?';
+        let swalText;
+        let swalTitleSuccess = 'Reservation Deleted!';
+        let swalTextSuccess = 'Reservation ID: ' + this.reservationId;
         if (
             !(await popup.confirm(
                 swalTitle,
