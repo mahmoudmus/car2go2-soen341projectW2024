@@ -2,6 +2,11 @@
     --red-hot: #f25c54;
     --sun-glow: #f4845f;
     --cool-yellow: #f7b267;
+
+    --date-black: #242423;
+    --date-pink: #ff8fab;
+    --date-rose: #d35384;
+    --date-purple: #bb49a2;
 }
 
 .red-hot {
@@ -51,6 +56,63 @@
     border: 3px solid #f25c54 !important;
 }
 
-.good{
+.good {
     border: 1.5px solid green !important;
+}
+
+/* Dating Themes */
+.dating-button {
+    --bs-btn-bg: #ec518c !important;
+    --bs-btn-border-color: #ec518c !important;
+    --bs-btn-hover-bg: #d23f77 !important;
+    --bs-btn-hover-border-color: #d23f77 !important;
+}
+
+#dating-cta h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--date-black);
+}
+
+.dating-text {
+    color: #ff8fab !important;
+}
+
+.dating-bg {
+    background: radial-gradient(
+        circle at 40% 50%,
+        var(--date-pink) 0%,
+        var(--date-rose) 50%,
+        var(--date-purple) 100%
+    );
+}
+
+.heart-container {
+    position: relative;
+}
+
+.heart {
+    position: absolute;
+    font-size: 40px;
+    color: var(--date-black);
+    animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        bottom: 0;
+        opacity: 0;
+    }
+    10% {
+        bottom: 10%;
+        opacity: 1;
+    }
+    90% {
+        bottom: 90%;
+        opacity: 1;
+    }
+    100% {
+        bottom: 100%;
+        opacity: 0;
+    }
 }

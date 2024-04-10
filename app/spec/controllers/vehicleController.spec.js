@@ -1,9 +1,9 @@
 const sinon = require('sinon');
-const vehicleController = require('../controllers/vehicleController');
-const Vehicle = require('../models/vehicle');
+const vehicleController = require('../../controllers/vehicleController');
+const Vehicle = require('../../models/vehicle');
 
 describe('Vehicle Controller', () => {
-    let req, res, next, vehicleSaveStub;
+    let req, res, next, vehicleFindStub, vehicleFindByIdStub, vehicleFindByIdAndDeleteStub, vehicleSaveStub;
 
     beforeEach(() => {
         req = {

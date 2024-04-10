@@ -1,7 +1,7 @@
-const User = require('../models/user');
-const Reservation = require('../models/reservation');
+const User = require('../../models/user');
+const Reservation = require('../../models/reservation');
 const jwt = require('jsonwebtoken');
-const userController = require('../controllers/userController');
+const userController = require('../../controllers/userController');
 
 describe('User Controller', function () {
     it('should create a new and return a jwt in a cookie', async function () {
@@ -229,7 +229,7 @@ describe('User Controller', function () {
 
     it('should return a 401 status with an error message when no user is logged in', async function () {
         const req = {};
-        nestedjson = jasmine.createSpy();
+        let nestedjson = jasmine.createSpy();
         const res = {
             json: jasmine.createSpy(),
             status: jasmine.createSpy().and.returnValue({

@@ -13,7 +13,6 @@ class VehicleDetails extends HTMLElement {
         if (response.ok) {
             const vehicle = (await response.json()).vehicle;
 
-            // this.querySelector('#vehicle-image').src = vehicle.imageUrl;
             this.querySelector('#vehicle-model').innerHTML =
                 vehicle.details.model;
 
