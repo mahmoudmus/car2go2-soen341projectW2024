@@ -45,6 +45,30 @@
             required
         >
     </div>
+    <div class="row">
+        <div class="mb-3 col-md-6">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input
+                value="<%= user ? user.phoneNumber : '' %>"
+                type="text"
+                class="form-control"
+                id="phoneNumber"
+                name="phoneNumber"
+                required
+            >
+        </div>
+        <div class="mb-3 col-md-6">
+            <label for="driverLicenseNumber" class="form-label">Driver's License Number</label>
+            <input
+                value="<%= user ? user.driverLicenseNumber : '' %>"
+                type="text"
+                class="form-control"
+                id="driverLicenseNumber"
+                name="driverLicenseNumber"
+                required
+            >
+        </div>
+    </div>
     <% if (!user) { %>
         <div class="mb-3">
             <label for="hash" class="form-label">Password</label>
@@ -65,8 +89,16 @@
 
 <% if (user) { %>
 <script>
-    document.querySelector('#delete-account').addEventListener('click', (e) => {
+    document.querySelector('#delete-account').addEventListener('click', async (e) => {
         e.preventDefault();
+        const popup = document.querySelector('confirmation-popup');
+        const swalTitle = 'Delete your account?';
+        const swalText = 'This action is permanent.';
+        const swalTitleSuccess = "Account Deleted.";
+        const swalTextSuccess = 'If this was a mistake, please call our support line.';
+        if (!(await popup.confirm(swalTitle, swalText, swalTitleSuccess, swalTextSuccess))) {
+            return;
+        }
         fetch(`/users/<%= user._id %>`, {
             method: 'DELETE',
         })

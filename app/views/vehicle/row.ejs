@@ -17,7 +17,7 @@
             >&nbsp;|&nbsp;<span class="vehicle-make"
             ><%= vehicle.details.make %></span
             >&nbsp;|
-            $<span class="vehicle-price"><%= vehicle.hourlyPrice %></span><small class="text-secondary">/hr</small>
+            $<span class="vehicle-price"><%= vehicle.dailyPrice %></span><small class="text-secondary">/day</small>
         </p>
         <% if (user && user.type === 'admin') { %>
         <div>
@@ -34,6 +34,9 @@
         <% } else { %>
             <button class="btn btn-dark start-reservation">
                 <i class="bi bi-calendar3-range"></i> Reserve
+            </button>
+            <button class="btn btn-dark see-details">
+                <i class="bi bi-file-earmark-fill"></i> Details
             </button>
         <% } %>
     </div>

@@ -21,6 +21,30 @@ const UserSchema = new Schema({
     },
     createdAt: { type: Date, default: Date.now, immutable: true },
     updatedAt: { type: Date, default: Date.now },
+    billingInformation: {
+        creditCardNumber: { type: String },
+        cardExpiryDate: { type: String },
+        cvv: { type: String },
+        cardHolderName: { type: String },
+        billingAddress: { type: String },
+        postalCode: { type: String },
+    },
+    phoneNumber: {
+        type: String,
+        required: 'A phone number is required.',
+        match: [
+            /^[0-9\s\-\(\)]+$/,
+            'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
+        ],
+    },
+    driverLicenseNumber: {
+        type: String,
+        required: "A driver's license number is required.",
+        match: [
+            /^[A-Za-z0-9\- ]+$/,
+            "Driver's license number can only contain letters, numbers, hyphens, and spaces.",
+        ],
+    },
 });
 
 UserSchema.pre('save', function (next) {
@@ -38,6 +62,11 @@ UserSchema.pre('save', async function (next) {
         this.hash = await bcrypt.hash(this.hash, salt);
     }
     next();
+});
+
+UserSchema.pre('deleteOne', async function (next) {
+    var user = this;
+    user.model('Reservation').deleteMany({ user: this._id }, next());
 });
 
 UserSchema.methods.verifyPassword = async function (password) {

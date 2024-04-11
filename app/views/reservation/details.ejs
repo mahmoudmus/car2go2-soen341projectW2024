@@ -1,0 +1,26 @@
+<button type="button" class="btn btn-primary" id="continue">Continue</button>
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Booking Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <p><strong>Vehicle: </strong><%= vehicle.details.model %> <span id="confirm-vehicle-model"></span> (<%= vehicle.details.year %><span id="confirm-vehicle-year"></span>)</p>
+                <p><strong>Reservation Dates:</strong> <span id="confirm-dates"></span></p>
+                <p><strong>Pickup Location: </strong> <%= vehicle.branch.name %> <span id="confirm-pickup-location"></span></p>
+                <p><strong>Dropoff Location:</strong> <span id="confirm-dropoff-location"></span></p>
+                <p><strong>Additional Services:</strong></p>
+                <ul id="confirm-services"></ul>
+                <p><strong>Total Price:</strong> $<span id="confirm-total-price"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Details</button>
+                <button type="button" class="btn btn-primary" id="final-confirm-button">Confirm Reservation</button>
+            </div>
+        </div>
+    </div>
+</div>

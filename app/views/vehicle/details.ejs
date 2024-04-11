@@ -1,0 +1,39 @@
+<script type="module" src="/javascripts/vehicle/vehicleDetails.component.js"></script>
+<vehicle-details class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="vehicle-model"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <input type="hidden" id="vehicle_id" name="vehicle_id" value="">
+            <div class="modal-body">
+                <!-- <img
+                    id="vehicle-image"
+                    src=""
+                    class="img-thumbnail"
+
+                    alt="Car Image"
+                /> -->
+                <div class="row">
+                    <div class="col-sm-6 pb-2">
+                        <span id="vehicle-year"></span>&nbsp;|&nbsp;<span id="vehicle-make"></span>&nbsp;|&nbsp;<span>$<span id="vehicle-price"></span><small class="text-secondary">/day</small></span>
+                    </div>
+                    <div class="text-success text-sm-end col-sm-6 pb-4"><i class="bi bi-geo-alt-fill"></i>&nbsp;<span id="vehicle-branch"></span></div>
+                </div>
+
+                <div><small class="text-secondary">Category:</small>&nbsp;<span id="vehicle-category"></span>&nbsp;(<span id="vehicle-type"></span>)</div>
+                <div><small class="text-secondary">Colour:</small>&nbsp;<span id="vehicle-colour"></span></div>
+                <div><small class="text-secondary">Number of seats:</small>&nbsp;<span id="vehicle-seats"></span></div>
+                <div><small class="text-secondary">Number of doors:</small>&nbsp;<span id="vehicle-doors"></span></div>
+                <div><small class="text-secondary">Mileage:</small>&nbsp;<span id="vehicle-mileage"></span></div>
+                <div><small class="text-secondary">Engine Type:</small>&nbsp;<span id="vehicle-engine-type"></span>&nbsp;<span id="vehicle-automatic"></span></div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="reserve-button" class="btn btn-success">Reserve</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</vehicle-details>

@@ -16,10 +16,38 @@ const reservationSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
 
-    // TBD
-    pickup_location_id: { type: String },
-    dropoff_location_id: { type: String },
-    status: { type: String, default: 'Pending' },
+    deposit: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+    },
+    payment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+    },
+
+    pickupLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
+    dropoffLocation: { type: Schema.Types.ObjectId, ref: 'Branch' },
+    status: {
+        type: String,
+        enum: ['upcoming', 'checked-in', 'checked-out'],
+        default: 'upcoming',
+    },
+    accessories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Accessory',
+        },
+    ],
+    cost: { type: Number, required: true },
+    madeByCSR: { type: Boolean, required: true, default: false },
+    initialDamages: { type: String },
 });
+
+reservationSchema.virtual('duration').get(function () {
+    return (this.endDate - this.startDate) / (1000 * 60 * 60 * 24);
+});
+
+reservationSchema.set('toJSON', { virtuals: true });
+reservationSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model('Reservation', reservationSchema);

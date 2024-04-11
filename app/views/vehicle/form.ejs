@@ -1,4 +1,4 @@
-<script type="module" src="/javascripts/vehicleForm.component.js"></script>
+<script type="module" src="/javascripts/vehicle/vehicleForm.component.js"></script>
 <vehicle-form class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -28,7 +28,7 @@
                                 <option value="compact">Compact</option>
                                 <option value="standard">Standard</option>
                                 <option value="intermediate">Intermediate</option>
-                                <option value="full-size">Full-size</option>
+                                <option value="fullsize">Full-size</option>
                             </select>
                         </div>
                     </div>
@@ -40,28 +40,23 @@
 
                     <div class="form-group mb-3">
                         <label for="branch">Branch</label>
-                        <select class="form-control" id="branch" name="branch" required>
-                            <option value="" disabled selected>Select</option>
-                            <option value="montreal">Montreal</option>
-                            <option value="toronto">Toronto</option>
-                            <option value="winnipeg">Winnipeg</option>
-                            <option value="calgary">Calgary</option>
-                            <option value="vancouver">Vancouver</option>
-                        </select>
+                        <script type="module" src="/javascripts/branch/branchPicker.component.js"></script>
+                        <branch-picker></branch-picker>
                     </div>
 
                     <div class="row align-items-center">
                         <div class="form-group mb-3 col-sm-6">
-                            <label for="hourlyPrice">Hourly Rate</label>
-                            <input type="number" class="form-control" id="hourlyPrice" name="hourlyPrice" required min="0" step=".01">
+                            <label for="engineType">Engine Type</label>
+                            <select class="form-control" id="engineType" name="engineType">
+                                <option value="" disabled selected>select</option>
+                                <option value="gas">Gas</option>
+                                <option value="electric">Electric</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
                         </div>
                         <div class="form-group mb-3 col-sm-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="available" name="available">
-                                <label class="form-check-label" for="available">
-                                    Available
-                                </label>
-                            </div>
+                            <label for="dailyPrice">Daily Rate</label>
+                            <input type="number" class="form-control" id="dailyPrice" name="dailyPrice" required min="0" step=".01">
                         </div>
                     </div>
 
@@ -105,13 +100,8 @@
                     
                     <div class="row align-items-center">
                         <div class="form-group mb-3 col-sm-6">
-                            <label for="engineType">Engine Type</label>
-                            <select class="form-control" id="engineType" name="engineType">
-                                <option value="" disabled selected>select</option>
-                                <option value="gas">Gas</option>
-                                <option value="electric">Electric</option>
-                                <option value="hybrid">Hybrid</option>
-                            </select>
+                            <label for="licensePlateNumber">License Plate Number</label>
+                            <input type="text" class="form-control" id="licensePlateNumber" name="licensePlateNumber">
                         </div>
 
                         <div class="form-group mb-3 col-sm-6">
