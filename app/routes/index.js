@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const reservationController = require('../controllers/reservationController');
+const datingController = require('../controllers/datingController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -20,6 +21,8 @@ router.get('/signup', function (req, res, next) {
 router.get('/login', function (req, res, next) {
     res.render('user/login');
 });
+
+router.get('/dating', datingController.datingDashboard);
 
 router.post('/login', authController.login);
 

@@ -5,7 +5,7 @@
             <p class="lead">Welcome to Gas - your flexibile car rental solution.</p>
         </div>
         <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center my-5">
-            <script type="module" src="/javascripts/reservationFinder.component.js"></script>
+            <script type="module" src="/javascripts/reservation/reservationFinder.component.js"></script>
             <reservation-finder class="w-100">
                 <div class="input-group">
                     <input type="text" id="dateRangeFinder" class="form-control rounded-start-5 p-3" placeholder="What day(s) do you need a car?" aria-label="Recipient's username" aria-describedby="button-addon">
@@ -21,6 +21,20 @@
                     </button>
                 </div>
             </reservation-finder>
+        </div>
+    </div>
+    <div id="dating-cta" class="row rounded-5 overflow-hidden dating-bg p-4 mb-4">
+        <div class="col-lg-7">
+            <h1>Not sure what you're looking&nbsp;for?</h1>
+            <p class="lead">Try our vehicle matchmaker to find the right car, the right&nbsp;way.</p>
+            <div>
+                <a href="/dating" role="button" class="btn btn-dark dating-text">
+                    <i class="bi bi-arrow-through-heart-fill pe-1"></i>
+                    Learn more
+                </a>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-5 heart-container">
         </div>
     </div>
     <% if (process.env.GEOCODE_KEY) { %>
@@ -45,7 +59,7 @@
     });
 </script>
 <% } %>
-<script type="module" src="/javascripts/vehicleCarousel.component.js"></script>
+<script type="module" src="/javascripts/vehicle/vehicleCarousel.component.js"></script>
 <%- include('./reservation/form')  %>
 <%- include('./reservation/checkinSuccessModal') %>
 <%- include('./reservation/checkoutSuccessModal') %>
@@ -64,6 +78,25 @@
         document.querySelector('#mapRow').appendChild(mapDiv);
     }
 </script>
-<script type="module" src="/javascripts/mapDiv.component.js"></script>
+<script type="module" src="/javascripts/branch/mapDiv.component.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GEOCODE_KEY %>&callback=initMap"></script>
 <% } %>
+<script>
+    // Dating CTA floating hearts script:
+    // @todo place this in a component
+    const heartContainer = document.querySelector('.heart-container');
+
+    function addHeart() {
+        const heart = document.createElement('span');
+        heart.classList.add('heart');
+        heart.innerHTML = '<i class="bi bi-balloon-heart-fill"></i>';
+        heart.style.left = Math.random() * 100 + '%';
+        heartContainer.appendChild(heart);
+
+        setTimeout(() => {
+            heartContainer.removeChild(heart);
+        }, 5000);
+    }
+
+    setInterval(addHeart, 2000);
+</script>

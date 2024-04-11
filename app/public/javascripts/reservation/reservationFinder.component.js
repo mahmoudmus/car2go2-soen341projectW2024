@@ -1,6 +1,5 @@
 class ReservationFinder extends HTMLElement {
     connectedCallback() {
-        // this.searchVehiclesButton = this.querySelector('#button-addon');
         this.postalInput = this.querySelector('.postal-group');
         this.searchButton = this.querySelector('#search-vehicles');
         this.initializeDateRangePicker();
@@ -126,6 +125,17 @@ class ReservationFinder extends HTMLElement {
             url.pathname = '/vehicles';
             url.search = params.toString();
             walkin.setVehiclePageUrl(url.toString());
+            return;
+        }
+
+        const swipeGame = document.querySelector('swipe-game');
+        if (swipeGame) {
+            url.pathname = '/vehicles/json';
+            url.search = params.toString();
+            // Add style to hide the container
+            document.querySelector('#instructions').style.display = 'none';
+            swipeGame.setDates(start, end);
+            swipeGame.startGame(url.toString());
             return;
         }
 

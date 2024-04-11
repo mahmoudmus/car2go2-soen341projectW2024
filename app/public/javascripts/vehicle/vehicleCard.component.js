@@ -22,10 +22,10 @@ class VehicleCard extends HTMLElement {
 
     async deleteVehicle() {
         const popup = document.querySelector('confirmation-popup');
-        var swalTitle = 'Delete Vehicle?';
-        var swalText = undefined;
-        var swalTitleSuccess = 'Vehicle Deleted!';
-        var swalTextSuccess = 'Vehicle ID: ' + this.vehicleId;
+        let swalTitle = 'Delete Vehicle?';
+        let swalText;
+        let swalTitleSuccess = 'Vehicle Deleted!';
+        let swalTextSuccess = 'Vehicle ID: ' + this.vehicleId;
 
         if (
             !(await popup.confirm(
@@ -76,13 +76,6 @@ class VehicleCard extends HTMLElement {
             new URL(window.location.href).search
         );
         window.location.href = `${newUrl}?${params.toString()}`;
-
-        // const reservationForm = document.querySelector('reservation-form');
-        // reservationForm.mode = 'starting';
-        // const result = await reservationForm.setVehicle(this.vehicleId);
-        // if (result) {
-        //     reservationForm.modal.show();
-        // }
     }
 
     async seeDetails() {
