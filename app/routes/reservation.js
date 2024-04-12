@@ -13,6 +13,7 @@ router.post('/emailbill/', reservationController.emailBill);
 
 // Read
 router.get('/', reservationController.readAllReservations);
+router.get('/edit/:id', reservationController.getEditReservationPage);
 router.post('/:id/bill', reservationController.generateBill);
 router.post(
     '/:id/billingInformation',
@@ -40,6 +41,7 @@ router.get('/:id', reservationController.readReservation);
 // Update
 router.put('/:id', reservationController.updateReservation);
 router.patch('/:id', reservationController.updateReservationStatus);
+router.post('/edit/:id', reservationController.updateBooking);
 
 // Delete
 router.delete('/:id', reservationController.deleteReservation);
