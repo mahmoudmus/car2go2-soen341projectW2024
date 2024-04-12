@@ -24,14 +24,12 @@ class BookingForm extends HTMLElement {
             updateCalendarMode();
             window.addEventListener('resize', updateCalendarMode);
             if (this.editMode) {
-                this.calendar.setDate([
+                const dateObjects = [
                     new Date(this.reservation.startDate),
                     new Date(this.reservation.endDate),
-                ]);
-                this.setUnavailabilities([
-                    this.reservation.startDate,
-                    this.reservation.endDate,
-                ]);
+                ];
+                this.calendar.setDate(dateObjects);
+                this.setUnavailabilities(dateObjects);
             } else {
                 const params = new URLSearchParams(window.location.search);
                 const start = new Date(decodeURIComponent(params.get('start')));
@@ -46,7 +44,7 @@ class BookingForm extends HTMLElement {
         });
     }
 
-    async setUnavailabilities(dates = []) {
+    async setUnavailabilities(dateObjects = []) {
         const response = await fetch(
             `/vehicles/${this.vehicleId}/unavailabilities`,
             {
@@ -62,9 +60,19 @@ class BookingForm extends HTMLElement {
                 .warn('Could not get vehicle unavailabilities.');
         } else {
             const data = await response.json();
-            const filteredUnavailabilities = data.unavailabilities.filter(
-                (date) => !dates.includes(date)
-            );
+            let filteredUnavailabilities;
+            if (dateObjects.length === 2) {
+                const startObj = dateObjects[0];
+                const endObj = dateObjects[1];
+                filteredUnavailabilities = data.unavailabilities.filter(
+                    (date) => {
+                        const dateObj = new Date(date);
+                        return dateObj < startObj || dateObj > endObj;
+                    }
+                );
+            } else {
+                filteredUnavailabilities = data.unavailabilities;
+            }
             this.calendar.set('disable', filteredUnavailabilities);
         }
     }
