@@ -161,6 +161,15 @@ exports.readLoggedInEmail = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.findUserByEmail = asyncHandler(async (req, res, next) =>{
+    const email = await User.findOne({email: req.body.email.toLowerCase()});
+    if(email == null){
+        return res.status(404).json({message: 'User not found'});
+    }else{
+        return res.status(200).json({email});
+    }
+})
+
 exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
