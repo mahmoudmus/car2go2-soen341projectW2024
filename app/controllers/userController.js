@@ -161,27 +161,47 @@ exports.readLoggedInEmail = asyncHandler(async (req, res, next) => {
     }
 });
 
-exports.findUserByEmail = asyncHandler(async (req, res, next) =>{
-    const email = await User.findOne({email: req.body.email.toLowerCase()});
-    if(email == null){
-        return res.status(404).json({message: 'User not found'});
-    }else{
-        return res.status(200).json({email});
+exports.findUserByEmail = asyncHandler(async (req, res, next) => {
+    const email = await User.findOne({ email: req.body.email.toLowerCase() });
+    if (email == null) {
+        return res.status(404).json({ message: 'User not found' });
+    } else {
+        return res.status(200).json({ email });
     }
-})
+});
 
 exports.updateProfile = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.user && req.user.email === user.email) {
         const { name, age, email, address, phoneNumber, driverLicenseNumber } =
             req.body;
+
+        if (age < 18) {
+            return res.render('user/profile', {
+                user,
+                error: 'You must be at least 18 years of age.',
+            });
+        }
         user.name = name;
         user.age = age;
         user.email = email;
         user.address = address;
         user.phoneNumber = phoneNumber;
         user.driverLicenseNumber = driverLicenseNumber;
-        await user.save();
+
+        try {
+            await user.save();
+        } catch (error) {
+            let message;
+            switch (error.code) {
+                case 11000: // Duplicate key error
+                    message = 'Email already in use.';
+                    break;
+                default:
+                    message = error.message;
+            }
+            res.render('user/profile', { user, error: message });
+        }
 
         res.redirect('/profile');
     } else {
