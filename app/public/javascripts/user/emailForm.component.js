@@ -3,13 +3,15 @@ class EmailForm extends HTMLElement {
         this.modal = new bootstrap.Modal(this);
         this.continueButton = this.querySelector('#continue');
         this.continueButton.addEventListener('click', async () => {
-            this.modal.hide();
             const email = this.querySelector('#email').value.toLowerCase();
             const isValid = await this.validateEmail(email);
             if (!isValid) {
-                document.querySelector('#toast').warn("Email doesn't exists");
+                document
+                    .querySelector('#toast')
+                    .warn("Email doesn't exist. Please try again.");
                 return;
             } else {
+                this.modal.hide();
                 document.querySelector('walkin-form').setEmail(email);
             }
         });
