@@ -19,33 +19,33 @@ This project is a car rental platform designed to facilitate the process of rent
 
 ## Team Members
 
-### Azal Al-Mashta, 40179492
+### Azal Al-Mashta, 40179492, royaleagle04
 #### Role 
   Back-end Developper, Database Design & Model Management
 #### Background
  Student in Software Engineering with professional experience in Agile Methodologies 
-### Thomas Mahut, 40249811
+### Thomas Mahut, 40249811, mahutt
 #### Role
   Scrum Master and Full-stack Developper, Integration & Testing
 #### Background
   2nd year soen student with experience in web development.
-### Mahmoud Mustafa, 40252016
+### Mahmoud Mustafa, 40252016, mahmoudmus
 #### Role
   Front-end Developper, Logic & Architecture
 #### Background
    Second yearr software engineerring student
-### Vincent Nguyen, 40246406
+### Vincent Nguyen, 40246406, Vincentnguyen135
 #### Role
  Front-end Developper, Designs & Styling
 #### Background
 Computer Engineering with low-level programming
-### Alex Page-Slowik, 40193184 
+### Alex Page-Slowik, 40193184, APageSlow
 #### Role
 Front-end Developper, Templating & Layout
 #### Background
 Third year Computer Engineering student with embedded C programming experience.
 
-### Adam Tahle, 40237870 
+### Adam Tahle, 40237870, atahle
 #### Role
  Back-end Developper, Routing and Controller Logic
 #### Background
