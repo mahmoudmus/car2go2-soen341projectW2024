@@ -19,11 +19,6 @@ class BranchPicker extends HTMLElement {
         for (const branch of this.branches) {
             this.addOption({ value: branch._id, name: branch[display] });
         }
-        if (this.presetValue) {
-            this.select.value = this.presetValue;
-            document.querySelector('#drop-off-label').innerHTML =
-                this.selectedBranch.name;
-        }
     }
     addOption({ value, name }) {
         const option = document.createElement('option');

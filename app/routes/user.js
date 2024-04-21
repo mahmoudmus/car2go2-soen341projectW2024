@@ -12,7 +12,6 @@ router.post('/new', userController.createUser);
 router.get('/', userController.readAllUsers);
 router.get('/myemail', userController.readLoggedInEmail);
 router.get('/:id', userController.readUser);
-router.post('/checkemail', userController.findUserByEmail);
 
 // Update
 router.post('/:id/update', userController.updateProfile);

@@ -256,7 +256,6 @@ describe('User Controller', function () {
                 age: 18,
                 email: 'email',
                 address: 'oldAddress',
-                save: jasmine.createSpy(),
             })
         );
 

@@ -1,6 +1,6 @@
 class BookingForm extends HTMLElement {
     connectedCallback() {
-        this.setBackLink();
+        this.setCatalogueLink();
         this.initializeBranchPicker();
         this.initializeAccessories();
         this.initializeDateRangePicker();
@@ -23,20 +23,11 @@ class BookingForm extends HTMLElement {
             };
             updateCalendarMode();
             window.addEventListener('resize', updateCalendarMode);
-            if (this.editMode) {
-                const dateObjects = [
-                    new Date(this.reservation.startDate),
-                    new Date(this.reservation.endDate),
-                ];
-                this.calendar.setDate(dateObjects);
-                this.setUnavailabilities(dateObjects);
-            } else {
-                const params = new URLSearchParams(window.location.search);
-                const start = new Date(decodeURIComponent(params.get('start')));
-                const end = new Date(decodeURIComponent(params.get('end')));
-                this.calendar.setDate([start, end]);
-                this.setUnavailabilities();
-            }
+            const params = new URLSearchParams(window.location.search);
+            const start = new Date(decodeURIComponent(params.get('start')));
+            const end = new Date(decodeURIComponent(params.get('end')));
+            this.calendar.setDate([start, end]);
+            this.setUnavailabilities();
             this.calendar.config.onChange.push((selectedDates) => {
                 this.updateBasePrice(selectedDates);
             });
@@ -44,7 +35,7 @@ class BookingForm extends HTMLElement {
         });
     }
 
-    async setUnavailabilities(dateObjects = []) {
+    async setUnavailabilities() {
         const response = await fetch(
             `/vehicles/${this.vehicleId}/unavailabilities`,
             {
@@ -60,32 +51,15 @@ class BookingForm extends HTMLElement {
                 .warn('Could not get vehicle unavailabilities.');
         } else {
             const data = await response.json();
-            let filteredUnavailabilities;
-            if (dateObjects.length === 2) {
-                const startObj = dateObjects[0];
-                const endObj = dateObjects[1];
-                filteredUnavailabilities = data.unavailabilities.filter(
-                    (date) => {
-                        const dateObj = new Date(date);
-                        return dateObj < startObj || dateObj > endObj;
-                    }
-                );
-            } else {
-                filteredUnavailabilities = data.unavailabilities;
-            }
-            this.calendar.set('disable', filteredUnavailabilities);
+            this.calendar.set('disable', data.unavailabilities);
         }
     }
 
-    setBackLink() {
-        if (this.editMode) {
-            this.querySelector('#catalogue-link').href = '/myreservations';
-        } else {
-            const currentUrl = new URL(window.location.href);
-            const params = new URLSearchParams(currentUrl.search);
-            const link = `/vehicles?${params.toString()}`;
-            this.querySelector('#catalogue-link').href = link;
-        }
+    setCatalogueLink() {
+        const currentUrl = new URL(window.location.href);
+        const params = new URLSearchParams(currentUrl.search);
+        const link = `/vehicles?${params.toString()}`;
+        this.querySelector('#catalogue-link').href = link;
     }
 
     initializeBranchPicker() {
@@ -95,13 +69,6 @@ class BookingForm extends HTMLElement {
             this.querySelector('#drop-off-label').innerHTML =
                 this.branchPicker.selectedBranch.name;
         });
-        if (this.editMode) {
-            window.addEventListener('load', () => {
-                this.branchPicker.presetValue =
-                    this.reservation.dropoffLocation;
-                this.branchPicker.select.style.border = '';
-            });
-        }
     }
 
     initializeAccessories() {
@@ -111,15 +78,6 @@ class BookingForm extends HTMLElement {
                 this.renderInvoiceAccessory(e.target);
             });
             this.renderInvoiceAccessory(checkbox);
-        }
-        if (this.editMode) {
-            for (const accessory of this.reservation.accessories) {
-                const checkbox = this.querySelector(
-                    `input[value="${accessory}"]`
-                );
-                checkbox.checked = true;
-                this.renderInvoiceAccessory(checkbox);
-            }
         }
     }
 
@@ -132,11 +90,7 @@ class BookingForm extends HTMLElement {
                     .querySelector('#toast')
                     .warn('Please select a dropoff location.');
             } else {
-                if (this.editMode) {
-                    this.updateReservation();
-                } else {
-                    this.showConfirmationModal();
-                }
+                this.showConfirmationModal();
             }
         });
         this.confirmModal = new bootstrap.Modal(
@@ -146,37 +100,6 @@ class BookingForm extends HTMLElement {
             'click',
             () => this.createReservation()
         );
-    }
-
-    async updateReservation() {
-        const response = await fetch(
-            `/reservations/edit/${this.reservationId}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    startDate: this.calendar.selectedDates[0],
-                    endDate: this.calendar.selectedDates[1],
-                    dropoffLocation: this.branchPicker.value,
-                    accessories: this.selectedCheckboxes.map(
-                        (checkbox) => checkbox.value
-                    ),
-                    cost: parseFloat(
-                        this.querySelector('#total').innerHTML,
-                        10
-                    ),
-                }),
-            }
-        );
-        if (response.ok) {
-            window.location.href = `/myreservations`;
-        } else {
-            document
-                .querySelector('#toast')
-                .warn('Could not update reservation.');
-        }
     }
 
     showConfirmationModal() {
@@ -304,14 +227,6 @@ class BookingForm extends HTMLElement {
             return emailField.value;
         }
         return null;
-    }
-
-    get reservationId() {
-        return this.getAttribute('reservation-id');
-    }
-
-    get editMode() {
-        return Boolean(this.reservationId);
     }
 }
 customElements.define('booking-form', BookingForm);

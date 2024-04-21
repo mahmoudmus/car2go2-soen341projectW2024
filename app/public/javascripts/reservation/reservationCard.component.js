@@ -58,7 +58,10 @@ class ReservationCard extends HTMLElement {
     }
 
     editReservation() {
-        window.location.href = `/reservations/edit/${this.reservationId}`;
+        const reservationForm = document.querySelector('reservation-form');
+        reservationForm.setFields(this.reservationId);
+        reservationForm.mode = 'updating';
+        reservationForm.modal.show();
     }
 
     async copyToClipboard(message) {

@@ -4,7 +4,6 @@ const Branch = require('../models/branch');
 const asyncHandler = require('express-async-handler');
 const axios = require('axios');
 const Accessory = require('../models/accessory');
-const reservation = require('../models/reservation');
 
 exports.createVehicle = asyncHandler(async (req, res, next) => {
     const { type, category, details, branch, imageUrl, licensePlateNumber } =
@@ -234,7 +233,6 @@ exports.getBooking = asyncHandler(async (req, res, next) => {
         vehicle,
         accessories,
         email,
-        reservation: false,
     });
 });
 

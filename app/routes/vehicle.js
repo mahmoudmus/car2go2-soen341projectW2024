@@ -22,5 +22,4 @@ router.put('/:id', vehicleController.updateVehicle);
 // Delete
 router.delete('/:id', vehicleController.deleteVehicle);
 
-// Export the router.
 module.exports = router;

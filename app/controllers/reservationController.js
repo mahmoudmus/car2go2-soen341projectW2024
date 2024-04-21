@@ -2,7 +2,6 @@ const Reservation = require('../models/reservation');
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const Transaction = require('../models/transaction');
-const Accessory = require('../models/accessory');
 const asyncHandler = require('express-async-handler');
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
@@ -232,24 +231,6 @@ exports.updateReservation = asyncHandler(async (req, res, next) => {
     res.send({ reservation: populatedReservation });
 });
 
-exports.updateBooking = asyncHandler(async (req, res, next) => {
-    const { startDate, endDate, dropoffLocation, accessories, cost } = req.body;
-
-    const reservation = await Reservation.findById(req.params.id);
-    if (!reservation) {
-        return res.status(404).send({ message: 'Reservation not found.' });
-    }
-
-    reservation.startDate = startDate;
-    reservation.endDate = endDate;
-    reservation.dropoffLocation = dropoffLocation;
-    reservation.accessories = accessories;
-    reservation.cost = cost;
-    await reservation.save();
-
-    res.sendStatus(200);
-});
-
 exports.updateReservationStatus = asyncHandler(async (req, res, next) => {
     if (!req.user || !['admin', 'csr'].includes(req.user.type)) {
         return res.sendStatus(401);
@@ -417,35 +398,4 @@ exports.walkinDashboard = asyncHandler(async (req, res, next) => {
     } else {
         res.render('reservation/walkin');
     }
-});
-
-exports.getEditReservationPage = asyncHandler(async (req, res, next) => {
-    if (!req.user) {
-        return res.render('user/login', {
-            error: 'You must be logged in to edit a reservation.',
-        });
-    }
-    const reservationId = req.params.id;
-    const reservation = await Reservation.findById(reservationId)
-        .populate('vehicle')
-        .exec();
-
-    reservationObject = {
-        _id: reservation._id.toString(),
-        dropoffLocation: reservation.dropoffLocation,
-        accessories: reservation.accessories,
-        startDate: reservation.startDate,
-        endDate: reservation.endDate,
-    };
-
-    const vehicle = await Vehicle.populate(reservation.vehicle, ['branch']);
-
-    const accessories = await Accessory.find({}, 'name price');
-    const email = req.query.email ?? null;
-    res.render('reservation/booking', {
-        vehicle,
-        accessories,
-        email,
-        reservation: reservationObject,
-    });
 });
