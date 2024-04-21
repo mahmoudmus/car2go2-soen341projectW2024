@@ -36,6 +36,7 @@ const UserSchema = new Schema({
             /^[0-9\s\-\(\)]+$/,
             'Phone numbers can only contain digits, hyphens, spaces, and parentheses.',
         ],
+        trim: true
     },
     driverLicenseNumber: {
         type: String,

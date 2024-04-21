@@ -19,6 +19,8 @@
                         class="form-control"
                         id="creditCardNumber"
                         name="creditCardNumber"
+                        placeholder="1234 5678 9012 3456" 
+                        maxlength="19"
                         required
                     />
                 </div>
@@ -32,6 +34,7 @@
                         id="cardExpiryDate"
                         name="cardExpiryDate"
                         placeholder="MM/YY"
+                        maxlength="5"
                         required
                     />
                 </div>
@@ -42,6 +45,7 @@
                         class="form-control"
                         id="cvv"
                         name="cvv"
+                        maxlength="3"
                         required
                     />
                 </div>
@@ -73,10 +77,12 @@
                         >Postal Code</label
                     >
                     <input
+                        oninput="this.value = this.value.toUpperCase()"
                         type="text"
                         class="form-control"
                         id="postalCode"
                         name="postalCode"
+                        maxlength="7"
                     />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -202,4 +208,31 @@
                 .warn('Could not save billing information.');
         }
     });
+
+    // Automatically add spacing to credit cards
+    const input_num = document.getElementById("creditCardNumber");
+    input_num.addEventListener("input", () => input_num.value = formatNumber(input_num.value.replaceAll(" ", "")));
+
+    const formatNumber = (number) => number.split("").reduce((seed, next, index) => {
+    if (index !== 0 && !(index % 4)) seed += " ";
+    return seed + next;
+    }, "");
+
+    // Automatically add "/" to expiry date
+    const input_date = document.getElementById("cardExpiryDate");
+    input_date.addEventListener("input", () => input_date.value = formatDate(input_date.value.replaceAll("/", "") ));
+
+    const formatDate = (date) => date.split("").reduce((seed, next, index) => {
+    if (index !== 0 && !(index % 2)) seed += "/";
+    return seed + next;
+    }, "");
+
+    // Automatically add spacing to Postal code
+    const input_post = document.getElementById("postalCode");
+    input_post.addEventListener("input", () => input_post.value = formatPostal(input_post.value.replaceAll(" ", "")));
+
+    const formatPostal = (postal) => postal.split("").reduce((seed, next, index) => {
+    if (index !== 0 && !(index % 3)) seed += " ";
+    return seed + next;
+    }, "");
 </script>

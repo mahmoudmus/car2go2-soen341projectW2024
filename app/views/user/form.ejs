@@ -54,6 +54,8 @@
                 class="form-control"
                 id="phoneNumber"
                 name="phoneNumber"
+                maxlength="12"
+                pattern = "^\d{3}\s\d{3}\s\d{4}$"
                 required
             >
         </div>
@@ -86,6 +88,16 @@
         </div>
     </div>
 </form>
+<script>
+    // Automatically format phone number
+    const input_phone = document.getElementById("phoneNumber");
+    input_phone.addEventListener("input", () => input_phone.value = formatPhone(input_phone.value.replaceAll(" ", "")));
+
+    const formatPhone = (phone) => phone.split("").reduce((seed, next, index) => {
+    if (index !== 0 && !(index % 3) && (index <9)) seed += " ";
+    return seed + next;
+    }, "");
+</script>
 
 <% if (user) { %>
 <script>

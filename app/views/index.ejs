@@ -23,6 +23,16 @@
             </reservation-finder>
         </div>
     </div>
+    <% if (process.env.GEOCODE_KEY) { %>
+    <div id="mapRow" class="row mb-4">
+        <div class="d-flex justify-content-between">
+            <p class="lead fw-bold bold gradient-text" id="results-label">Explore our branch locations:</p>
+            <div class="text-success">
+                <i class="bi bi-geo-alt-fill"></i>&nbsp;<span id="branchLabel">All Branches</span>
+            </div>
+        </div>
+    </div>
+    <% } %>
     <div id="dating-cta" class="row rounded-5 overflow-hidden dating-bg p-4 mb-4">
         <div class="col-lg-7">
             <h1>Not sure what you're looking&nbsp;for?</h1>
@@ -37,16 +47,6 @@
         <div class="d-none d-lg-block col-lg-5 heart-container">
         </div>
     </div>
-    <% if (process.env.GEOCODE_KEY) { %>
-    <div id="mapRow" class="row mb-4">
-        <div class="d-flex justify-content-between">
-            <p class="lead fw-bold bold gradient-text" id="results-label">Explore our branch locations:</p>
-            <div class="text-success">
-                <i class="bi bi-geo-alt-fill"></i>&nbsp;<span id="branchLabel">All Branches</span>
-            </div>
-        </div>
-    </div>
-    <% } %>
     <div class="row">
         <p class="lead fw-bold bold gradient-text" id="results-label">Explore our selection:</p>
     </div>
